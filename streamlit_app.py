@@ -8,7 +8,7 @@ publica telemetry_sync.py. Es de solo lectura: los botones que cambian el estado
 
 Fuentes del snapshot (por orden):
 1. Local: data/telemetry_snapshot.json (o se genera al vuelo desde trading_bot.db)
-2. Nube: feed público de GitHub (srrxnogz/polymarket-telemetry) o la URL de st.secrets / barra lateral.
+2. Nube: feed público de GitHub (srrxnogz/polymarket-dashboard, rama telemetry) o la URL de st.secrets / barra lateral.
 """
 
 import json
@@ -22,7 +22,7 @@ import streamlit.components.v1 as components
 
 BASE_DIR = Path(__file__).parent
 TEMPLATE = BASE_DIR / "templates" / "index.html"
-DEFAULT_FEED = "https://raw.githubusercontent.com/srrxnogz/polymarket-telemetry/main/telemetry_snapshot.json"
+DEFAULT_FEED = "https://raw.githubusercontent.com/srrxnogz/polymarket-dashboard/telemetry/telemetry_snapshot.json"
 REFRESH_S = 15
 
 st.set_page_config(page_title="Polymarket Bot · V4", page_icon="🎯", layout="wide", initial_sidebar_state="collapsed")
