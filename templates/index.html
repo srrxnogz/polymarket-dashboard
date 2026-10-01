@@ -616,6 +616,7 @@ function renderOracle(v4, live) {
 }
 function renderParams(p) {
   const box = $('params'); if (!box || !p) return;
+  if (p._private) { box.innerHTML = `<div class="stat" style="grid-column:1/-1"><div class="k">Parámetros</div><div class="v" style="font-size:13px">privados · solo visibles en el panel local</div></div>`; return; }
   const dp = p.V4_DURATION_PARAMS || {};
   const pm = (p.V4_DURATIONS || ['5m']).map(d => `${d} ${(((dp[d] || {}).V4_P_MIN ?? p.V4_P_MIN) * 100).toFixed(1)}%`).join(' · ');
   const exitTxt = p.V4_EXIT_MODE === 'HOLD' ? 'mantener hasta resolución'
