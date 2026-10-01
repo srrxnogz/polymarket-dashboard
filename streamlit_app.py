@@ -41,7 +41,7 @@ iframe[title="st.iframe"], .element-container iframe { border: 0 !important; }
 
 def _secret(key: str, default: str = "") -> str:
     try:
-        return str(st.secrets.get(key, default) or default)
+        return str(st.secrets.get(key, default) or default).strip()
     except Exception:
         return default
 
@@ -57,27 +57,30 @@ def load_from_file(file_path: str) -> Optional[Dict[str, Any]]:
 
 
 @st.cache_data(ttl=5)
-def load_from_url(url: str, auth_token: Optional[str] = None) -> Optional[Dict[str, Any]]:
-    """Carga el snapshot desde raw de GitHub, la API de contenidos, un Gist o un endpoint REST."""
+def load_from_url(url: str, auth_token: Optional[str] = None) -> tuple:
+    """Carga el snapshot desde raw de GitHub, la API de contenidos, un Gist o un endpoint REST.
+    Devuelve (snapshot o None, explicación del fallo o "")."""
     import base64
     try:
         sep = "&" if "?" in url else "?"
         headers = {}
         if auth_token:
-            headers["Authorization"] = f"token {auth_token}" if "github" in url else f"Bearer {auth_token}"
+            headers["Authorization"] = f"Bearer {auth_token}"
         if "api.github.com/repos" in url and "contents" in url:
-            headers["Accept"] = "application/vnd.github.v3+json"
-        resp = requests.get(f"{url}{sep}_cb={int(time.time())}", headers=headers, timeout=6.0)
+            headers["Accept"] = "application/vnd.github.raw+json"     # contenido tal cual (sin base64 ni límite de 1 MB)
+        resp = requests.get(f"{url}{sep}_cb={int(time.time())}", headers=headers, timeout=8.0)
         if resp.status_code != 200:
-            return None
+            why = {401: "token no válido o caducado", 403: "token sin permiso (Contents: Read-only) o límite de GitHub",
+                   404: "no encontrado: falta el token o no tiene acceso a ese repositorio"}.get(resp.status_code, "")
+            return None, f"GitHub respondió HTTP {resp.status_code} {why}".strip()
         data = resp.json()
         if isinstance(data, dict) and data.get("encoding") == "base64" and "content" in data:
-            return json.loads(base64.b64decode(data["content"]).decode("utf-8"))
+            return json.loads(base64.b64decode(data["content"]).decode("utf-8")), ""
         if isinstance(data, dict) and "telemetry_snapshot.json" in (data.get("files") or {}):
-            return json.loads(data["files"]["telemetry_snapshot.json"]["content"])
-        return data if isinstance(data, dict) else None
-    except Exception:
-        return None
+            return json.loads(data["files"]["telemetry_snapshot.json"]["content"]), ""
+        return (data, "") if isinstance(data, dict) else (None, "la respuesta no es un snapshot JSON")
+    except Exception as e:
+        return None, f"error al descargar: {type(e).__name__}: {str(e)[:160]}"
 
 
 def get_telemetry() -> tuple:
@@ -90,8 +93,12 @@ def get_telemetry() -> tuple:
 
     url = st.session_state.get("telemetry_url", "").strip() or _secret("TELEMETRY_URL", DEFAULT_FEED)
     token = st.session_state.get("gh_token", "").strip() or _secret("GITHUB_TOKEN")
+    st.session_state["_diag"] = (f"URL del feed: {url or '(vacía)'} · token: "
+                                 f"{'sí (' + str(len(token)) + ' caracteres)' if token else 'NO encontrado en Secrets (GITHUB_TOKEN)'}")
     if url:
-        data = load_from_url(url, token or None)
+        data, err = load_from_url(url, token or None)
+        if err:
+            st.session_state["_diag"] += f" · {err}"
         if data:
             # Solo se sondea desde el navegador si el feed es público (nunca se expone un token en la página)
             return data, "Feed GitHub", (None if token else url)
@@ -130,6 +137,7 @@ data, source_label, poll_url = get_telemetry()
 if not data:
     st.warning("⚠️ No hay telemetría. Arranca el bot (app.py publica el snapshot cada 15 s) o ejecuta "
                "`python telemetry_sync.py`, y revisa la URL del feed en la barra lateral.")
+    st.caption("Diagnóstico: " + st.session_state.get("_diag", "sin datos"))
     st.stop()
 
 if int(data.get("schema") or 1) < 2:
