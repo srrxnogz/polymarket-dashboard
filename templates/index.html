@@ -417,13 +417,15 @@ function renderKpis(live) {
     const e = $('kPnl'); e.textContent = signed(pnl) + ' $'; e.className = 'val ' + cls(pnl);
     setT('kPnlSub', `reset ${utcTxt(L.anchor && L.anchor.ts)} · saldo inicial $${n(L.anchor && L.anchor.balance)}`);
   } else {
-    const bal = Number(live.real_balance || 0), pnl = Number(live.session_pnl ?? live.real_pnl ?? 0);
+    const vr = live.v4_real || null;
+    const bal = Number(live.real_balance || 0), pnl = Number(vr ? vr.pnl : (live.session_pnl ?? live.real_pnl ?? 0));
     setT('kBal', '$' + bal.toFixed(2));
     const cb = live.cobros || {};
     setT('kBalSub', 'cartera real' + (Number(cb.pending_value || 0) > 0 ? ` · por cobrar $${n(cb.pending_value)}` : ''));
-    setT('kPnlLbl', 'PnL de la sesión real');
+    setT('kPnlLbl', vr ? 'PnL total V4 (real)' : 'PnL de la sesión real');
     const e = $('kPnl'); e.textContent = signed(pnl) + ' $'; e.className = 'val ' + cls(pnl);
-    setT('kPnlSub', 'desde que se activó el modo real');
+    setT('kPnlSub', vr ? `${vr.trades} operaciones reales · ${vr.wins} ganadas · desde ${vr.since ? utcTxt(vr.since) : '—'}`
+                       : 'desde que se activó el modo real');
   }
 }
 function renderV4Kpis(ls, eqd) {
