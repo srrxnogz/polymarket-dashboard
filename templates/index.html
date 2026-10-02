@@ -190,6 +190,7 @@ tr.waiting td { background: rgba(251,191,36,.05); }
     <span class="pill" id="v4Pill"><span class="led"></span> V4</span>
     <span class="pill" id="clPill" title="TWAP-60s oficial de Chainlink (el dato con el que resuelve Polymarket)"><span class="led"></span> Oráculo</span>
     <span class="pill" id="wsPill" title="Libro de órdenes de Polymarket en tiempo real"><span class="led"></span> Libro</span>
+    <span class="pill" id="recPill" title="Grabador de mercado (datos para el simulador y los análisis)"><span class="led"></span> Grabador</span>
     <button class="btn" id="resetSimBtn" onclick="openResetDialog()" title="Restablecer el saldo de simulación con la cantidad que elijas">↺ Reset saldo</button>
     <button class="btn sim" id="modeBtn" onclick="toggleMode()">Cambiar a REAL</button>
   </div>
@@ -603,6 +604,14 @@ function renderOracle(v4, live) {
   const wsBad = !w.connected || (h.reconexiones || 0) >= 3 || (freshest != null && freshest > 20);
   const wsState = wsBad ? 'off' : (((h.reconexiones || 0) > 0) ? 'warn' : 'on');
   led('hWsLed', wsState); pill('wsPill', w.connected ? (wsBad ? 'Libro sin datos' : 'Libro') : 'Libro caído', wsState);
+  // Grabador de mercado: verde si todos sus procesos escribieron hace < 3 min (lo vigila además una tarea de Windows)
+  const rc = (live || {}).recorder;
+  if (rc && rc.procs != null) {
+    const ok = rc.ok && rc.procs > 0;
+    pill('recPill', ok ? 'Grabador' : (rc.procs ? 'Grabador parado' : 'Grabador sin datos'), ok ? 'on' : 'off');
+    const rp = $('recPill'); if (rp) rp.title = ok ? `Grabador: ${rc.procs} procesos al día (último estado hace ${n(rc.max_age_s, 0)} s)`
+                                                  : `Grabador parado o colgado: ${(rc.stale || []).join(', ') || 'sin estados'} (se relanza solo en ≤ 5 min)`;
+  }
   setT('hWs', w.connected ? 'conectado' : 'desconectado');
   setT('hWsSub', `último dato hace ${n(freshest, 1)} s · mercado más quieto ${n(w.max_data_age_s, 0)} s · cortes 1 h: ${h.reconexiones || 0}`);
   // Bucle
