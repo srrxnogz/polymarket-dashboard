@@ -190,6 +190,7 @@ body.stale-off .grid, body.stale-off .card { opacity: .38; filter: grayscale(.7)
 REMOTE_BOOT = """
 <script>
 window.__SNAP = __SNAP_JSON__;
+window.__LOADED = Date.now();   // cuándo llegaron a esta página los datos (render del servidor o sondeo)
 window.__FEED = { url: __POLL_URL__, source: __SOURCE__, every: __EVERY__ };
 (function () {
   const ok = (obj) => Promise.resolve(new Response(JSON.stringify(obj), {status: 200, headers: {'Content-Type': 'application/json'}}));
@@ -257,14 +258,19 @@ REMOTE_TAIL = """
   function ageTxt(s) { s = Math.max(0, Math.round(s)); return s < 90 ? s + ' s' : (s < 5400 ? Math.round(s / 60) + ' min' : Math.round(s / 3600) + ' h'); }
   function renderTelemetry() {
     const S = window.__SNAP || {}, age = Date.now() / 1000 - (S.timestamp_epoch || 0);
-    const st = age < 45 ? 'on' : (age < 120 ? 'warn' : 'off');
+    // Dos cosas distintas: (a) el BOT no publica -> los datos ya eran viejos cuando llegaron a la página;
+    // (b) la PÁGINA no se refresca (pestaña dormida, conexión con Streamlit cortada) -> el bot puede ir bien.
+    const sinceFetch = (Date.now() - (window.__LOADED || Date.now())) / 1000, ageAtFetch = age - sinceFetch;
+    const st = ageAtFetch >= 120 ? 'off' : ((ageAtFetch >= 45 || sinceFetch >= 60) ? 'warn' : 'on');
     led('telLed', st);
     document.body.classList.toggle('stale-warn', st === 'warn');
     document.body.classList.toggle('stale-off', st === 'off');
     const bn = $('staleBanner');
     if (bn) bn.innerHTML = st === 'off'
       ? `⛔ BOT APAGADO O SIN CONEXIÓN — no publica datos desde hace ${ageTxt(age)}<small>Lo que ves abajo son los últimos datos que envió (${S.timestamp ? new Date(S.timestamp).toLocaleString('es-ES') : '—'}), NO está en directo. Los bots solo funcionan con sus ventanas de terminal abiertas en el PC.</small>`
-      : (st === 'warn' ? `⚠️ Datos con retraso: el último envío fue hace ${ageTxt(age)}<small>Si pasa de 2 minutos, el bot está apagado o sin conexión.</small>` : '');
+      : (st !== 'warn' ? '' : (sinceFetch >= 60
+          ? `⚠️ Esta página no recibe datos nuevos desde hace ${ageTxt(sinceFetch)}<small>No significa que el bot esté apagado: recarga la página (F5) para ver el estado actual.</small>`
+          : `⚠️ Datos con retraso: el último envío del bot fue hace ${ageTxt(age)}<small>Si pasa de 2 minutos, el bot está apagado o sin conexión.</small>`));
     setT('telAge', 'hace ' + ageTxt(age));
     setT('telTs', S.timestamp ? new Date(S.timestamp).toLocaleString('es-ES') : '—');
     setT('telSrc', (S.source === 'panel' ? 'panel del bot' : (S.source === 'db' ? 'base de datos (panel sin respuesta)' : '—')) + ' · ' + (window.__FEED.source || ''));
@@ -319,7 +325,7 @@ REMOTE_TAIL = """
       if (!r.ok) return;
       const d = await r.json();
       if (d && (d.timestamp_epoch || 0) > ((window.__SNAP || {}).timestamp_epoch || 0) && (d.schema || 1) >= 2) {
-        window.__SNAP = d; _last = {trades: 0, eq: 0, dbg: 0}; fetchSim(); refresh(true);
+        window.__SNAP = d; window.__LOADED = Date.now(); _last = {trades: 0, eq: 0, dbg: 0}; fetchSim(); refresh(true);
       }
     } catch (e) {}
   }
