@@ -545,12 +545,17 @@ function renderPositions(pos) {
   tb.innerHTML = pos.map(p => {
     const w = waitingOfficial(p), up = Number(p.unrealized_pnl || 0);
     const tip = w ? `La ventana cerró a las ${new Date(w.end * 1000).toLocaleTimeString()}. Se liquida con el resultado OFICIAL de Polymarket (suele tardar 2-6 min); hasta entonces no se toca el saldo.` : '';
+    // Esperando el cobro: se mantiene el último dato vivo (al cierre) y si iba ganando o perdiendo según el modelo
+    const fz = w && p.frozen, ps = p.p_side_at_close;
+    const trend = fz ? (ps != null ? (ps >= 0.5 ? `<span class="pos">▲ iba ganando · modelo ${(ps * 100).toFixed(1)}%</span>`
+                                                : `<span class="neg">▼ iba perdiendo · modelo ${(ps * 100).toFixed(1)}%</span>`)
+                                   : (up >= 0 ? '<span class="pos">▲ iba ganando</span>' : '<span class="neg">▼ iba perdiendo</span>')) : '';
     return `<tr${w ? ' class="waiting"' : ''}>
-      <td><div class="slug">${esc(p.market_slug || '-')}</div>${w ? `<div class="wait" title="${esc(tip)}">⏳ esperando resultado oficial · ${fmtMMSS(w.secs)}</div>` : ''}</td>
+      <td><div class="slug">${esc(p.market_slug || '-')}</div>${w ? `<div class="wait" title="${esc(tip)}">⏳ esperando resultado oficial · ${fmtMMSS(w.secs)}</div>` : ''}${trend ? `<div class="wait">${trend}</div>` : ''}</td>
       <td>${sideTag(p.outcome)}</td><td>${n(p.entry_price, 3)}</td>
-      <td>${w ? '<span class="muted">ventana cerrada</span>' : n(p.current_price || p.entry_price, 3)}</td>
+      <td>${w ? (fz ? `${n(p.current_price, 3)} <span class="muted" style="font-size:10px">al cierre</span>` : '<span class="muted">ventana cerrada</span>') : n(p.current_price || p.entry_price, 3)}</td>
       <td>$${n(p.cost_usdc)}</td>
-      <td class="${w ? '' : cls(up)}">${w ? '<span class="muted">pendiente</span>' : signed(up, 3) + ' $'}</td></tr>`;
+      <td class="${w && !fz ? '' : cls(up)}">${w && !fz ? '<span class="muted">pendiente</span>' : signed(up, 3) + ' $' + (fz ? ' <span class="muted" style="font-size:10px">al cierre</span>' : '')}</td></tr>`;
   }).join('');
 }
 let _trades = [], _filter = 'v4';
