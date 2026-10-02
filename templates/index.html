@@ -603,7 +603,9 @@ function renderOracle(v4, live) {
   const freshest = ages.length ? Math.min(...ages) : null;
   const wsBad = !w.connected || (h.reconexiones || 0) >= 3 || (freshest != null && freshest > 20);
   const wsState = wsBad ? 'off' : (((h.reconexiones || 0) > 0) ? 'warn' : 'on');
-  led('hWsLed', wsState); pill('wsPill', w.connected ? (wsBad ? 'Libro sin datos' : 'Libro') : 'Libro caído', wsState);
+  const wsTxt = !w.connected ? 'Libro caído' : ((freshest != null && freshest > 20) ? 'Libro sin datos'
+                : ((h.reconexiones || 0) >= 3 ? 'Libro inestable' : 'Libro'));
+  led('hWsLed', wsState); pill('wsPill', wsTxt, wsState);
   // Grabador de mercado: verde si todos sus procesos escribieron hace < 3 min (lo vigila además una tarea de Windows)
   const rc = (live || {}).recorder;
   if (rc && rc.procs != null) {
