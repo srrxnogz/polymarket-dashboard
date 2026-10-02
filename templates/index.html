@@ -591,11 +591,15 @@ function renderOracle(v4, live) {
   }).join('');
   // Libro (WebSocket)
   const w = (live || {}).ws_feed || {}, h = w.last_hour || {};
-  const wsBad = !w.connected || (h.reconexiones || 0) >= 3 || Number(w.max_data_age_s || 0) > 20;
+  // Polymarket solo envía datos cuando un libro CAMBIA: un mercado tranquilo (o la ventana siguiente, ya suscrita)
+  // puede pasar >20 s sin datos sin que haya ningún fallo. El libro está caído si NINGÚN mercado recibe datos.
+  const ages = Object.values(w.data_age_s || {}).map(Number).filter(x => isFinite(x));
+  const freshest = ages.length ? Math.min(...ages) : null;
+  const wsBad = !w.connected || (h.reconexiones || 0) >= 3 || (freshest != null && freshest > 20);
   const wsState = wsBad ? 'off' : (((h.reconexiones || 0) > 0) ? 'warn' : 'on');
-  led('hWsLed', wsState); pill('wsPill', w.connected ? 'Libro' : 'Libro caído', wsState);
+  led('hWsLed', wsState); pill('wsPill', w.connected ? (wsBad ? 'Libro sin datos' : 'Libro') : 'Libro caído', wsState);
   setT('hWs', w.connected ? 'conectado' : 'desconectado');
-  setT('hWsSub', `último dato hace ${n(w.max_data_age_s, 1)} s · cortes 1 h: ${h.reconexiones || 0}`);
+  setT('hWsSub', `último dato hace ${n(freshest, 1)} s · mercado más quieto ${n(w.max_data_age_s, 0)} s · cortes 1 h: ${h.reconexiones || 0}`);
   // Bucle
   const el = (v4 || {}).event_loop || {};
   if (el.enabled) {
