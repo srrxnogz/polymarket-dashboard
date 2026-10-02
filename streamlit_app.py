@@ -172,6 +172,12 @@ body { min-height: 0 !important; }
 .tel-bar { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; font-size: 12px; color: #cbd5e1;
            background: #0b1324; border: 1px dashed var(--line); border-radius: 10px; padding: 8px 12px; margin-bottom: 14px; }
 .tel-bar b { color: var(--text); }
+/* Datos congelados: el bot no publica (apagado, PC suspendido o sin conexión) */
+.stale-banner { display: none; border-radius: 12px; padding: 14px 18px; margin-bottom: 14px; font-size: 15px; font-weight: 800; }
+.stale-banner small { display: block; font-size: 12px; font-weight: 600; margin-top: 4px; opacity: .9; }
+body.stale-warn .stale-banner { display: block; background: #2a1d06; border: 1px solid #a16207; color: var(--amber); }
+body.stale-off .stale-banner { display: block; background: #2e0f0f; border: 1px solid #b91c1c; color: #fca5a5; }
+body.stale-off .grid, body.stale-off .card { opacity: .38; filter: grayscale(.7); }
 .tel-bar .r { margin-left: auto; color: var(--muted); }
 .logs { max-height: 330px; overflow: auto; font-family: ui-monospace, Consolas, monospace; font-size: 11px; }
 .logs div { padding: 4px 0; border-bottom: 1px solid var(--line2); color: #94a3b8; white-space: pre-wrap; word-break: break-word; }
@@ -216,6 +222,7 @@ window.__FEED = { url: __POLL_URL__, source: __SOURCE__, every: __EVERY__ };
 
 # 3) Bloques añadidos para la vista remota (latido de la telemetría, V4 por activo y registro del bot).
 REMOTE_TOP = """
+<div class="stale-banner" id="staleBanner"></div>
 <div class="tel-bar" id="telBar">
   <span><span class="led" id="telLed"></span> Telemetría <b id="telAge">—</b></span>
   <span>snapshot <b id="telTs">—</b></span>
@@ -250,8 +257,14 @@ REMOTE_TAIL = """
   function ageTxt(s) { s = Math.max(0, Math.round(s)); return s < 90 ? s + ' s' : (s < 5400 ? Math.round(s / 60) + ' min' : Math.round(s / 3600) + ' h'); }
   function renderTelemetry() {
     const S = window.__SNAP || {}, age = Date.now() / 1000 - (S.timestamp_epoch || 0);
-    const st = age < 45 ? 'on' : (age < 180 ? 'warn' : 'off');
+    const st = age < 45 ? 'on' : (age < 120 ? 'warn' : 'off');
     led('telLed', st);
+    document.body.classList.toggle('stale-warn', st === 'warn');
+    document.body.classList.toggle('stale-off', st === 'off');
+    const bn = $('staleBanner');
+    if (bn) bn.innerHTML = st === 'off'
+      ? `⛔ BOT APAGADO O SIN CONEXIÓN — no publica datos desde hace ${ageTxt(age)}<small>Lo que ves abajo son los últimos datos que envió (${S.timestamp ? new Date(S.timestamp).toLocaleString('es-ES') : '—'}), NO está en directo. Los bots solo funcionan con sus ventanas de terminal abiertas en el PC.</small>`
+      : (st === 'warn' ? `⚠️ Datos con retraso: el último envío fue hace ${ageTxt(age)}<small>Si pasa de 2 minutos, el bot está apagado o sin conexión.</small>` : '');
     setT('telAge', 'hace ' + ageTxt(age));
     setT('telTs', S.timestamp ? new Date(S.timestamp).toLocaleString('es-ES') : '—');
     setT('telSrc', (S.source === 'panel' ? 'panel del bot' : (S.source === 'db' ? 'base de datos (panel sin respuesta)' : '—')) + ' · ' + (window.__FEED.source || ''));
