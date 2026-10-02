@@ -261,7 +261,10 @@ REMOTE_TAIL = """
     // Dos cosas distintas: (a) el BOT no publica -> los datos ya eran viejos cuando llegaron a la página;
     // (b) la PÁGINA no se refresca (pestaña dormida, conexión con Streamlit cortada) -> el bot puede ir bien.
     const sinceFetch = (Date.now() - (window.__LOADED || Date.now())) / 1000, ageAtFetch = age - sinceFetch;
-    const st = ageAtFetch >= 120 ? 'off' : ((ageAtFetch >= 45 || sinceFetch >= 60) ? 'warn' : 'on');
+    // raw.githubusercontent.com sirve el archivo con caché de hasta 5 min: ahí el retraso normal es mayor
+    const cdn = String((window.__FEED || {}).url || '').includes('raw.githubusercontent.com');
+    const offAt = cdn ? 420 : 120, warnAt = cdn ? 330 : 45;
+    const st = ageAtFetch >= offAt ? 'off' : ((ageAtFetch >= warnAt || sinceFetch >= 60) ? 'warn' : 'on');
     led('telLed', st);
     document.body.classList.toggle('stale-warn', st === 'warn');
     document.body.classList.toggle('stale-off', st === 'off');
@@ -270,7 +273,7 @@ REMOTE_TAIL = """
       ? `⛔ BOT APAGADO O SIN CONEXIÓN — no publica datos desde hace ${ageTxt(age)}<small>Lo que ves abajo son los últimos datos que envió (${S.timestamp ? new Date(S.timestamp).toLocaleString('es-ES') : '—'}), NO está en directo. Los bots solo funcionan con sus ventanas de terminal abiertas en el PC.</small>`
       : (st !== 'warn' ? '' : (sinceFetch >= 60
           ? `⚠️ Esta página no recibe datos nuevos desde hace ${ageTxt(sinceFetch)}<small>No significa que el bot esté apagado: recarga la página (F5) para ver el estado actual.</small>`
-          : `⚠️ Datos con retraso: el último envío del bot fue hace ${ageTxt(age)}<small>Si pasa de 2 minutos, el bot está apagado o sin conexión.</small>`));
+          : `⚠️ Datos con retraso: el último envío del bot fue hace ${ageTxt(age)}<small>Si pasa de ${cdn ? '7' : '2'} minutos, el bot está apagado o sin conexión.</small>`));
     setT('telAge', 'hace ' + ageTxt(age));
     setT('telTs', S.timestamp ? new Date(S.timestamp).toLocaleString('es-ES') : '—');
     setT('telSrc', (S.source === 'panel' ? 'panel del bot' : (S.source === 'db' ? 'base de datos (panel sin respuesta)' : '—')) + ' · ' + (window.__FEED.source || ''));
@@ -324,6 +327,7 @@ REMOTE_TAIL = """
       const r = await fetch(F.url + (F.url.includes('?') ? '&' : '?') + '_cb=' + Date.now(), {cache: 'no-store'});
       if (!r.ok) return;
       const d = await r.json();
+      window.__LOADED = Date.now();
       if (d && (d.timestamp_epoch || 0) > ((window.__SNAP || {}).timestamp_epoch || 0) && (d.schema || 1) >= 2) {
         window.__SNAP = d; window.__LOADED = Date.now(); _last = {trades: 0, eq: 0, dbg: 0}; fetchSim(); refresh(true);
       }
