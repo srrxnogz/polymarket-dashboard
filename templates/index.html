@@ -601,10 +601,13 @@ function renderOracle(v4, live) {
   // puede pasar >20 s sin datos sin que haya ningún fallo. El libro está caído si NINGÚN mercado recibe datos.
   const ages = Object.values(w.data_age_s || {}).map(Number).filter(x => isFinite(x));
   const freshest = ages.length ? Math.min(...ages) : null;
-  const wsBad = !w.connected || (h.reconexiones || 0) >= 3 || (freshest != null && freshest > 20);
-  const wsState = wsBad ? 'off' : (((h.reconexiones || 0) > 0) ? 'warn' : 'on');
+  // Cortes que importan: saturación (1013) y errores. Con una conexión por mercado (proceso aparte, 2-oct) cada
+  // ventana resuelta cierra su conexión ("limpio") y la siguiente puede tardar en mandar datos ("vigilancia"): normal.
+  const cuts = (h['1013'] || 0) + (h.error || 0), cutLim = w.slots ? 2 * w.slots : 3;
+  const wsBad = !w.connected || cuts >= cutLim || (freshest != null && freshest > 20);
+  const wsState = wsBad ? 'off' : (cuts > 0 ? 'warn' : 'on');
   const wsTxt = !w.connected ? 'Libro caído' : ((freshest != null && freshest > 20) ? 'Libro sin datos'
-                : ((h.reconexiones || 0) >= 3 ? 'Libro inestable' : 'Libro'));
+                : (cuts >= cutLim ? 'Libro inestable' : 'Libro'));
   led('hWsLed', wsState); pill('wsPill', wsTxt, wsState);
   // Grabador de mercado: verde si todos sus procesos escribieron hace < 3 min (lo vigila además una tarea de Windows)
   const rc = (live || {}).recorder;
@@ -615,7 +618,8 @@ function renderOracle(v4, live) {
                                                   : `Grabador parado o colgado: ${(rc.stale || []).join(', ') || 'sin estados'} (se relanza solo en ≤ 5 min)`;
   }
   setT('hWs', w.connected ? 'conectado' : 'desconectado');
-  setT('hWsSub', `último dato hace ${n(freshest, 1)} s · mercado más quieto ${n(w.max_data_age_s, 0)} s · cortes 1 h: ${h.reconexiones || 0}`);
+  setT('hWsSub', `último dato hace ${n(freshest, 1)} s · ${w.slots ? w.slots + ' conexiones · ' : ''}cortes reales 1 h: ${cuts}` +
+                 ` (cierres normales ${(h.limpio || 0) + (h.vigilancia || 0)})`);
   // Bucle
   const el = (v4 || {}).event_loop || {};
   if (el.enabled) {
