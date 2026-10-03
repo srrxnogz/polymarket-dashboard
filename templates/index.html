@@ -605,11 +605,25 @@ function renderOracle(v4, live) {
   // Cortes que importan: saturación (1013) y errores. Con una conexión por mercado (proceso aparte, 2-oct) cada
   // ventana resuelta cierra su conexión ("limpio") y la siguiente puede tardar en mandar datos ("vigilancia"): normal.
   const cuts = (h['1013'] || 0) + (h.error || 0), cutLim = w.slots ? 2 * w.slots : 3;
-  const wsBad = !w.connected || cuts >= cutLim || (freshest != null && freshest > 20);
-  const cutWarn = w.slots ? Math.max(3, Math.ceil(w.slots / 2)) : 1;   // un corte suelto se recupera en ~1 s
-  const wsState = wsBad ? 'off' : (cuts >= cutWarn ? 'warn' : 'on');
-  const wsTxt = !w.connected ? 'Libro caído' : ((freshest != null && freshest > 20) ? 'Libro sin datos'
-                : (cuts >= cutLim ? 'Libro inestable' : 'Libro'));
+  let wsBad, wsState, wsTxt;
+  if (h.huecos !== undefined) {
+    // 3-oct: cada mercado va por 2 conexiones; un corte de Polymarket en una lo cubre la otra. Solo cuenta un HUECO
+    // (mercado sin ninguna conexión viva ≥2 s), que es lo único que puede hacer perder una entrada.
+    const gaps = h.huecos || 0, nowGap = w.sin_conexion_ahora || 0;
+    wsBad = !w.connected || (freshest != null && freshest > 20) || gaps >= 3;
+    wsState = wsBad ? 'off' : ((gaps > 0 || nowGap > 0) ? 'warn' : 'on');
+    wsTxt = !w.connected ? 'Libro caído' : ((freshest != null && freshest > 20) ? 'Libro sin datos'
+            : (gaps >= 3 ? 'Libro inestable' : (gaps > 0 || nowGap > 0 ? 'Libro con huecos' : 'Libro')));
+    const pe = $('wsPill');
+    if (pe) pe.title = `Libro en tiempo real · ${w.redundancia || 1} conexiones por mercado · última hora: ${cuts} cortes de ` +
+                       `Polymarket cubiertos por la otra conexión, ${gaps} huecos sin datos`;
+  } else {
+    const cutWarn = w.slots ? Math.max(3, Math.ceil(w.slots / 2)) : 1;
+    wsBad = !w.connected || cuts >= cutLim || (freshest != null && freshest > 20);
+    wsState = wsBad ? 'off' : (cuts >= cutWarn ? 'warn' : 'on');
+    wsTxt = !w.connected ? 'Libro caído' : ((freshest != null && freshest > 20) ? 'Libro sin datos'
+            : (cuts >= cutLim ? 'Libro inestable' : 'Libro'));
+  }
   led('hWsLed', wsState); pill('wsPill', wsTxt, wsState);
   // Grabador de mercado: verde si todos sus procesos escribieron hace < 3 min (lo vigila además una tarea de Windows)
   const rc = (live || {}).recorder;
