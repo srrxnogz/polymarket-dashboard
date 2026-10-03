@@ -1,7 +1,7 @@
 {
   "schema": 2,
-  "timestamp": "2026-10-03T21:59:39.507972+00:00",
-  "timestamp_epoch": 1791064779,
+  "timestamp": "2026-10-03T21:59:58.074752+00:00",
+  "timestamp_epoch": 1791064798,
   "bot_online": true,
   "simulation_mode": true,
   "balance": 300.3466,
@@ -244,7 +244,7 @@
     "real_pnl": -2979.044821360532,
     "v4_real": null,
     "recorder": {
-      "max_age_s": 9.0,
+      "max_age_s": 7.0,
       "ok": true,
       "procs": 12,
       "stale": []
@@ -255,7 +255,7 @@
       "collected_value": 10928.24,
       "failed_count": 0,
       "failed_value": 0.0,
-      "last_collected_age_s": 7504.9,
+      "last_collected_age_s": 7522.7,
       "last_error": null,
       "mode": "sim",
       "no_value_count": 0,
@@ -264,102 +264,264 @@
       "real_claim_method": "auto-canje de Polymarket o reclamación manual (el bot solo lo vigila)",
       "sent_count": 0,
       "sim_delay_s": 30.0,
-      "worker_alive": false,
+      "worker_alive": true,
       "worker_error": null
     },
     "ws_feed": {
-      "connected": false,
+      "connected": true,
+      "connected_for_s": 13.0,
+      "data_age_s": {
+        "…063643": 0.0,
+        "…103476": 0.1,
+        "…215423": 0.0,
+        "…306021": 0.6,
+        "…366752": 0.2,
+        "…469463": 0.0,
+        "…501988": 0.0,
+        "…583035": 0.1,
+        "…740918": 0.8,
+        "…754983": 0.0,
+        "…775315": 0.8,
+        "…843614": 0.0,
+        "…887969": 0.6,
+        "…902329": 0.2,
+        "…924739": 0.6,
+        "…979414": 0.6
+      },
+      "kb_per_s": 0.0,
+      "lag_ms_max": null,
+      "lag_ms_p50": null,
+      "last_hour": {
+        "1013": 0,
+        "cierres_normales": 0,
+        "error": 0,
+        "huecos": 0,
+        "limpio": 0,
+        "primeros_datos": 32,
+        "reconexiones": 0,
+        "resuscripcion": 0,
+        "vigilancia": 0
+      },
+      "max_data_age_s": 0.8,
+      "msgs_per_s": 0.0,
+      "redundancia": 2,
+      "restarts": 0,
+      "sin_conexion_ahora": 0,
+      "slots": 16,
       "subprocess": true,
-      "tokens": 0
+      "tokens": 16,
+      "tokens_waiting_first_data": 0,
+      "totals": {
+        "closes": {
+          "1013": 0,
+          "error": 0,
+          "limpio": 0,
+          "vigilancia": 0
+        },
+        "connects": 16,
+        "msgs": 6487,
+        "parse_errors": 0,
+        "pongs": 16,
+        "resubscribes": 0
+      }
     },
     "active_positions": [],
     "v4": {
       "available": true,
       "active": true,
       "exclusive": true,
-      "markets": [],
+      "markets": [
+        {
+          "K": null,
+          "S": null,
+          "ask_down": null,
+          "ask_up": 0.01,
+          "asset": "BTC",
+          "bid_down": 0.99,
+          "bid_up": null,
+          "cl_ref": 84698.08506083018,
+          "cl_strike": null,
+          "cl_twap": 84699.07057711837,
+          "cl_twap_age_s": 0.72,
+          "dist": null,
+          "dur": "5m",
+          "edge_down": null,
+          "edge_up": null,
+          "p_min": 0.985,
+          "p_up": null,
+          "pm_strike": 84693.12273727893,
+          "quote_age": 16.8,
+          "sigma": null,
+          "signal": null,
+          "signal_p": null,
+          "signal_side": null,
+          "slug": "btc-updown-5m-1791064500",
+          "status": "Modelo en espera: historial insuficiente",
+          "t": 298,
+          "t_eff": 298,
+          "updated": 1791064798.1143615,
+          "window_s": 300,
+          "window_ts": 1791064500,
+          "zone": [
+            210,
+            292
+          ]
+        },
+        {
+          "K": null,
+          "S": null,
+          "ask_down": 0.001,
+          "ask_up": null,
+          "asset": "BTC",
+          "bid_down": null,
+          "bid_up": 0.999,
+          "cl_ref": 84698.08506083018,
+          "cl_strike": null,
+          "cl_twap": 84699.07057711837,
+          "cl_twap_age_s": 0.72,
+          "dist": null,
+          "dur": "15m",
+          "edge_down": null,
+          "edge_up": null,
+          "p_min": 0.985,
+          "p_up": null,
+          "pm_strike": 84688.65874950503,
+          "quote_age": 12.6,
+          "sigma": null,
+          "signal": null,
+          "signal_p": null,
+          "signal_side": null,
+          "slug": "btc-updown-15m-1791063900",
+          "status": "Modelo en espera: historial insuficiente",
+          "t": 898,
+          "t_eff": 298,
+          "updated": 1791064798.1149437,
+          "window_s": 900,
+          "window_ts": 1791063900,
+          "zone": [
+            810,
+            892
+          ]
+        },
+        {
+          "K": null,
+          "S": null,
+          "ask_down": null,
+          "ask_up": 0.01,
+          "asset": "ETH",
+          "bid_down": 0.99,
+          "bid_up": null,
+          "cl_ref": 2684.894044034303,
+          "cl_strike": null,
+          "cl_twap": 2684.8308696890545,
+          "cl_twap_age_s": 0.74,
+          "dist": null,
+          "dur": "5m",
+          "edge_down": null,
+          "edge_up": null,
+          "p_min": 0.985,
+          "p_up": null,
+          "pm_strike": 2684.8749449172064,
+          "quote_age": 15.9,
+          "sigma": null,
+          "signal": null,
+          "signal_p": null,
+          "signal_side": null,
+          "slug": "eth-updown-5m-1791064500",
+          "status": "Modelo en espera: historial insuficiente",
+          "t": 298,
+          "t_eff": 298,
+          "updated": 1791064798.1157522,
+          "window_s": 300,
+          "window_ts": 1791064500,
+          "zone": [
+            210,
+            292
+          ]
+        }
+      ],
       "chainlink_twap": {
-        "authed": false,
+        "authed": true,
         "conexiones": 2,
-        "conexiones_vivas": 0,
-        "connected": false,
-        "connects": 0,
+        "conexiones_vivas": 2,
+        "connected": true,
+        "connects": 2,
         "errors": 0,
         "last_error": null,
-        "msgs": 0,
+        "msgs": 496,
         "primeros_por_conexion": [
-          0,
-          0
+          1860,
+          57
         ],
         "running": true,
         "started_at": 1791064779.8653493,
         "symbols": {
           "bnbusd": {
-            "fresh": false,
-            "ref": null,
-            "ref_age_s": null,
-            "twap": null,
-            "twap_age_s": null,
-            "twap_lag_s": null
+            "fresh": true,
+            "ref": 784.9205,
+            "ref_age_s": 0.06,
+            "twap": 785.01238,
+            "twap_age_s": 0.02,
+            "twap_lag_s": 1.13
           },
           "btcusd": {
-            "fresh": false,
-            "ref": null,
-            "ref_age_s": null,
-            "twap": null,
-            "twap_age_s": null,
-            "twap_lag_s": null
+            "fresh": true,
+            "ref": 84698.3857,
+            "ref_age_s": 0.04,
+            "twap": 84698.899335,
+            "twap_age_s": 0.03,
+            "twap_lag_s": 1.12
           },
           "dogeusd": {
-            "fresh": false,
-            "ref": null,
-            "ref_age_s": null,
-            "twap": null,
-            "twap_age_s": null,
-            "twap_lag_s": null
+            "fresh": true,
+            "ref": 0.0929,
+            "ref_age_s": 0.82,
+            "twap": 0.092911,
+            "twap_age_s": 0.8,
+            "twap_lag_s": 1.36
           },
           "ethusd": {
-            "fresh": false,
-            "ref": null,
-            "ref_age_s": null,
-            "twap": null,
-            "twap_age_s": null,
-            "twap_lag_s": null
+            "fresh": true,
+            "ref": 2684.894,
+            "ref_age_s": 0.06,
+            "twap": 2684.827371,
+            "twap_age_s": 0.02,
+            "twap_lag_s": 1.14
           },
           "hypeusd": {
-            "fresh": false,
-            "ref": null,
-            "ref_age_s": null,
-            "twap": null,
-            "twap_age_s": null,
-            "twap_lag_s": null
+            "fresh": true,
+            "ref": 89.6369,
+            "ref_age_s": 0.07,
+            "twap": 89.637237,
+            "twap_age_s": 0.01,
+            "twap_lag_s": 1.15
           },
           "solusd": {
-            "fresh": false,
-            "ref": null,
-            "ref_age_s": null,
-            "twap": null,
-            "twap_age_s": null,
-            "twap_lag_s": null
+            "fresh": true,
+            "ref": 119.6134,
+            "ref_age_s": 0.0,
+            "twap": 119.608237,
+            "twap_age_s": 0.79,
+            "twap_lag_s": 1.36
           },
           "xrpusd": {
-            "fresh": false,
-            "ref": null,
-            "ref_age_s": null,
-            "twap": null,
-            "twap_age_s": null,
-            "twap_lag_s": null
+            "fresh": true,
+            "ref": 1.4866,
+            "ref_age_s": 0.81,
+            "twap": 1.4866,
+            "twap_age_s": 0.05,
+            "twap_lag_s": 1.11
           }
         }
       },
       "event_loop": {
-        "cycles": 0,
+        "cycles": 70,
         "enabled": true,
-        "last_cycle": 0.0,
+        "last_cycle": 1791064798.11296,
         "max_s": 0.25,
         "min_s": 0.2,
-        "wakes_by_data": 0,
-        "wakes_by_timeout": 0
+        "wakes_by_data": 66,
+        "wakes_by_timeout": 4
       },
       "depth_recorder": {
         "book_rows": 0,
@@ -367,7 +529,7 @@
         "enabled": false,
         "files": 0,
         "last_error": null,
-        "live_tokens": 0,
+        "live_tokens": 8,
         "queue": 0,
         "running": false,
         "trade_rows": 0
@@ -579,6 +741,38 @@
         "trades": 215,
         "win_rate_pct": 96.28,
         "wins": 207
+      },
+      "last_simulation": {
+        "asset": "BTC",
+        "avg_entry_price": 0.9752,
+        "by_side": {
+          "DOWN": {
+            "n": 1032,
+            "pf": 1.5,
+            "pnl": 375.07
+          },
+          "UP": {
+            "n": 929,
+            "pf": 1.88,
+            "pnl": 475.07
+          }
+        },
+        "dataset": "BTC 5m · cinta pública (retraso medido +2 s) + spot Bybit 1s + resolución oficial (solo ventanas TWAP-60) · motor sim_core",
+        "engine": "TWAP_LOCK_V4/v5",
+        "final_balance": 950.14,
+        "initial_balance": 100.0,
+        "latency_s": 1,
+        "losses": 27,
+        "max_drawdown_usd": 257.58,
+        "profit_factor": 1.66,
+        "roi_per_trade_pct": 0.93,
+        "timestamp": "2026-10-01T13:09:46.380431Z",
+        "total_pnl_usd": 850.14,
+        "total_trades": 1961,
+        "verdict": "REVIEW",
+        "win_rate_pct": 98.62,
+        "windows_replayed": 12295,
+        "wins": 1934
       },
       "sim_running": false,
       "params": {
