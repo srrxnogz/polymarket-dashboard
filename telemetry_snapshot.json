@@ -1,7 +1,7 @@
 {
   "schema": 2,
-  "timestamp": "2026-10-03T02:33:40.117531+00:00",
-  "timestamp_epoch": 1790994820,
+  "timestamp": "2026-10-03T02:33:57.920090+00:00",
+  "timestamp_epoch": 1790994837,
   "bot_online": true,
   "simulation_mode": true,
   "balance": 348.8456,
@@ -244,7 +244,7 @@
     "real_pnl": -2930.5458213605316,
     "v4_real": null,
     "recorder": {
-      "max_age_s": 8.0,
+      "max_age_s": 10.0,
       "ok": true,
       "procs": 12,
       "stale": []
@@ -255,7 +255,7 @@
       "collected_value": 10732.07,
       "failed_count": 0,
       "failed_value": 0.0,
-      "last_collected_age_s": 39.4,
+      "last_collected_age_s": 56.6,
       "last_error": null,
       "mode": "sim",
       "no_value_count": 0,
@@ -264,96 +264,251 @@
       "real_claim_method": "auto-canje de Polymarket o reclamación manual (el bot solo lo vigila)",
       "sent_count": 0,
       "sim_delay_s": 30.0,
-      "worker_alive": false,
+      "worker_alive": true,
       "worker_error": null
     },
     "ws_feed": {
-      "connected": false,
+      "connected": true,
+      "connected_for_s": 14.0,
+      "data_age_s": {
+        "…180469": 2.5,
+        "…220385": 0.0,
+        "…295882": 0.0,
+        "…380223": 0.0,
+        "…394162": 0.0,
+        "…587649": 0.0,
+        "…598668": 2.5,
+        "…637038": 0.0,
+        "…900221": 0.5,
+        "…943736": 0.0,
+        "…968893": 0.0,
+        "…985994": 0.5
+      },
+      "kb_per_s": 0.0,
+      "lag_ms_max": null,
+      "lag_ms_p50": null,
+      "last_hour": {
+        "1013": 0,
+        "cierres_normales": 0,
+        "error": 0,
+        "limpio": 0,
+        "primeros_datos": 12,
+        "reconexiones": 0,
+        "resuscripcion": 0,
+        "vigilancia": 0
+      },
+      "max_data_age_s": 2.5,
+      "msgs_per_s": 0.0,
+      "restarts": 0,
+      "slots": 6,
       "subprocess": true,
-      "tokens": 0
+      "tokens": 12,
+      "tokens_waiting_first_data": 0,
+      "totals": {
+        "closes": {
+          "1013": 0,
+          "error": 0,
+          "limpio": 0,
+          "vigilancia": 0
+        },
+        "connects": 6,
+        "msgs": 21959,
+        "parse_errors": 0,
+        "pongs": 6,
+        "resubscribes": 0
+      }
     },
     "active_positions": [],
     "v4": {
       "available": true,
       "active": true,
       "exclusive": true,
-      "markets": [],
+      "markets": [
+        {
+          "K": null,
+          "S": null,
+          "ask_down": 0.11,
+          "ask_up": 0.9,
+          "asset": "BTC",
+          "bid_down": 0.1,
+          "bid_up": 0.89,
+          "cl_ref": 84641.7369209978,
+          "cl_strike": null,
+          "cl_twap": 84640.52342531474,
+          "cl_twap_age_s": 0.02,
+          "dist": null,
+          "dur": "5m",
+          "edge_down": null,
+          "edge_up": null,
+          "p_min": 0.99,
+          "p_up": null,
+          "pm_strike": null,
+          "quote_age": 0.6,
+          "sigma": null,
+          "signal": null,
+          "signal_p": null,
+          "signal_side": null,
+          "slug": "btc-updown-5m-1790994600",
+          "status": "Modelo en espera: historial insuficiente",
+          "t": 238,
+          "t_eff": 238,
+          "updated": 1790994838.0721483,
+          "window_s": 300,
+          "window_ts": 1790994600,
+          "zone": [
+            210,
+            292
+          ]
+        },
+        {
+          "K": null,
+          "S": null,
+          "ask_down": 0.8,
+          "ask_up": 0.21,
+          "asset": "ETH",
+          "bid_down": 0.79,
+          "bid_up": 0.2,
+          "cl_ref": 2679.2967425689635,
+          "cl_strike": null,
+          "cl_twap": 2679.419267847179,
+          "cl_twap_age_s": 0.02,
+          "dist": null,
+          "dur": "5m",
+          "edge_down": null,
+          "edge_up": null,
+          "p_min": 0.99,
+          "p_up": null,
+          "pm_strike": null,
+          "quote_age": 2.5,
+          "sigma": null,
+          "signal": null,
+          "signal_p": null,
+          "signal_side": null,
+          "slug": "eth-updown-5m-1790994600",
+          "status": "Modelo en espera: historial insuficiente",
+          "t": 238,
+          "t_eff": 238,
+          "updated": 1790994838.0730555,
+          "window_s": 300,
+          "window_ts": 1790994600,
+          "zone": [
+            210,
+            292
+          ]
+        },
+        {
+          "K": null,
+          "S": null,
+          "ask_down": 0.49,
+          "ask_up": 0.52,
+          "asset": "BTC",
+          "bid_down": 0.48,
+          "bid_up": 0.51,
+          "cl_ref": 84641.7369209978,
+          "cl_strike": null,
+          "cl_twap": 84640.52342531474,
+          "cl_twap_age_s": 0.02,
+          "dist": null,
+          "dur": "15m",
+          "edge_down": null,
+          "edge_up": null,
+          "p_min": 0.993,
+          "p_up": null,
+          "pm_strike": null,
+          "quote_age": 2.5,
+          "sigma": null,
+          "signal": null,
+          "signal_p": null,
+          "signal_side": null,
+          "slug": "btc-updown-15m-1790994600",
+          "status": "Modelo en espera: historial insuficiente",
+          "t": 238,
+          "t_eff": -362,
+          "updated": 1790994838.0737493,
+          "window_s": 900,
+          "window_ts": 1790994600,
+          "zone": [
+            810,
+            892
+          ]
+        }
+      ],
       "chainlink_twap": {
-        "authed": false,
-        "connected": false,
-        "connects": 0,
+        "authed": true,
+        "connected": true,
+        "connects": 1,
         "errors": 0,
         "last_error": null,
-        "msgs": 0,
+        "msgs": 265,
         "running": true,
         "started_at": 1790994820.4641623,
         "symbols": {
           "bnbusd": {
-            "fresh": false,
-            "ref": null,
-            "ref_age_s": null,
-            "twap": null,
-            "twap_age_s": null,
-            "twap_lag_s": null
+            "fresh": true,
+            "ref": 768.5309,
+            "ref_age_s": 0.08,
+            "twap": 768.581097,
+            "twap_age_s": 0.1,
+            "twap_lag_s": 0.99
           },
           "btcusd": {
-            "fresh": false,
-            "ref": null,
-            "ref_age_s": null,
-            "twap": null,
-            "twap_age_s": null,
-            "twap_lag_s": null
+            "fresh": true,
+            "ref": 84641.7369,
+            "ref_age_s": 0.03,
+            "twap": 84640.523425,
+            "twap_age_s": 0.04,
+            "twap_lag_s": 1.05
           },
           "dogeusd": {
-            "fresh": false,
-            "ref": null,
-            "ref_age_s": null,
-            "twap": null,
-            "twap_age_s": null,
-            "twap_lag_s": null
+            "fresh": true,
+            "ref": 0.0932,
+            "ref_age_s": 0.01,
+            "twap": 0.093212,
+            "twap_age_s": 0.7,
+            "twap_lag_s": 1.39
           },
           "ethusd": {
-            "fresh": false,
-            "ref": null,
-            "ref_age_s": null,
-            "twap": null,
-            "twap_age_s": null,
-            "twap_lag_s": null
+            "fresh": true,
+            "ref": 2679.2967,
+            "ref_age_s": 0.06,
+            "twap": 2679.419268,
+            "twap_age_s": 0.04,
+            "twap_lag_s": 1.06
           },
           "hypeusd": {
-            "fresh": false,
-            "ref": null,
-            "ref_age_s": null,
-            "twap": null,
-            "twap_age_s": null,
-            "twap_lag_s": null
+            "fresh": true,
+            "ref": 88.9723,
+            "ref_age_s": 0.08,
+            "twap": 88.988571,
+            "twap_age_s": 0.06,
+            "twap_lag_s": 1.03
           },
           "solusd": {
-            "fresh": false,
-            "ref": null,
-            "ref_age_s": null,
-            "twap": null,
-            "twap_age_s": null,
-            "twap_lag_s": null
+            "fresh": true,
+            "ref": 119.1527,
+            "ref_age_s": 0.02,
+            "twap": 119.161831,
+            "twap_age_s": 0.07,
+            "twap_lag_s": 1.02
           },
           "xrpusd": {
-            "fresh": false,
-            "ref": null,
-            "ref_age_s": null,
-            "twap": null,
-            "twap_age_s": null,
-            "twap_lag_s": null
+            "fresh": true,
+            "ref": 1.489,
+            "ref_age_s": 0.1,
+            "twap": 1.489107,
+            "twap_age_s": 0.05,
+            "twap_lag_s": 1.04
           }
         }
       },
       "event_loop": {
-        "cycles": 0,
+        "cycles": 72,
         "enabled": true,
-        "last_cycle": 0.0,
+        "last_cycle": 1790994838.071354,
         "max_s": 0.25,
         "min_s": 0.2,
-        "wakes_by_data": 0,
-        "wakes_by_timeout": 0
+        "wakes_by_data": 70,
+        "wakes_by_timeout": 2
       },
       "depth_recorder": {
         "book_rows": 0,
@@ -361,7 +516,7 @@
         "enabled": false,
         "files": 0,
         "last_error": null,
-        "live_tokens": 0,
+        "live_tokens": 8,
         "queue": 0,
         "running": false,
         "trade_rows": 0
@@ -573,6 +728,38 @@
         "trades": 205,
         "win_rate_pct": 96.59,
         "wins": 198
+      },
+      "last_simulation": {
+        "asset": "BTC",
+        "avg_entry_price": 0.9752,
+        "by_side": {
+          "DOWN": {
+            "n": 1032,
+            "pf": 1.5,
+            "pnl": 375.07
+          },
+          "UP": {
+            "n": 929,
+            "pf": 1.88,
+            "pnl": 475.07
+          }
+        },
+        "dataset": "BTC 5m · cinta pública (retraso medido +2 s) + spot Bybit 1s + resolución oficial (solo ventanas TWAP-60) · motor sim_core",
+        "engine": "TWAP_LOCK_V4/v5",
+        "final_balance": 950.14,
+        "initial_balance": 100.0,
+        "latency_s": 1,
+        "losses": 27,
+        "max_drawdown_usd": 257.58,
+        "profit_factor": 1.66,
+        "roi_per_trade_pct": 0.93,
+        "timestamp": "2026-10-01T13:09:46.380431Z",
+        "total_pnl_usd": 850.14,
+        "total_trades": 1961,
+        "verdict": "REVIEW",
+        "win_rate_pct": 98.62,
+        "windows_replayed": 12295,
+        "wins": 1934
       },
       "sim_running": false,
       "params": {
