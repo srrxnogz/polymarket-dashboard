@@ -536,6 +536,7 @@ function renderPerf(eqd, ls) {
 }
 
 // ─── Render: posiciones y operaciones ─────────────────────────────────────────
+function pcTag(st) { return String(st || '').startsWith('TWAP_LOCK_PC') ? ' <span class="tag open">PC</span>' : ''; }
 function sideTag(o) { const s = String(o || '').toUpperCase(); return `<span class="tag ${s === 'UP' ? 'up' : 'dn'}">${s === 'UP' ? '▲ UP' : '▼ DOWN'}</span>`; }
 function renderPositions(pos) {
   const tb = $('posBody'); if (!tb) return;
@@ -552,7 +553,7 @@ function renderPositions(pos) {
                                                 : `<span class="neg">▼ iba perdiendo · modelo ${(ps * 100).toFixed(1)}%</span>`)
                                    : (up >= 0 ? '<span class="pos">▲ iba ganando</span>' : '<span class="neg">▼ iba perdiendo</span>')) : '';
     return `<tr${w ? ' class="waiting"' : ''}>
-      <td><div class="slug">${esc(p.market_slug || '-')}</div>${w ? `<div class="wait" title="${esc(tip)}">⏳ esperando resultado oficial · ${fmtMMSS(w.secs)}</div>` : ''}${trend ? `<div class="wait">${trend}</div>` : ''}</td>
+      <td><div class="slug">${esc(p.market_slug || '-')}${pcTag(p.strategy)}</div>${w ? `<div class="wait" title="${esc(tip)}">⏳ esperando resultado oficial · ${fmtMMSS(w.secs)}</div>` : ''}${trend ? `<div class="wait">${trend}</div>` : ''}</td>
       <td>${sideTag(p.outcome)}</td><td>${n(p.entry_price, 3)}</td>
       <td>${w ? (fz ? `${n(p.current_price, 3)} <span class="muted" style="font-size:10px">al cierre</span>` : '<span class="muted">ventana cerrada</span>') : n(p.current_price || p.entry_price, 3)}</td>
       <td>$${n(p.cost_usdc)}</td>
@@ -570,12 +571,12 @@ function resultTag(t) {
 function renderTrades() {
   const tb = $('tradeBody'); if (!tb) return;
   let rows = (_trades || []).filter(t => t.status !== 'OPEN');
-  if (_filter === 'v4') rows = rows.filter(t => String(t.strategy || '').startsWith('TWAP_LOCK_V4'));
+  if (_filter === 'v4') rows = rows.filter(t => /^TWAP_LOCK_(V4|PC)/.test(String(t.strategy || '')));
   rows.sort((a, b) => (b.id || 0) - (a.id || 0));
   if (!rows.length) { tb.innerHTML = `<tr class="empty"><td colspan="6">${_filter === 'v4' ? 'Sin operaciones V4 en este modo todavía' : 'Sin operaciones cerradas'}</td></tr>`; return; }
   tb.innerHTML = rows.slice(0, 60).map(t => {
     const pnl = Number(t.pnl || 0);
-    return `<tr><td>${esc(utcTxt(t.close_time || t.timestamp))}</td><td class="slug">${esc(t.market_slug || '-')}</td>
+    return `<tr><td>${esc(utcTxt(t.close_time || t.timestamp))}</td><td class="slug">${esc(t.market_slug || '-')}${pcTag(t.strategy)}</td>
       <td>${sideTag(t.outcome)}</td><td>${n(t.entry_price, 3)}</td>
       <td>${t.cost_usdc != null ? '$' + n(t.cost_usdc) : '—'}</td>
       <td class="${cls(pnl)}"><b>${signed(pnl, 3)}</b></td></tr>`;
@@ -605,7 +606,8 @@ function renderOracle(v4, live) {
   // ventana resuelta cierra su conexión ("limpio") y la siguiente puede tardar en mandar datos ("vigilancia"): normal.
   const cuts = (h['1013'] || 0) + (h.error || 0), cutLim = w.slots ? 2 * w.slots : 3;
   const wsBad = !w.connected || cuts >= cutLim || (freshest != null && freshest > 20);
-  const wsState = wsBad ? 'off' : (cuts > 0 ? 'warn' : 'on');
+  const cutWarn = w.slots ? Math.max(3, Math.ceil(w.slots / 2)) : 1;   // un corte suelto se recupera en ~1 s
+  const wsState = wsBad ? 'off' : (cuts >= cutWarn ? 'warn' : 'on');
   const wsTxt = !w.connected ? 'Libro caído' : ((freshest != null && freshest > 20) ? 'Libro sin datos'
                 : (cuts >= cutLim ? 'Libro inestable' : 'Libro'));
   led('hWsLed', wsState); pill('wsPill', wsTxt, wsState);
