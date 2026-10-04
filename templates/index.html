@@ -536,7 +536,7 @@ function renderPerf(eqd, ls) {
 }
 
 // ─── Render: posiciones y operaciones ─────────────────────────────────────────
-function pcTag(st) { return String(st || '').startsWith('TWAP_LOCK_PC') ? ' <span class="tag open">PC</span>' : ''; }
+function pcTag(st) { const s = String(st || ''); return s.startsWith('TWAP_LOCK_PC') ? ' <span class="tag open">PC</span>' : (s.startsWith('TWAP_LOCK_EARLY') ? ' <span class="tag open">TEMPRANA</span>' : ''); }
 function sideTag(o) { const s = String(o || '').toUpperCase(); return `<span class="tag ${s === 'UP' ? 'up' : 'dn'}">${s === 'UP' ? '▲ UP' : '▼ DOWN'}</span>`; }
 function renderPositions(pos) {
   const tb = $('posBody'); if (!tb) return;
@@ -571,7 +571,7 @@ function resultTag(t) {
 function renderTrades() {
   const tb = $('tradeBody'); if (!tb) return;
   let rows = (_trades || []).filter(t => t.status !== 'OPEN');
-  if (_filter === 'v4') rows = rows.filter(t => /^TWAP_LOCK_(V4|PC)/.test(String(t.strategy || '')));
+  if (_filter === 'v4') rows = rows.filter(t => /^TWAP_LOCK_(V4|PC|EARLY)/.test(String(t.strategy || '')));
   rows.sort((a, b) => (b.id || 0) - (a.id || 0));
   if (!rows.length) { tb.innerHTML = `<tr class="empty"><td colspan="6">${_filter === 'v4' ? 'Sin operaciones V4 en este modo todavía' : 'Sin operaciones cerradas'}</td></tr>`; return; }
   tb.innerHTML = rows.slice(0, 60).map(t => {
