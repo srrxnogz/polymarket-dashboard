@@ -134,6 +134,9 @@ tr:hover td { background: rgba(96,165,250,.04); }
 .tag.up { background: #06281d; color: var(--green); } .tag.dn { background: #2e0f0f; color: var(--red); }
 .tag.win { background: #06281d; color: var(--green); } .tag.loss { background: #2e0f0f; color: var(--red); }
 .tag.open { background: #10254a; color: #93c5fd; } .tag.other { background: #1b2336; color: var(--muted); }
+.tag.k-v4 { background: #10254a; color: #93c5fd; } .tag.k-cheap { background: #2b2410; color: #f5c451; }
+.tag.k-early { background: #241a3d; color: #c4b5fd; } .tag.k-pc { background: #0d2b2a; color: #5eead4; }
+.tag.k-other { background: #1b2336; color: var(--muted); }
 .wait { font-size: 10px; color: var(--amber); margin-top: 3px; }
 tr.waiting td { background: rgba(251,191,36,.05); }
 .tbl-wrap { max-height: 330px; overflow: auto; border-radius: 10px; }
@@ -263,8 +266,8 @@ tr.waiting td { background: rgba(251,191,36,.05); }
       <div class="card-h"><h2>Posiciones abiertas</h2><span class="sub" id="posSub">—</span></div>
       <div class="tbl-wrap short">
         <table>
-          <thead><tr><th>Mercado</th><th>Lado</th><th>Precio compra</th><th>Actual</th><th>Coste</th><th>PnL latente</th></tr></thead>
-          <tbody id="posBody"><tr class="empty"><td colspan="6">Sin posiciones abiertas</td></tr></tbody>
+          <thead><tr><th>Mercado</th><th>Tipo</th><th>Lado</th><th>Precio compra</th><th>Actual</th><th>Coste</th><th>PnL latente</th></tr></thead>
+          <tbody id="posBody"><tr class="empty"><td colspan="7">Sin posiciones abiertas</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -275,8 +278,8 @@ tr.waiting td { background: rgba(251,191,36,.05); }
       </div>
       <div class="fill-body">
         <table>
-          <thead><tr><th>Cierre</th><th>Mercado</th><th>Lado</th><th>Precio compra</th><th>Coste</th><th>PnL</th></tr></thead>
-          <tbody id="tradeBody"><tr class="empty"><td colspan="6">Cargando…</td></tr></tbody>
+          <thead><tr><th>Cierre</th><th>Mercado</th><th>Tipo</th><th>Lado</th><th>Precio compra</th><th>Coste</th><th>PnL</th></tr></thead>
+          <tbody id="tradeBody"><tr class="empty"><td colspan="7">Cargando…</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -536,14 +539,25 @@ function renderPerf(eqd, ls) {
 }
 
 // ─── Render: posiciones y operaciones ─────────────────────────────────────────
-function pcTag(st) { const s = String(st || ''); return s.startsWith('TWAP_LOCK_PC') ? ' <span class="tag open">PC</span>' : (s.startsWith('TWAP_LOCK_EARLY') ? ' <span class="tag open">TEMPRANA</span>' : ''); }
+function pcTag(st) { return ''; }
+// Tipo de entrada de cada operación (4-oct-2026): estrategia y tramo de precio, con la explicación al pasar el ratón.
+function entryType(st, px) {
+  const s = String(st || ''), p = Number(px || 0);
+  let k, lab, tip;
+  if (s.startsWith('TWAP_LOCK_EARLY')) { k = 'early'; lab = 'Temprana'; tip = 'Compra a 4-3 min del cierre (0,70-0,85) con ventaja del modelo; sin salidas de emergencia; vende a 0,99 o cobra el resultado.'; }
+  else if (s.startsWith('TWAP_LOCK_PC')) { k = 'pc'; lab = 'Post-cierre'; tip = 'Puja a 0,991 por el ganador ya decidido después del cierre; sin riesgo de resultado.'; }
+  else if (s.startsWith('TWAP_LOCK_V4') && p > 0 && p < 0.95) { k = 'cheap'; lab = 'V4 barata'; tip = 'V4 en el tramo barato: por debajo de 0,95, solo con el modelo muy seguro (≥ 99 %).'; }
+  else if (s.startsWith('TWAP_LOCK_V4')) { k = 'v4'; lab = 'V4'; tip = 'V4: compra al final de la ventana (0,95-0,99) con el modelo ≥ 98,5 %; aguanta hasta el resultado.'; }
+  else { k = 'other'; lab = esc(s.split(' (')[0] || '—'); tip = 'Estrategia heredada'; }
+  return `<span class="tag k-${k}" title="${esc(tip)}">${lab}</span>`;
+}
 function sideTag(o) { const s = String(o || '').toUpperCase(); return `<span class="tag ${s === 'UP' ? 'up' : 'dn'}">${s === 'UP' ? '▲ UP' : '▼ DOWN'}</span>`; }
 function renderPositions(pos) {
   const tb = $('posBody'); if (!tb) return;
   pos = pos || [];
   const waiting = pos.filter(p => waitingOfficial(p)).length;
   setT('posSub', pos.length ? `${pos.length} abierta(s)` + (waiting ? ` · ${waiting} esperando resultado oficial` : '') : '—');
-  if (!pos.length) { tb.innerHTML = '<tr class="empty"><td colspan="6">Sin posiciones abiertas</td></tr>'; return; }
+  if (!pos.length) { tb.innerHTML = '<tr class="empty"><td colspan="7">Sin posiciones abiertas</td></tr>'; return; }
   tb.innerHTML = pos.map(p => {
     const w = waitingOfficial(p), up = Number(p.unrealized_pnl || 0);
     const tip = w ? `La ventana cerró a las ${new Date(w.end * 1000).toLocaleTimeString()}. Se liquida con el resultado OFICIAL de Polymarket (suele tardar 2-6 min); hasta entonces no se toca el saldo.` : '';
@@ -554,7 +568,7 @@ function renderPositions(pos) {
                                    : (up >= 0 ? '<span class="pos">▲ iba ganando</span>' : '<span class="neg">▼ iba perdiendo</span>')) : '';
     return `<tr${w ? ' class="waiting"' : ''}>
       <td><div class="slug">${esc(p.market_slug || '-')}${pcTag(p.strategy)}</div>${w ? `<div class="wait" title="${esc(tip)}">⏳ esperando resultado oficial · ${fmtMMSS(w.secs)}</div>` : ''}${trend ? `<div class="wait">${trend}</div>` : ''}</td>
-      <td>${sideTag(p.outcome)}</td><td>${n(p.entry_price, 3)}</td>
+      <td>${entryType(p.strategy, p.entry_price)}</td><td>${sideTag(p.outcome)}</td><td>${n(p.entry_price, 3)}</td>
       <td>${w ? (fz ? `${n(p.current_price, 3)} <span class="muted" style="font-size:10px">al cierre</span>` : '<span class="muted">ventana cerrada</span>') : n(p.current_price || p.entry_price, 3)}</td>
       <td>$${n(p.cost_usdc)}</td>
       <td class="${w && !fz ? '' : cls(up)}">${w && !fz ? '<span class="muted">pendiente</span>' : signed(up, 3) + ' $' + (fz ? ' <span class="muted" style="font-size:10px">al cierre</span>' : '')}</td></tr>`;
@@ -573,11 +587,11 @@ function renderTrades() {
   let rows = (_trades || []).filter(t => t.status !== 'OPEN');
   if (_filter === 'v4') rows = rows.filter(t => /^TWAP_LOCK_(V4|PC|EARLY)/.test(String(t.strategy || '')));
   rows.sort((a, b) => (b.id || 0) - (a.id || 0));
-  if (!rows.length) { tb.innerHTML = `<tr class="empty"><td colspan="6">${_filter === 'v4' ? 'Sin operaciones V4 en este modo todavía' : 'Sin operaciones cerradas'}</td></tr>`; return; }
+  if (!rows.length) { tb.innerHTML = `<tr class="empty"><td colspan="7">${_filter === 'v4' ? 'Sin operaciones V4 en este modo todavía' : 'Sin operaciones cerradas'}</td></tr>`; return; }
   tb.innerHTML = rows.slice(0, 60).map(t => {
     const pnl = Number(t.pnl || 0);
     return `<tr><td>${esc(utcTxt(t.close_time || t.timestamp))}</td><td class="slug">${esc(t.market_slug || '-')}${pcTag(t.strategy)}</td>
-      <td>${sideTag(t.outcome)}</td><td>${n(t.entry_price, 3)}</td>
+      <td>${entryType(t.strategy, t.entry_price)}</td><td>${sideTag(t.outcome)}</td><td>${n(t.entry_price, 3)}</td>
       <td>${t.cost_usdc != null ? '$' + n(t.cost_usdc) : '—'}</td>
       <td class="${cls(pnl)}"><b>${signed(pnl, 3)}</b></td></tr>`;
   }).join('');
