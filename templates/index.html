@@ -136,7 +136,7 @@ tr:hover td { background: rgba(96,165,250,.04); }
 .tag.open { background: #10254a; color: #93c5fd; } .tag.other { background: #1b2336; color: var(--muted); }
 .tag.k-v4 { background: #10254a; color: #93c5fd; } .tag.k-cheap { background: #2b2410; color: #f5c451; }
 .tag.k-early { background: #241a3d; color: #c4b5fd; } .tag.k-pc { background: #0d2b2a; color: #5eead4; }
-.tag.k-other { background: #1b2336; color: var(--muted); }
+.tag.k-other { background: #1b2336; color: var(--muted); } .tag.k-coh { background: #2a1f0d; color: #fdba74; }
 .wait { font-size: 10px; color: var(--amber); margin-top: 3px; }
 tr.waiting td { background: rgba(251,191,36,.05); }
 .tbl-wrap { max-height: 330px; overflow: auto; border-radius: 10px; }
@@ -545,6 +545,7 @@ function entryType(st, px) {
   const s = String(st || ''), p = Number(px || 0);
   let k, lab, tip;
   if (s.startsWith('TWAP_LOCK_EARLY')) { k = 'early'; lab = 'Temprana'; tip = 'Compra cuando faltan de 4 min a 2,5 min (0,70-0,85) con ventaja ≥ 3 c del modelo y de Chainlink; sin salidas de emergencia; vende a 0,99 o cobra el resultado.'; }
+  else if (s.startsWith('TWAP_LOCK_COH')) { k = 'coh'; lab = 'Coherencia'; tip = 'Par BTC 15m + su último 5m (terminan a la vez): una pata gana siempre; el par se compra solo si cuesta menos de 1 $. Mira la suma de las dos patas, no cada una.'; }
   else if (s.startsWith('TWAP_LOCK_PC')) { k = 'pc'; lab = 'Post-cierre'; tip = 'Puja a 0,991 por el ganador ya decidido después del cierre; sin riesgo de resultado.'; }
   else if (s.startsWith('TWAP_LOCK_V4') && p > 0 && p < 0.95) { k = 'cheap'; lab = 'V4 barata'; tip = 'V4 en el tramo barato: por debajo de 0,95, solo con el modelo muy seguro (≥ 99 %).'; }
   else if (s.startsWith('TWAP_LOCK_V4')) { k = 'v4'; lab = 'V4'; tip = 'V4: compra al final de la ventana (0,95-0,99) con el modelo ≥ 98,5 %; aguanta hasta el resultado.'; }
@@ -585,7 +586,7 @@ function resultTag(t) {
 function renderTrades() {
   const tb = $('tradeBody'); if (!tb) return;
   let rows = (_trades || []).filter(t => t.status !== 'OPEN');
-  if (_filter === 'v4') rows = rows.filter(t => /^TWAP_LOCK_(V4|PC|EARLY)/.test(String(t.strategy || '')));
+  if (_filter === 'v4') rows = rows.filter(t => /^TWAP_LOCK_(V4|PC|EARLY|COH)/.test(String(t.strategy || '')));
   rows.sort((a, b) => (b.id || 0) - (a.id || 0));
   if (!rows.length) { tb.innerHTML = `<tr class="empty"><td colspan="7">${_filter === 'v4' ? 'Sin operaciones V4 en este modo todavía' : 'Sin operaciones cerradas'}</td></tr>`; return; }
   tb.innerHTML = rows.slice(0, 60).map(t => {
