@@ -544,7 +544,7 @@ function pcTag(st) { return ''; }
 function entryType(st, px) {
   const s = String(st || ''), p = Number(px || 0);
   let k, lab, tip;
-  if (s.startsWith('TWAP_LOCK_EARLY')) { k = 'early'; lab = 'Temprana'; tip = 'Compra a 4-3 min del cierre (0,70-0,85) con ventaja del modelo; sin salidas de emergencia; vende a 0,99 o cobra el resultado.'; }
+  if (s.startsWith('TWAP_LOCK_EARLY')) { k = 'early'; lab = 'Temprana'; tip = 'Compra cuando faltan de 4 min a 2,5 min (0,70-0,85) con ventaja ≥ 3 c del modelo y de Chainlink; sin salidas de emergencia; vende a 0,99 o cobra el resultado.'; }
   else if (s.startsWith('TWAP_LOCK_PC')) { k = 'pc'; lab = 'Post-cierre'; tip = 'Puja a 0,991 por el ganador ya decidido después del cierre; sin riesgo de resultado.'; }
   else if (s.startsWith('TWAP_LOCK_V4') && p > 0 && p < 0.95) { k = 'cheap'; lab = 'V4 barata'; tip = 'V4 en el tramo barato: por debajo de 0,95, solo con el modelo muy seguro (≥ 99 %).'; }
   else if (s.startsWith('TWAP_LOCK_V4')) { k = 'v4'; lab = 'V4'; tip = 'V4: compra al final de la ventana (0,95-0,99) con el modelo ≥ 98,5 %; aguanta hasta el resultado.'; }
