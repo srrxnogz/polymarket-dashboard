@@ -544,7 +544,7 @@ function pcTag(st) { return ''; }
 function entryType(st, px) {
   const s = String(st || ''), p = Number(px || 0);
   let k, lab, tip;
-  if (s.startsWith('TWAP_LOCK_EARLY')) { k = 'early'; lab = 'Temprana'; tip = 'Compra cuando faltan de 4 min a 2,5 min (0,70-0,85) con ventaja ≥ 3 c del modelo y de Chainlink; sin salidas de emergencia; vende a 0,99 o cobra el resultado.'; }
+  if (s.startsWith('TWAP_LOCK_EARLY')) { k = 'early'; lab = 'Temprana'; tip = 'Compra cuando faltan de 3 a 2 min (0,70-0,85) con ventaja ≥ 3 c del modelo y de Chainlink; sin salidas: cobra el resultado.'; }
   else if (s.startsWith('TWAP_LOCK_COH')) { k = 'coh'; lab = 'Coherencia'; tip = 'Par BTC 15m + su último 5m (terminan a la vez): una pata gana siempre; el par se compra solo si cuesta menos de 1 $. Mira la suma de las dos patas, no cada una.'; }
   else if (s.startsWith('TWAP_LOCK_PC')) { k = 'pc'; lab = 'Post-cierre'; tip = 'Puja a 0,991 por el ganador ya decidido después del cierre; sin riesgo de resultado.'; }
   else if (s.startsWith('TWAP_LOCK_V4') && p > 0 && p < 0.95) { k = 'cheap'; lab = 'V4 barata'; tip = 'V4 en el tramo barato: por debajo de 0,95, solo con el modelo muy seguro (≥ 99 %).'; }
