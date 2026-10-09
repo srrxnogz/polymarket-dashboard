@@ -1,7 +1,7 @@
 {
   "schema": 2,
-  "timestamp": "2026-10-09T10:00:07.878292+00:00",
-  "timestamp_epoch": 1791540007,
+  "timestamp": "2026-10-09T10:00:46.907100+00:00",
+  "timestamp_epoch": 1791540046,
   "bot_online": true,
   "simulation_mode": true,
   "balance": 167.5058,
@@ -283,8 +283,9 @@
     "session_pnl": -82.4942,
     "real_pnl": -3111.885621360532,
     "v4_real": null,
+    "v4_version": "4.5",
     "recorder": {
-      "max_age_s": 10.0,
+      "max_age_s": 8.0,
       "ok": true,
       "procs": 12,
       "stale": []
@@ -295,7 +296,7 @@
       "collected_value": 26943.44,
       "failed_count": 0,
       "failed_value": 0.0,
-      "last_collected_age_s": 265.1,
+      "last_collected_age_s": 305.3,
       "last_error": null,
       "mode": "sim",
       "no_value_count": 0,
@@ -304,85 +305,30 @@
       "real_claim_method": "auto-canje de Polymarket o reclamación manual (el bot solo lo vigila)",
       "sent_count": 0,
       "sim_delay_s": 30.0,
-      "worker_alive": true,
+      "worker_alive": false,
       "worker_error": null
     },
     "ws_feed": {
-      "connected": true,
-      "connected_for_s": 4.0,
-      "data_age_s": {
-        "…011711": 0.0,
-        "…045987": 2.9,
-        "…059377": 0.0,
-        "…101417": 0.0,
-        "…153548": 3.5,
-        "…236525": 3.5,
-        "…280425": 0.0,
-        "…319931": 3.0,
-        "…342595": 3.6,
-        "…360736": 0.0,
-        "…417788": 3.0,
-        "…436811": 0.0,
-        "…555498": 2.9,
-        "…616588": 0.0,
-        "…776075": 0.0,
-        "…804522": 3.6
-      },
-      "kb_per_s": 905.1,
-      "lag_ms_max": 5115,
-      "lag_ms_p50": 26,
-      "lag_tokens": {
-        "104288158081152832782774592378692899220382024055149727980631390558033739153548": 0,
-        "106986943486478580254103053491624187809722852242322790005674172336335420280425": 20,
-        "15923740545177798926047663501257895902883897242004071892676740425987143360736": 19,
-        "19227181454221009166267378718624782533156085095976839297923212515351482804522": 0,
-        "33527125974538571352032663508609932240050378633905096953898949623597567555498": 0,
-        "36481711597235051084194990657225714706105710740274080390585076962407991342595": 0,
-        "40505789972945344344820806686992015279016709600393827356980059557524738011711": 24,
-        "40968669061211540357152845968606869743874753977503282884438584868990407776075": 19,
-        "68905194681377212045814292027560688371072781490435253633975856464792849045987": 0,
-        "73205473982392403138816183641960544347375848342594299936732958497298167616588": 24,
-        "75881257208570306298449166143327629081088563015682946052444781382537827417788": 0,
-        "79990354897160256673089499528958495148326614463483594846995338386923605236525": 0,
-        "85037182658265501504357510148421656049437373925239085705915620637826885436811": 20,
-        "89603724938319370728762976819732647878469413485414531063239684681672359319931": 0,
-        "95457676331336700787604072846694698059078417586407943135569154116319237059377": 19,
-        "96127033822428779379730680663638154808161388383914716210519655780805698101417": 19
-      },
-      "last_hour": {
-        "1013": 11,
-        "cierres_normales": 36,
-        "error": 4,
-        "huecos": 0,
-        "limpio": 36,
-        "primeros_datos": 132,
-        "reconexiones": 15,
-        "resuscripcion": 34,
-        "vigilancia": 0
-      },
-      "max_data_age_s": 3.6,
-      "msgs_per_s": 1371.1,
+      "connected": false,
+      "connected_for_s": 0,
+      "data_age_s": {},
+      "kb_per_s": 0.0,
+      "lag_ms_max": null,
+      "lag_ms_p50": null,
+      "lag_tokens": {},
+      "last_hour": {},
+      "max_data_age_s": null,
+      "msgs_per_s": 0.0,
       "procesos": 8,
-      "redundancia": 2,
       "restarts": 0,
       "sin_conexion_ahora": 0,
       "sin_conexion_tokens": {},
-      "slots": 16,
+      "slots": 0,
       "subprocess": true,
-      "tokens": 16,
+      "tokens": 0,
       "tokens_waiting_first_data": 0,
       "totals": {
-        "closes": {
-          "1013": 11,
-          "error": 4,
-          "limpio": 36,
-          "vigilancia": 0
-        },
-        "connects": 67,
-        "msgs": 4974757,
-        "parse_errors": 0,
-        "pongs": 3445,
-        "resubscribes": 68
+        "closes": {}
       }
     },
     "active_positions": [],
@@ -390,200 +336,91 @@
       "available": true,
       "active": true,
       "exclusive": true,
-      "markets": [
-        {
-          "K": 82657.21,
-          "S": 82670.79,
-          "ask_down": 0.4,
-          "ask_up": 0.61,
-          "asset": "BTC",
-          "bid_down": 0.39,
-          "bid_up": 0.6,
-          "cl_ref": 82598.77278809466,
-          "cl_strike": 82590.73908302821,
-          "cl_twap": 82590.22540657739,
-          "cl_twap_age_s": 0.83,
-          "dist": 13.58,
-          "dur": "5m",
-          "edge_down": -0.1453,
-          "edge_up": 0.1018,
-          "p_min": 0.985,
-          "p_up": 0.72847,
-          "pm_strike": null,
-          "quote_age": 0.0,
-          "sigma": 1.296,
-          "signal": null,
-          "signal_p": null,
-          "signal_side": null,
-          "slug": "btc-updown-5m-1791540000",
-          "status": "Fuera de zona: espera hasta t≥195s (ahora t=8s)",
-          "t": 8,
-          "t_eff": 8,
-          "updated": 1791540008.0053663,
-          "window_s": 300,
-          "window_ts": 1791540000,
-          "zone": [
-            195,
-            292
-          ]
-        },
-        {
-          "K": 2502.76,
-          "S": 2502.94,
-          "ask_down": 0.51,
-          "ask_up": 0.5,
-          "asset": "ETH",
-          "bid_down": 0.5,
-          "bid_up": 0.49,
-          "cl_ref": 2500.662959373768,
-          "cl_strike": 2500.6019180201433,
-          "cl_twap": 2500.552138545777,
-          "cl_twap_age_s": 0.8,
-          "dist": 0.18,
-          "dur": "5m",
-          "edge_down": -0.0762,
-          "edge_up": 0.0312,
-          "p_min": 0.985,
-          "p_up": 0.54875,
-          "pm_strike": null,
-          "quote_age": 0.0,
-          "sigma": 0.087,
-          "signal": null,
-          "signal_p": null,
-          "signal_side": null,
-          "slug": "eth-updown-5m-1791540000",
-          "status": "Fuera de zona: espera hasta t≥195s (ahora t=8s)",
-          "t": 8,
-          "t_eff": 8,
-          "updated": 1791540008.01614,
-          "window_s": 300,
-          "window_ts": 1791540000,
-          "zone": [
-            195,
-            292
-          ]
-        },
-        {
-          "K": 82657.21,
-          "S": 82670.79,
-          "ask_down": 0.42,
-          "ask_up": 0.59,
-          "asset": "BTC",
-          "bid_down": 0.41,
-          "bid_up": 0.58,
-          "cl_ref": 82598.77278809466,
-          "cl_strike": 82590.73908302821,
-          "cl_twap": 82590.22540657739,
-          "cl_twap_age_s": 0.85,
-          "dist": 13.58,
-          "dur": "15m",
-          "edge_down": -0.0694,
-          "edge_up": 0.0254,
-          "p_min": 0.993,
-          "p_up": 0.6323,
-          "pm_strike": null,
-          "quote_age": 0.0,
-          "sigma": 1.296,
-          "signal": null,
-          "signal_p": null,
-          "signal_side": null,
-          "slug": "btc-updown-15m-1791540000",
-          "status": "Fuera de zona: espera hasta t≥795s (ahora t=8s)",
-          "t": 8,
-          "t_eff": -592,
-          "updated": 1791540008.0242968,
-          "window_s": 900,
-          "window_ts": 1791540000,
-          "zone": [
-            795,
-            892
-          ]
-        }
-      ],
+      "markets": [],
       "chainlink_twap": {
-        "authed": true,
+        "authed": false,
         "conexiones": 2,
-        "conexiones_vivas": 2,
-        "connected": true,
-        "connects": 2,
+        "conexiones_vivas": 0,
+        "connected": false,
+        "connects": 0,
         "discrepancias": 0,
         "errors": 0,
         "last_error": null,
-        "msgs": 64988,
+        "msgs": 0,
         "primeros_por_conexion": [
-          24461,
-          8733
+          0,
+          0
         ],
         "running": true,
-        "started_at": 1791537661.9367025,
+        "started_at": 1791540048.3945205,
         "symbols": {
           "bnbusd": {
-            "fresh": true,
+            "fresh": false,
             "ref": 742.5674,
-            "ref_age_s": 0.95,
-            "twap": 742.47718,
-            "twap_age_s": 0.84,
-            "twap_lag_s": 1.19
+            "ref_age_s": 39.39,
+            "twap": 742.478195,
+            "twap_age_s": 39.35,
+            "twap_lag_s": 1.06
           },
           "btcusd": {
             "fresh": true,
-            "ref": 82598.7728,
-            "ref_age_s": 0.93,
-            "twap": 82590.225407,
-            "twap_age_s": 0.86,
-            "twap_lag_s": 1.18
+            "ref": 82599.0118,
+            "ref_age_s": 39.38,
+            "twap": 82593.599076,
+            "twap_age_s": 5.28,
+            "twap_lag_s": 2.13
           },
           "dogeusd": {
-            "fresh": true,
+            "fresh": false,
             "ref": 0.085,
-            "ref_age_s": 0.96,
-            "twap": 0.085037,
-            "twap_age_s": 0.85,
-            "twap_lag_s": 1.19
+            "ref_age_s": 39.41,
+            "twap": 0.085036,
+            "twap_age_s": 39.38,
+            "twap_lag_s": 1.04
           },
           "ethusd": {
-            "fresh": true,
-            "ref": 2500.663,
-            "ref_age_s": 0.93,
-            "twap": 2500.552139,
-            "twap_age_s": 0.82,
-            "twap_lag_s": 1.22
+            "fresh": false,
+            "ref": 2500.658,
+            "ref_age_s": 38.14,
+            "twap": 2500.545049,
+            "twap_age_s": 39.37,
+            "twap_lag_s": 1.05
           },
           "hypeusd": {
-            "fresh": true,
-            "ref": 86.1843,
-            "ref_age_s": 0.92,
-            "twap": 86.189064,
-            "twap_age_s": 0.82,
-            "twap_lag_s": 1.22
+            "fresh": false,
+            "ref": 86.1797,
+            "ref_age_s": 39.4,
+            "twap": 86.188958,
+            "twap_age_s": 39.36,
+            "twap_lag_s": 1.05
           },
           "solusd": {
-            "fresh": true,
-            "ref": 110.3514,
-            "ref_age_s": 0.94,
-            "twap": 110.300696,
-            "twap_age_s": 0.85,
-            "twap_lag_s": 1.18
+            "fresh": false,
+            "ref": 110.35,
+            "ref_age_s": 39.41,
+            "twap": 110.301247,
+            "twap_age_s": 39.35,
+            "twap_lag_s": 1.07
           },
           "xrpusd": {
-            "fresh": true,
+            "fresh": false,
             "ref": 1.3998,
-            "ref_age_s": 0.95,
-            "twap": 1.399576,
-            "twap_age_s": 0.88,
-            "twap_lag_s": 1.15
+            "ref_age_s": 39.42,
+            "twap": 1.399579,
+            "twap_age_s": 39.37,
+            "twap_lag_s": 1.04
           }
         },
         "ultima_discrepancia": null
       },
       "event_loop": {
-        "cycles": 11435,
+        "cycles": 0,
         "enabled": true,
-        "last_cycle": 1791540008.0032296,
+        "last_cycle": 0.0,
         "max_s": 0.25,
         "min_s": 0.2,
-        "wakes_by_data": 11261,
-        "wakes_by_timeout": 174
+        "wakes_by_data": 0,
+        "wakes_by_timeout": 0
       },
       "depth_recorder": {
         "book_rows": 0,
@@ -591,7 +428,7 @@
         "enabled": false,
         "files": 0,
         "last_error": null,
-        "live_tokens": 52,
+        "live_tokens": 0,
         "queue": 0,
         "running": false,
         "trade_rows": 0
@@ -803,38 +640,6 @@
         "trades": 781,
         "win_rate_pct": 92.06,
         "wins": 719
-      },
-      "last_simulation": {
-        "asset": "BTC",
-        "avg_entry_price": 0.9762,
-        "by_side": {
-          "DOWN": {
-            "n": 1599,
-            "pf": 1.45,
-            "pnl": 1047.89
-          },
-          "UP": {
-            "n": 1498,
-            "pf": 1.42,
-            "pnl": 896.67
-          }
-        },
-        "dataset": "BTC 5m · cinta pública (retraso medido +2 s) + spot Bybit 1s + resolución oficial (solo ventanas TWAP-60) · motor sim_core",
-        "engine": "TWAP_LOCK_V4/v5",
-        "final_balance": 2044.56,
-        "initial_balance": 100.0,
-        "latency_s": 1,
-        "losses": 47,
-        "max_drawdown_usd": 759.29,
-        "profit_factor": 1.44,
-        "roi_per_trade_pct": 0.68,
-        "timestamp": "2026-10-06T17:48:41.550710Z",
-        "total_pnl_usd": 1944.56,
-        "total_trades": 3097,
-        "verdict": "REVIEW",
-        "win_rate_pct": 98.48,
-        "windows_replayed": 12295,
-        "wins": 3050
       },
       "sim_running": false,
       "params": {
@@ -2888,7 +2693,8 @@
       "cost_usdc": 16.3196,
       "pnl": 2.6804,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_EARLY"
+      "strategy": "TWAP_LOCK_EARLY",
+      "cobro": "COBRADA"
     },
     {
       "id": 11073,
@@ -2903,7 +2709,8 @@
       "cost_usdc": 18.6461,
       "pnl": 0.3539,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11072,
@@ -2918,7 +2725,8 @@
       "cost_usdc": 17.7486,
       "pnl": 0.2514,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11071,
@@ -2948,7 +2756,8 @@
       "cost_usdc": 19.8139,
       "pnl": 0.1861,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11069,
@@ -2963,7 +2772,8 @@
       "cost_usdc": 25.5157,
       "pnl": 0.4843,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11068,
@@ -3008,7 +2818,8 @@
       "cost_usdc": 24.5343,
       "pnl": 0.4657,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11065,
@@ -3023,7 +2834,8 @@
       "cost_usdc": 15.2532,
       "pnl": 0.7468,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11064,
@@ -3038,7 +2850,8 @@
       "cost_usdc": 18.504,
       "pnl": 11.496,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_EARLY"
+      "strategy": "TWAP_LOCK_EARLY",
+      "cobro": "COBRADA"
     },
     {
       "id": 11063,
@@ -3053,7 +2866,8 @@
       "cost_usdc": 25.273,
       "pnl": 0.727,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11062,
@@ -3068,7 +2882,8 @@
       "cost_usdc": 22.1418,
       "pnl": 0.8582,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11061,
@@ -3083,7 +2898,8 @@
       "cost_usdc": 17.3859,
       "pnl": 6.6141,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_EARLY"
+      "strategy": "TWAP_LOCK_EARLY",
+      "cobro": "COBRADA"
     },
     {
       "id": 11060,
@@ -3098,7 +2914,8 @@
       "cost_usdc": 17.8511,
       "pnl": 6.1489,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_EARLY"
+      "strategy": "TWAP_LOCK_EARLY",
+      "cobro": "COBRADA"
     },
     {
       "id": 11059,
@@ -3113,7 +2930,8 @@
       "cost_usdc": 18.6461,
       "pnl": 0.3539,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11058,
@@ -3128,7 +2946,8 @@
       "cost_usdc": 19.0665,
       "pnl": 0.9335,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11057,
@@ -3143,7 +2962,8 @@
       "cost_usdc": 14.7206,
       "pnl": 0.2794,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11056,
@@ -3158,7 +2978,8 @@
       "cost_usdc": 16.3657,
       "pnl": 0.6343,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11055,
@@ -3188,7 +3009,8 @@
       "cost_usdc": 3.6706,
       "pnl": 1.3294,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11053,
@@ -3203,7 +3025,8 @@
       "cost_usdc": 15.5526,
       "pnl": 0.4474,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11052,
@@ -3218,7 +3041,8 @@
       "cost_usdc": 16.6833,
       "pnl": 0.3167,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11051,
@@ -3233,7 +3057,8 @@
       "cost_usdc": 20.6088,
       "pnl": 0.3912,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11050,
@@ -3263,7 +3088,8 @@
       "cost_usdc": 28.1891,
       "pnl": 0.8109,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11048,
@@ -3278,7 +3104,8 @@
       "cost_usdc": 11.7765,
       "pnl": 0.2235,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11047,
@@ -3293,7 +3120,8 @@
       "cost_usdc": 22.5716,
       "pnl": 0.4284,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11046,
@@ -3308,7 +3136,8 @@
       "cost_usdc": 25.3764,
       "pnl": 2.6236,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11045,
@@ -3323,7 +3152,8 @@
       "cost_usdc": 23.2818,
       "pnl": 0.7182,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11044,
@@ -3338,7 +3168,8 @@
       "cost_usdc": 23.8331,
       "pnl": 1.1669,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11043,
@@ -3353,7 +3184,8 @@
       "cost_usdc": 21.5902,
       "pnl": 0.4098,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11042,
@@ -3368,7 +3200,8 @@
       "cost_usdc": 25.9043,
       "pnl": 2.0957,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11041,
@@ -3383,7 +3216,8 @@
       "cost_usdc": 24.0672,
       "pnl": 0.9328,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11040,
@@ -3398,7 +3232,8 @@
       "cost_usdc": 21.1791,
       "pnl": 0.8209,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11039,
@@ -3413,7 +3248,8 @@
       "cost_usdc": 18.6461,
       "pnl": 0.3539,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11038,
@@ -3428,7 +3264,8 @@
       "cost_usdc": 20.6088,
       "pnl": 0.3912,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11037,
@@ -3443,7 +3280,8 @@
       "cost_usdc": 18.4687,
       "pnl": 0.5313,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11036,
@@ -3458,7 +3296,8 @@
       "cost_usdc": 27.2458,
       "pnl": 0.7542,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11035,
@@ -3473,7 +3312,8 @@
       "cost_usdc": 21.5902,
       "pnl": 0.4098,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11034,
@@ -3488,7 +3328,8 @@
       "cost_usdc": 29.7208,
       "pnl": 0.2792,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11033,
@@ -3518,7 +3359,8 @@
       "cost_usdc": 22.0234,
       "pnl": 7.9766,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_EARLY"
+      "strategy": "TWAP_LOCK_EARLY",
+      "cobro": "COBRADA"
     },
     {
       "id": 11031,
@@ -3533,7 +3375,8 @@
       "cost_usdc": 29.4412,
       "pnl": 0.5588,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11030,
@@ -3548,7 +3391,8 @@
       "cost_usdc": 22.0421,
       "pnl": 3.9079,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_EARLY"
+      "strategy": "TWAP_LOCK_EARLY",
+      "cobro": "COBRADA"
     },
     {
       "id": 11029,
@@ -3563,7 +3407,8 @@
       "cost_usdc": 33.0493,
       "pnl": 0.9507,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11028,
@@ -3578,7 +3423,8 @@
       "cost_usdc": 35.6195,
       "pnl": 1.3805,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11027,
@@ -3608,7 +3454,8 @@
       "cost_usdc": 33.3666,
       "pnl": 0.6334,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11025,
@@ -3623,7 +3470,8 @@
       "cost_usdc": 32.3853,
       "pnl": 0.6147,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11024,
@@ -3638,7 +3486,8 @@
       "cost_usdc": 34.9933,
       "pnl": 1.0067,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11023,
@@ -3653,7 +3502,8 @@
       "cost_usdc": 31.7687,
       "pnl": 1.2313,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11022,
@@ -3668,7 +3518,8 @@
       "cost_usdc": 39.4702,
       "pnl": 1.5298,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11021,
@@ -3683,7 +3534,8 @@
       "cost_usdc": 33.6941,
       "pnl": 1.3059,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11020,
@@ -3698,7 +3550,8 @@
       "cost_usdc": 23.5166,
       "pnl": 4.4834,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_EARLY"
+      "strategy": "TWAP_LOCK_EARLY",
+      "cobro": "COBRADA"
     },
     {
       "id": 11019,
@@ -3713,7 +3566,8 @@
       "cost_usdc": 19.5364,
       "pnl": 3.4636,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_EARLY"
+      "strategy": "TWAP_LOCK_EARLY",
+      "cobro": "COBRADA"
     },
     {
       "id": 11018,
@@ -3728,7 +3582,8 @@
       "cost_usdc": 29.7208,
       "pnl": 0.2792,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11017,
@@ -3743,7 +3598,8 @@
       "cost_usdc": 22.1763,
       "pnl": 5.8237,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_EARLY"
+      "strategy": "TWAP_LOCK_EARLY",
+      "cobro": "COBRADA"
     },
     {
       "id": 11016,
@@ -3758,7 +3614,8 @@
       "cost_usdc": 18.8963,
       "pnl": 3.1037,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_EARLY"
+      "strategy": "TWAP_LOCK_EARLY",
+      "cobro": "COBRADA"
     },
     {
       "id": 11015,
@@ -3773,7 +3630,8 @@
       "cost_usdc": 27.4784,
       "pnl": 0.5216,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11014,
@@ -3788,7 +3646,8 @@
       "cost_usdc": 23.5529,
       "pnl": 0.4471,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11013,
@@ -3803,7 +3662,8 @@
       "cost_usdc": 21.441,
       "pnl": 8.559,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_EARLY"
+      "strategy": "TWAP_LOCK_EARLY",
+      "cobro": "COBRADA"
     },
     {
       "id": 11012,
@@ -3818,7 +3678,8 @@
       "cost_usdc": 23.5529,
       "pnl": 0.4471,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11011,
@@ -3833,7 +3694,8 @@
       "cost_usdc": 20.6044,
       "pnl": 6.3956,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_EARLY"
+      "strategy": "TWAP_LOCK_EARLY",
+      "cobro": "COBRADA"
     },
     {
       "id": 11010,
@@ -3848,7 +3710,8 @@
       "cost_usdc": 18.2911,
       "pnl": 0.7089,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11009,
@@ -3863,7 +3726,8 @@
       "cost_usdc": 27.217,
       "pnl": 0.783,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11008,
@@ -3878,7 +3742,8 @@
       "cost_usdc": 26.245,
       "pnl": 0.755,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11007,
@@ -3893,7 +3758,8 @@
       "cost_usdc": 29.8433,
       "pnl": 1.1567,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11006,
@@ -3908,7 +3774,8 @@
       "cost_usdc": 30.2063,
       "pnl": 1.7937,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11005,
@@ -3923,7 +3790,8 @@
       "cost_usdc": 30.1332,
       "pnl": 0.8668,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11004,
@@ -3938,7 +3806,8 @@
       "cost_usdc": 25.7398,
       "pnl": 1.2602,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11003,
@@ -3953,7 +3822,8 @@
       "cost_usdc": 20.2165,
       "pnl": 0.7835,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11002,
@@ -3968,7 +3838,8 @@
       "cost_usdc": 22.5716,
       "pnl": 0.4284,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 11001,
@@ -3998,7 +3869,8 @@
       "cost_usdc": 31.1052,
       "pnl": 0.8948,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10999,
@@ -4013,7 +3885,8 @@
       "cost_usdc": 26.245,
       "pnl": 0.755,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10998,
@@ -4028,7 +3901,8 @@
       "cost_usdc": 18.1103,
       "pnl": 6.8897,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_EARLY"
+      "strategy": "TWAP_LOCK_EARLY",
+      "cobro": "COBRADA"
     },
     {
       "id": 10997,
@@ -4043,7 +3917,8 @@
       "cost_usdc": 22.5716,
       "pnl": 0.4284,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10996,
@@ -4058,7 +3933,8 @@
       "cost_usdc": 22.5716,
       "pnl": 0.4284,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10995,
@@ -4088,7 +3964,8 @@
       "cost_usdc": 19.6274,
       "pnl": 0.3726,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10993,
@@ -4103,7 +3980,8 @@
       "cost_usdc": 21.5902,
       "pnl": 0.4098,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10992,
@@ -4118,7 +3996,8 @@
       "cost_usdc": 22.5565,
       "pnl": 0.4435,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10991,
@@ -4133,7 +4012,8 @@
       "cost_usdc": 22.1418,
       "pnl": 0.8582,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10990,
@@ -4148,7 +4028,8 @@
       "cost_usdc": 19.8139,
       "pnl": 0.1861,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10989,
@@ -4163,7 +4044,8 @@
       "cost_usdc": 18.6461,
       "pnl": 0.3539,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10988,
@@ -4178,7 +4060,8 @@
       "cost_usdc": 17.8376,
       "pnl": 3.1624,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_EARLY"
+      "strategy": "TWAP_LOCK_EARLY",
+      "cobro": "COBRADA"
     },
     {
       "id": 10987,
@@ -4193,7 +4076,8 @@
       "cost_usdc": 20.6088,
       "pnl": 0.3912,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10986,
@@ -4223,7 +4107,8 @@
       "cost_usdc": 28.1891,
       "pnl": 0.8109,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10984,
@@ -4253,7 +4138,8 @@
       "cost_usdc": 24.5343,
       "pnl": 0.4657,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10982,
@@ -4268,7 +4154,8 @@
       "cost_usdc": 20.8045,
       "pnl": 0.1955,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10981,
@@ -4283,7 +4170,8 @@
       "cost_usdc": 30.806,
       "pnl": 1.194,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10980,
@@ -4298,7 +4186,8 @@
       "cost_usdc": 23.7766,
       "pnl": 0.2234,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10979,
@@ -4313,7 +4202,8 @@
       "cost_usdc": 23.7766,
       "pnl": 0.2234,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10978,
@@ -4343,7 +4233,8 @@
       "cost_usdc": 11.7765,
       "pnl": 0.2235,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10976,
@@ -4373,7 +4264,8 @@
       "cost_usdc": 26.4532,
       "pnl": 6.5468,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_EARLY"
+      "strategy": "TWAP_LOCK_EARLY",
+      "cobro": "COBRADA"
     },
     {
       "id": 10974,
@@ -4388,7 +4280,8 @@
       "cost_usdc": 24.7673,
       "pnl": 0.2327,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10973,
@@ -4403,7 +4296,8 @@
       "cost_usdc": 12.7578,
       "pnl": 0.2422,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10972,
@@ -4418,7 +4312,8 @@
       "cost_usdc": 25.5157,
       "pnl": 0.4843,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10971,
@@ -4433,7 +4328,8 @@
       "cost_usdc": 21.545,
       "pnl": 0.455,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10970,
@@ -4448,7 +4344,8 @@
       "cost_usdc": 31.1052,
       "pnl": 0.8948,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10969,
@@ -4463,7 +4360,8 @@
       "cost_usdc": 23.183,
       "pnl": 6.817,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_EARLY"
+      "strategy": "TWAP_LOCK_EARLY",
+      "cobro": "COBRADA"
     },
     {
       "id": 10968,
@@ -4478,7 +4376,8 @@
       "cost_usdc": 24.5343,
       "pnl": 0.4657,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10967,
@@ -4493,7 +4392,8 @@
       "cost_usdc": 28.8806,
       "pnl": 1.1194,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10966,
@@ -4508,7 +4408,8 @@
       "cost_usdc": 23.5529,
       "pnl": 0.4471,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10965,
@@ -4523,7 +4424,8 @@
       "cost_usdc": 23.1045,
       "pnl": 0.8955,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10964,
@@ -4538,7 +4440,8 @@
       "cost_usdc": 28.4598,
       "pnl": 0.5402,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10963,
@@ -4553,7 +4456,8 @@
       "cost_usdc": 25.9926,
       "pnl": 1.0074,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10962,
@@ -4568,7 +4472,8 @@
       "cost_usdc": 22.1418,
       "pnl": 0.8582,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10961,
@@ -4583,7 +4488,8 @@
       "cost_usdc": 26.9553,
       "pnl": 1.0447,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10960,
@@ -4598,7 +4504,8 @@
       "cost_usdc": 27.7394,
       "pnl": 0.2606,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10959,
@@ -4613,7 +4520,8 @@
       "cost_usdc": 26.9553,
       "pnl": 1.0447,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10958,
@@ -4628,7 +4536,8 @@
       "cost_usdc": 19.8139,
       "pnl": 0.1861,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10957,
@@ -4643,7 +4552,8 @@
       "cost_usdc": 25.273,
       "pnl": 0.727,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10956,
@@ -4658,7 +4568,8 @@
       "cost_usdc": 23.3289,
       "pnl": 0.6711,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     },
     {
       "id": 10955,
@@ -4673,7 +4584,8 @@
       "cost_usdc": 20.4128,
       "pnl": 0.5872,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4"
+      "strategy": "TWAP_LOCK_V4",
+      "cobro": "COBRADA"
     }
   ],
   "v4_sim": {
