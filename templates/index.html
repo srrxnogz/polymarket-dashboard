@@ -429,10 +429,12 @@ function renderKpis(live) {
     const vr = live.v4_real || null;
     const bal = Number(live.real_balance || 0), pnl = Number(vr ? vr.pnl : (live.session_pnl ?? live.real_pnl ?? 0));
     const cb = live.cobros || {}, pend = Number(cb.pending_value || 0);
-    // 9-oct: el bot da la operación por ganada 1 s tras el cierre y Polymarket la canjea 1-2 min después: el saldo
-    // muestra cartera + pendiente de cobro para que no «baje» en cada ganancia mientras Polymarket la canjea.
-    setT('kBal', '$' + (bal + pend).toFixed(2));
-    setT('kBalSub', pend > 0 ? `cartera $${n(bal)} · por cobrar $${n(pend)} (Polymarket la canjea en 1-2 min)` : 'cartera real');
+    // 9-oct: el bot da la operación por ganada 1 s tras el cierre y Polymarket la canjea 1-2 min después: el saldo suma
+    // solo lo que aún NO ha llegado a la cartera (el servidor descuenta lo ya ingresado), así nunca marca de más.
+    const falta = Math.max(0, Number(cb.pending_to_collect || 0));
+    setT('kBal', '$' + (bal + falta).toFixed(2));
+    setT('kBalSub', falta > 0.005 ? `cartera $${n(bal)} · por cobrar $${n(falta)} (Polymarket la canjea en 1-2 min)`
+                  : pend > 0.005 ? `cartera real · cobro de $${n(pend)} ya en la cartera o llegando` : 'cartera real');
     setT('kPnlLbl', vr ? 'PnL real V' + (vr.version || live.v4_version || '4.5') : 'PnL de la sesión real');
     const e = $('kPnl'); e.textContent = signed(pnl) + ' $'; e.className = 'val ' + cls(pnl);
     setT('kPnlSub', vr ? `${vr.trades} operaciones reales · ${vr.wins} ganadas · desde ${vr.since ? utcTxt(vr.since) : '—'}`
