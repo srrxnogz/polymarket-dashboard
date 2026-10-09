@@ -134,6 +134,10 @@ tr:hover td { background: rgba(96,165,250,.04); }
 .tag.up { background: #06281d; color: var(--green); } .tag.dn { background: #2e0f0f; color: var(--red); }
 .tag.win { background: #06281d; color: var(--green); } .tag.loss { background: #2e0f0f; color: var(--red); }
 .tag.open { background: #10254a; color: #93c5fd; } .tag.other { background: #1b2336; color: var(--muted); }
+.tag.cobro { background: #2b2410; color: #f5c451; margin-left: 6px; animation: cobroPulse 1.6s ease-in-out infinite; }
+.tag.cobro.bad { background: #2e0f0f; color: var(--red); animation: none; }
+@keyframes cobroPulse { 50% { opacity: .55; } }
+@media (prefers-reduced-motion: reduce) { .tag.cobro { animation: none; } }
 .tag.k-v4 { background: #10254a; color: #93c5fd; } .tag.k-cheap { background: #2b2410; color: #f5c451; }
 .tag.k-early { background: #241a3d; color: #c4b5fd; } .tag.k-pc { background: #0d2b2a; color: #5eead4; }
 .tag.k-other { background: #1b2336; color: var(--muted); } .tag.k-coh { background: #2a1f0d; color: #fdba74; }
@@ -183,7 +187,7 @@ tr.waiting td { background: rgba(251,191,36,.05); }
   <div class="brand">
     <div class="logo">🎯</div>
     <div>
-      <div class="title">Polymarket Bot · <span>V4 TWAP-LOCK</span></div>
+      <div class="title">Polymarket Bot · <span id="verTag">V4.5 TWAP-LOCK</span></div>
       <div class="tagline" id="tagline">Mercados Up/Down de 5 y 15 min · compra el lado casi seguro al final de la ventana, vende si se tuerce y liquida con el resultado oficial</div>
     </div>
   </div>
@@ -413,6 +417,7 @@ function ring(pctVal, color) {
 // ─── Render: KPIs ─────────────────────────────────────────────────────────────
 function renderKpis(live) {
   const sim = !!live.simulation_mode, L = sim ? live.ledger : null;
+  if (live.v4_version) setT('verTag', 'V' + live.v4_version + ' TWAP-LOCK');
   if (L) {
     const eq = Number(L.equity || 0), pnl = Number(L.pnl_since_reset || 0), pc = Number(L.pending_collect || 0);
     setT('kBal', '$' + eq.toFixed(2));
@@ -423,10 +428,12 @@ function renderKpis(live) {
   } else {
     const vr = live.v4_real || null;
     const bal = Number(live.real_balance || 0), pnl = Number(vr ? vr.pnl : (live.session_pnl ?? live.real_pnl ?? 0));
-    setT('kBal', '$' + bal.toFixed(2));
-    const cb = live.cobros || {};
-    setT('kBalSub', 'cartera real' + (Number(cb.pending_value || 0) > 0 ? ` · por cobrar $${n(cb.pending_value)}` : ''));
-    setT('kPnlLbl', vr ? 'PnL total V4 (real)' : 'PnL de la sesión real');
+    const cb = live.cobros || {}, pend = Number(cb.pending_value || 0);
+    // 9-oct: el bot da la operación por ganada 1 s tras el cierre y Polymarket la canjea 1-2 min después: el saldo
+    // muestra cartera + pendiente de cobro para que no «baje» en cada ganancia mientras Polymarket la canjea.
+    setT('kBal', '$' + (bal + pend).toFixed(2));
+    setT('kBalSub', pend > 0 ? `cartera $${n(bal)} · por cobrar $${n(pend)} (Polymarket la canjea en 1-2 min)` : 'cartera real');
+    setT('kPnlLbl', vr ? 'PnL real V' + (vr.version || live.v4_version || '4.5') : 'PnL de la sesión real');
     const e = $('kPnl'); e.textContent = signed(pnl) + ' $'; e.className = 'val ' + cls(pnl);
     setT('kPnlSub', vr ? `${vr.trades} operaciones reales · ${vr.wins} ganadas · desde ${vr.since ? utcTxt(vr.since) : '—'}`
                        : 'desde que se activó el modo real');
@@ -523,7 +530,7 @@ function renderPerf(eqd, ls) {
   const labels = pts.map(p => utcTxt(p.ts)), data = pts.map(p => p.cum);
   paint(eqChart, ['inicio'].concat(labels), [0].concat(data));
   paint(sparkPnl, ['0'].concat(labels), [0].concat(data));
-  setT('perfScope', (eqd.mode === 'sim' ? 'papel · desde el reset' : 'dinero real') + ` · ${eqd.trades} operaciones`);
+  setT('perfScope', (eqd.mode === 'sim' ? 'papel · desde el reset' : ('dinero real' + (eqd.since ? ' · desde ' + utcTxt(eqd.since) : ''))) + ` · ${eqd.trades} operaciones`);
   const wr = eqd.win_rate != null ? eqd.win_rate * 100 : null, be = eqd.breakeven_win_rate != null ? eqd.breakeven_win_rate * 100 : null;
   setT('mWr', wr != null ? wr.toFixed(1) + '%' : '—'); setT('mBe', be != null ? be.toFixed(1) + '%' : '—');
   // Escala con zoom: del (be-8)% al 100% para que se aprecie la diferencia en acierto alto
@@ -583,6 +590,12 @@ function resultTag(t) {
   if (s.includes('RESOLVED_LOSS') || (pnl < 0)) return '<span class="tag loss">PERDIDA</span>';
   return `<span class="tag other">${esc(s.replace('CLOSED_', '').slice(0, 16) || '—')}</span>`;
 }
+// 9-oct: ganada pendiente de cobro (el bot la da por ganada 1 s tras el cierre; Polymarket la canjea 1-2 min después)
+function cobroTag(t) {
+  if (t.cobro === 'PENDIENTE') return `<span class="tag cobro" title="Ganada. Polymarket canjea las acciones solo en 1-2 min; hasta entonces el dinero figura como «por cobrar».">cobrando…</span>`;
+  if (t.cobro === 'SIN_VALOR') return `<span class="tag cobro bad" title="La cartera la muestra resuelta con valor 0: el verificador corregirá el resultado.">revisar cobro</span>`;
+  return '';
+}
 function renderTrades() {
   const tb = $('tradeBody'); if (!tb) return;
   let rows = (_trades || []).filter(t => t.status !== 'OPEN');
@@ -594,7 +607,7 @@ function renderTrades() {
     return `<tr><td>${esc(utcTxt(t.close_time || t.timestamp))}</td><td class="slug">${esc(t.market_slug || '-')}${pcTag(t.strategy)}</td>
       <td>${entryType(t.strategy, t.entry_price)}</td><td>${sideTag(t.outcome)}</td><td>${n(t.entry_price, 3)}</td>
       <td>${t.cost_usdc != null ? '$' + n(t.cost_usdc) : '—'}</td>
-      <td class="${cls(pnl)}"><b>${signed(pnl, 3)}</b></td></tr>`;
+      <td class="${cls(pnl)}"><b>${signed(pnl, 3)}</b>${cobroTag(t)}</td></tr>`;
   }).join('');
 }
 
