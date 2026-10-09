@@ -25,7 +25,7 @@ TEMPLATE = BASE_DIR / "templates" / "index.html"
 DEFAULT_FEED = "https://raw.githubusercontent.com/srrxnogz/polymarket-dashboard/telemetry/telemetry_snapshot.json"
 REFRESH_S = 15
 
-st.set_page_config(page_title="Polymarket Bot · V4", page_icon="🎯", layout="wide", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="Polymarket Bot · V4.5", page_icon="🎯", layout="wide", initial_sidebar_state="collapsed")
 
 # Streamlit sin cromo: el panel ocupa toda la página con el mismo fondo que el local
 st.markdown("""
