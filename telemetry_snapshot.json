@@ -1,7 +1,7 @@
 {
   "schema": 2,
-  "timestamp": "2026-10-15T00:29:59.944838+00:00",
-  "timestamp_epoch": 1792024199,
+  "timestamp": "2026-10-15T00:30:57.609479+00:00",
+  "timestamp_epoch": 1792024257,
   "bot_online": true,
   "simulation_mode": true,
   "balance": 28.9547,
@@ -235,7 +235,7 @@
     "v4_real": null,
     "v4_version": "4.5",
     "recorder": {
-      "max_age_s": 5.0,
+      "max_age_s": 48.0,
       "ok": true,
       "procs": 13,
       "stale": []
@@ -246,7 +246,7 @@
       "collected_value": 20.0,
       "failed_count": 0,
       "failed_value": 0.0,
-      "last_collected_age_s": 2661.4,
+      "last_collected_age_s": 2720.2,
       "last_error": null,
       "mode": "sim",
       "no_value_count": 0,
@@ -255,85 +255,30 @@
       "real_claim_method": "auto-canje de Polymarket o reclamación manual (el bot solo lo vigila)",
       "sent_count": 0,
       "sim_delay_s": 30.0,
-      "worker_alive": true,
+      "worker_alive": false,
       "worker_error": null
     },
     "ws_feed": {
-      "connected": true,
-      "connected_for_s": 93.0,
-      "data_age_s": {
-        "…306690": 0.4,
-        "…313482": 0.1,
-        "…388682": 0.0,
-        "…465326": 0.0,
-        "…626250": 0.0,
-        "…664754": 0.3,
-        "…727833": 0.1,
-        "…733926": 0.0,
-        "…761931": 0.1,
-        "…773449": 0.0,
-        "…780030": 0.2,
-        "…795008": 0.4,
-        "…910694": 0.2,
-        "…961994": 0.3,
-        "…982294": 0.0,
-        "…987888": 0.1
-      },
-      "kb_per_s": 2440.3,
-      "lag_ms_max": 341,
-      "lag_ms_p50": 77,
-      "lag_tokens": {
-        "103159135989762258102389357728445752864568917475031993508911909050721700664754": 75,
-        "105211821427428280540305979608625054609778662711235842567155023788894025987888": 84,
-        "109319168103870878544603724212813974144367745323573861758108180522139295910694": 71,
-        "109401791612057896871661548050965252653381806922321036791707591649296292761931": 73,
-        "16729402048451922922126623153942931791890918148491099637664151489653058773449": 74,
-        "1812747606079019817253683103768020218975270278426931722617696464575910780030": 71,
-        "40181259293442735385479806865086976133148620615691840177978345870139614313482": 73,
-        "4400603105991268456789502264823555225038090143149227668109335292672640465326": 72,
-        "44914367607257752693104884154524955843549939820672690445762592684422668795008": 93,
-        "45640076397511996007808967795360423935947090458499962944246758530801536306690": 93,
-        "48119958560105665575474946128317151066816871639260148449046112244264291733926": 75,
-        "49012932352437090791177838135647125377497969226929969992980653084774037727833": 84,
-        "62824338331692396311429260103096065110976280128871816424743390104505649961994": 75,
-        "76072894034548075178741965604712220914013826577967560787595600905529231982294": 75,
-        "82643195368532196688403147494412801090799700518606988399626080704611581388682": 74,
-        "99668438721335368206992891291846966044560891544369885003047047044422901626250": 72
-      },
-      "last_hour": {
-        "1013": 2,
-        "cierres_normales": 59,
-        "error": 1,
-        "huecos": 0,
-        "limpio": 59,
-        "primeros_datos": 160,
-        "reconexiones": 3,
-        "resuscripcion": 1,
-        "vigilancia": 0
-      },
-      "max_data_age_s": 0.4,
-      "msgs_per_s": 3821.8,
+      "connected": false,
+      "connected_for_s": 0,
+      "data_age_s": {},
+      "kb_per_s": 0.0,
+      "lag_ms_max": null,
+      "lag_ms_p50": null,
+      "lag_tokens": {},
+      "last_hour": {},
+      "max_data_age_s": null,
+      "msgs_per_s": 0.0,
       "procesos": 8,
-      "redundancia": 2,
       "restarts": 0,
       "sin_conexion_ahora": 0,
       "sin_conexion_tokens": {},
-      "slots": 16,
+      "slots": 0,
       "subprocess": true,
-      "tokens": 16,
+      "tokens": 0,
       "tokens_waiting_first_data": 0,
       "totals": {
-        "closes": {
-          "1013": 4,
-          "error": 1,
-          "limpio": 131,
-          "vigilancia": 0
-        },
-        "connects": 152,
-        "msgs": 25936265,
-        "parse_errors": 0,
-        "pongs": 14828,
-        "resubscribes": 6
+        "closes": {}
       }
     },
     "active_positions": [],
@@ -343,97 +288,93 @@
       "exclusive": true,
       "markets": [],
       "chainlink_twap": {
-        "authed": true,
+        "authed": false,
         "conexiones": 2,
-        "conexiones_vivas": 2,
-        "connected": true,
-        "connects": 5,
+        "conexiones_vivas": 0,
+        "connected": false,
+        "connects": 0,
         "discrepancias": 0,
-        "errors": 3,
-        "last_error": "conexión 2: ConnectionClosedError: no close frame received or sent",
-        "msgs": 261351,
+        "errors": 0,
+        "last_error": null,
+        "msgs": 0,
         "primeros_por_conexion": [
-          61171,
-          69685
+          0,
+          0
         ],
-        "running": true,
-        "started_at": 1792014762.1277237,
+        "running": false,
+        "started_at": null,
         "symbols": {
           "bnbusd": {
-            "fresh": true,
-            "ref": 730.425,
-            "ref_age_s": 0.32,
-            "twap": 730.315337,
-            "twap_age_s": 0.28,
-            "twap_lag_s": 1.76
+            "fresh": false,
+            "ref": 730.4025,
+            "ref_age_s": 48.67,
+            "twap": 730.329673,
+            "twap_age_s": 48.64,
+            "twap_lag_s": 1.33
           },
           "btcusd": {
-            "fresh": true,
-            "ref": 81673.8713,
-            "ref_age_s": 0.32,
-            "twap": 81662.199183,
-            "twap_age_s": 0.31,
-            "twap_lag_s": 1.72
+            "fresh": false,
+            "ref": 81663.3439,
+            "ref_age_s": 48.69,
+            "twap": 81661.871956,
+            "twap_age_s": 48.6,
+            "twap_lag_s": 1.37
           },
           "dogeusd": {
-            "fresh": true,
-            "ref": 0.0819,
-            "ref_age_s": 0.32,
-            "twap": 0.081849,
-            "twap_age_s": 0.3,
-            "twap_lag_s": 1.74
+            "fresh": false,
+            "ref": 0.0818,
+            "ref_age_s": 48.65,
+            "twap": 0.081846,
+            "twap_age_s": 48.61,
+            "twap_lag_s": 1.35
           },
           "ethusd": {
-            "fresh": true,
-            "ref": 2425.1515,
-            "ref_age_s": 0.34,
-            "twap": 2424.685179,
-            "twap_age_s": 0.28,
-            "twap_lag_s": 1.75
+            "fresh": false,
+            "ref": 2424.9964,
+            "ref_age_s": 48.66,
+            "twap": 2424.728771,
+            "twap_age_s": 48.58,
+            "twap_lag_s": 1.38
           },
           "hypeusd": {
-            "fresh": true,
-            "ref": 81.0239,
-            "ref_age_s": 0.32,
-            "twap": 81.014517,
-            "twap_age_s": 0.3,
-            "twap_lag_s": 1.74
+            "fresh": false,
+            "ref": 81.0045,
+            "ref_age_s": 48.66,
+            "twap": 81.011211,
+            "twap_age_s": 48.62,
+            "twap_lag_s": 1.34
           },
           "solusd": {
-            "fresh": true,
-            "ref": 104.3801,
-            "ref_age_s": 0.32,
-            "twap": 104.339626,
-            "twap_age_s": 0.3,
-            "twap_lag_s": 1.74
+            "fresh": false,
+            "ref": 104.3753,
+            "ref_age_s": 47.9,
+            "twap": 104.342403,
+            "twap_age_s": 48.61,
+            "twap_lag_s": 1.35
           },
           "xrpusd": {
-            "fresh": true,
-            "ref": 1.3316,
-            "ref_age_s": 0.38,
-            "twap": 1.331549,
-            "twap_age_s": 0.27,
-            "twap_lag_s": 1.76
+            "fresh": false,
+            "ref": 1.3315,
+            "ref_age_s": 48.67,
+            "twap": 1.331489,
+            "twap_age_s": 48.58,
+            "twap_lag_s": 1.38
           }
         },
         "ultima_discrepancia": null
       },
       "event_loop": {
-        "cycles": 181602,
+        "cycles": 0,
         "enabled": true,
-        "last_cycle": 1792024199.9694376,
-        "last_slow": {
-          "partes": {},
-          "s": 1.67,
-          "ts": 1792014768.9430735
-        },
+        "last_cycle": 0.0,
+        "last_slow": null,
         "max_s": 0.25,
         "min_s": 0.05,
-        "slow_1s": 2,
+        "slow_1s": 0,
         "slow_3s": 0,
-        "wakes_by_data": 181110,
-        "wakes_by_timeout": 492,
-        "work_max_s": 1.67
+        "wakes_by_data": 0,
+        "wakes_by_timeout": 0,
+        "work_max_s": 0.0
       },
       "depth_recorder": {
         "book_rows": 0,
@@ -441,7 +382,7 @@
         "enabled": false,
         "files": 0,
         "last_error": null,
-        "live_tokens": 174,
+        "live_tokens": 0,
         "queue": 0,
         "running": false,
         "trade_rows": 0
@@ -633,38 +574,6 @@
         "trades": 5,
         "win_rate_pct": 80.0,
         "wins": 4
-      },
-      "last_simulation": {
-        "asset": "BTC",
-        "avg_entry_price": 0.9746,
-        "by_side": {
-          "DOWN": {
-            "n": 2330,
-            "pf": 1.21,
-            "pnl": 98.25
-          },
-          "UP": {
-            "n": 2250,
-            "pf": 1.08,
-            "pnl": 39.93
-          }
-        },
-        "dataset": "BTC 5m · cinta pública (retraso medido +2 s) + spot Bybit 1s + resolución oficial (solo ventanas TWAP-60) · motor sim_core",
-        "engine": "TWAP_LOCK_V4/v5",
-        "final_balance": 238.18,
-        "initial_balance": 100.0,
-        "latency_s": 1,
-        "losses": 91,
-        "max_drawdown_usd": 92.23,
-        "profit_factor": 1.14,
-        "roi_per_trade_pct": 0.29,
-        "timestamp": "2026-10-09T21:18:52.441601Z",
-        "total_pnl_usd": 138.18,
-        "total_trades": 4580,
-        "verdict": "REVIEW",
-        "win_rate_pct": 98.01,
-        "windows_replayed": 12295,
-        "wins": 4489
       },
       "sim_running": false,
       "params": {
