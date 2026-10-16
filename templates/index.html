@@ -64,6 +64,7 @@ h2 { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: upp
 .btn.sim { background: #10254a; color: #93c5fd; border-color: #1e3a6b; }
 .btn.teal { background: #0f766e; color: #fff; border-color: #14b8a6; }
 select { background: #16213a; color: var(--text); border: 1px solid var(--line); border-radius: 10px; padding: 6px 10px; font-size: 12px; }
+.num-in { background: #16213a; color: var(--text); border: 1px solid var(--line); border-radius: 10px; padding: 6px 10px; font-size: 12px; width: 96px; }
 
 /* KPIs */
 .kpi { position: relative; overflow: hidden; min-height: 118px; padding-bottom: 46px; }
@@ -295,10 +296,12 @@ tr.waiting td { background: rgba(251,191,36,.05); }
   <div class="card-h">
     <div>
       <h2>Simulador V4 · datos reales</h2>
-      <div class="sub" id="simSub">Reproduce V4 (entradas, filtro de distancia y salida de emergencia) sobre la cinta pública de Polymarket con su retraso medido (+2 s) y la latencia real de las órdenes.</div>
+      <div class="sub" id="simSub">Reproduce V4 en todos los mercados que opera el bot a la vez, con un solo saldo, comprando contra el libro real grabado al milisegundo: una compra solo cuenta si, al llegar la orden, había vendedores. Apuesta como el bot (Kelly real, filtro de gasto y tramo barato) y vende con su salida de emergencia.</div>
     </div>
     <div style="display:flex;gap:8px;align-items:center">
-      <select id="simAsset"><option value="BTC">BTC 5 min</option><option value="BTC:15m">BTC 15 min</option><option value="ETH">ETH 5 min</option></select>
+      <label for="simBal" class="sub" style="white-space:nowrap">Saldo inicial $</label>
+      <input id="simBal" class="num-in" type="number" min="5" step="5" value="100" title="Dinero con el que empieza la simulación"
+             onkeydown="if (event.key === 'Enter') runV4Simulation()">
       <button class="btn teal" id="simBtn" onclick="runV4Simulation()">▶ Simular</button>
     </div>
   </div>
@@ -714,7 +717,6 @@ function renderDecisions(dbg) {
 // ─── Render: simulador ────────────────────────────────────────────────────────
 function renderSim(s, equity) {
   if (!s) return;
-  const sel = $('simAsset'); if (sel && s.asset && [...sel.options].some(o => o.value === s.asset)) sel.value = s.asset;
   setT('simN', `${s.total_trades ?? 0} / ${s.windows_replayed ?? '—'}`);
   setT('simWr', s.win_rate_pct != null ? Number(s.win_rate_pct).toFixed(1) + '%' : '—');
   const pf = $('simPf'); pf.textContent = s.profit_factor != null ? Number(s.profit_factor).toFixed(2) : '∞';
@@ -728,18 +730,46 @@ function renderSim(s, equity) {
   const eng = s.libro ? 'libro real grabado al ms' : ((s.engine || '').includes('ticks') ? 'libro grabado por el bot' : 'cinta pública de Polymarket');
   const det = s.libro ? `${dia(s.libro_desde)} → ${dia(s.libro_hasta)} · solo compras con vendedores al llegar la orden ✓`
     : (corrected ? `cinta corregida +${s.tape_delay_s} s` + (s.libro_error ? ' · ⚠ sin libro: compras sin comprobar' : '') : ((s.engine || '').includes('ticks') ? 'sin retraso' : '⚠ SIN corregir el retraso de la cinta (resultado inflado): pulsa Simular'));
-  setT('simEngine', `${s.asset || 'BTC'} ${String(s.dur || '5m').replace('m', ' min')} · ${eng} · ` + det +
+  // 16-oct: todos los mercados juntos → «BTC 5m + BTC 15m + ETH 5m», con lo que aporta cada uno
+  const que = s.cartera ? (s.mercados || []).map(m => m.replace(':', ' ').replace('M', 'm')).join(' + ')
+    : `${s.asset || 'BTC'} ${String(s.dur || '5m').replace('m', ' min')}`;
+  const pm = s.por_mercado ? ' · ' + Object.entries(s.por_mercado).map(([k, x]) =>
+    `${k.replace(':', ' ').replace('M', 'm')}: ${x.n} op. ${signed(Number(x.pnl || 0))} $`).join(' · ') : '';
+  setT('simEngine', `${que} · ${eng} · ` + det + pm +
     (s.timestamp ? ' · ' + String(s.timestamp).slice(0, 16).replace('T', ' ') + ' UTC' : '') + (s.initial_balance ? ` · $${n(s.initial_balance, 0)} → $${n(s.final_balance)}` : ''));
-  if (equity && equity.length) paint(simChart, equity.map((_, i) => i), equity);
+  if (equity && equity.length) {
+    // 16-oct (Sergio): bajo cada número de operaciones, el tiempo que ha pasado desde el inicio; en el detalle, la fecha
+    const ts = Array.isArray(s.equity_ts) && s.equity_ts.length === equity.length ? s.equity_ts : null;
+    const dias = i => ts ? (ts[i] - ts[0]) / 86400 : null;
+    const fmtD = d => d == null ? '' : (d < 1 ? Math.round(d * 24) + ' h' : (d < 10 ? d.toFixed(1) : Math.round(d)) + ' d');
+    const labels = equity.map((_, i) => ts ? [String(i), fmtD(dias(i))] : String(i));
+    if (simChart) {
+      simChart.options.plugins.tooltip.callbacks.title = (items) => {
+        const i = items && items.length ? items[0].dataIndex : 0;
+        if (!ts) return 'operación ' + i;
+        const f = new Date(ts[i] * 1000).toLocaleString('es-ES', {day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Madrid'});
+        return `operación ${i} · ${f} · ${fmtD(dias(i))} desde el inicio`;
+      };
+    }
+    paint(simChart, labels, equity);
+  }
 }
+let _simBalSet = false;
 async function fetchSim() {
   try { const r = await fetch('/api/v4/simulations'); if (!r.ok) return; const d = await r.json();
-    if (d.status === 'ok' && d.latest) renderSim(d.latest, d.latest.equity_curve || null); } catch (e) {}
+    if (d.status === 'ok' && d.latest) {
+      if (!_simBalSet && d.latest.initial_balance && $('simBal')) { $('simBal').value = Math.round(Number(d.latest.initial_balance)); _simBalSet = true; }
+      renderSim(d.latest, d.latest.equity_curve || null);
+    } } catch (e) {}
 }
 async function runV4Simulation() {
+  const inp = $('simBal'); const bal = Number(inp ? inp.value : 100);
+  if (!(bal >= 5)) { setT('simEngine', 'Simulador: escribe un saldo inicial de al menos 5 $'); return; }
+  _simBalSet = true;
   const b = $('simBtn'); b.disabled = true; b.textContent = '⏳ Simulando…';
+  setT('simEngine', `Simulando todos los mercados con $${n(bal, 0)} contra el libro real al ms… (1-3 min)`);
   try {
-    const r = await fetch('/api/v4/simulate', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({asset: $('simAsset').value})});
+    const r = await fetch('/api/v4/simulate', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({asset: 'TODOS', initial_balance: bal})});
     const d = await r.json();
     if (d.status === 'ok' && d.result) renderSim(d.result, d.result.equity_curve || null);
     else setT('simEngine', 'Simulador: ' + (d.message || 'error'));
