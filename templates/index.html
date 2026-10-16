@@ -255,8 +255,8 @@ tr.waiting td { background: rgba(251,191,36,.05); }
         <span class="sub" id="perfScope">—</span>
       </div>
       <div class="chart-box"><canvas id="eqChart"></canvas></div>
-      <div class="meter">
-        <div class="row"><span>Acierto real <b id="mWr">—</b></span><span class="muted">necesario para no perder <b class="warn" id="mBe">—</b></span></div>
+      <div class="meter" title="Operaciones perdidas por cada 100 realizadas; el punto muerto es la proporción con la que se queda en 0 (no dependen del saldo)">
+        <div class="row"><span>Pierden <b id="mWr">—</b></span><span class="muted">punto muerto <b class="warn" id="mBe">—</b></span></div>
         <div class="bar"><div class="fill" id="mWrFill"></div><div class="mark" id="mBeMark"></div></div>
       </div>
       <div class="stats4">
@@ -264,6 +264,12 @@ tr.waiting td { background: rgba(251,191,36,.05); }
         <div class="stat"><div class="k">Pérdida media</div><div class="v neg" id="sAvgL">—</div></div>
         <div class="stat"><div class="k">1 pérdida =</div><div class="v" id="sRatio">—</div></div>
         <div class="stat"><div class="k">Precio medio</div><div class="v" id="sPx">—</div></div>
+      </div>
+      <div class="stats4" style="margin-top:8px" title="Índices sin saldo: no dependen del dinero ni del tope de apuesta">
+        <div class="stat"><div class="k">Últimas 100</div><div class="v" id="sUlt100">—</div></div>
+        <div class="stat"><div class="k">Peor tramo de 100</div><div class="v" id="sPeor100">—</div></div>
+        <div class="stat"><div class="k">Peor caída</div><div class="v" id="sDdL">—</div></div>
+        <div class="stat"><div class="k">Por cada 100 ganadas</div><div class="v" id="sL100">—</div></div>
       </div>
       <div class="sub" style="margin-top:10px" id="perfAudit">—</div>
     </div>
@@ -312,6 +318,13 @@ tr.waiting td { background: rgba(251,191,36,.05); }
     <div class="stat"><div class="k">PnL</div><div class="v" id="simPnl">—</div></div>
     <div class="stat"><div class="k">Caída máx.</div><div class="v neg" id="simDd">—</div></div>
     <div class="stat"><div class="k">Veredicto</div><div class="v" id="simVer" style="font-size:13px">—</div></div>
+  </div>
+  <div class="chips" title="Índices sin saldo: no dependen del dinero ni del tope de apuesta">
+    <div class="stat"><div class="k">Pierden</div><div class="v" id="simLr">—</div></div>
+    <div class="stat"><div class="k">Punto muerto</div><div class="v" id="simBe">—</div></div>
+    <div class="stat"><div class="k">Por cada 100 ganadas</div><div class="v" id="simL100">—</div></div>
+    <div class="stat"><div class="k">Peor tramo de 100</div><div class="v" id="simW100">—</div></div>
+    <div class="stat"><div class="k">Peor caída</div><div class="v" id="simDdL">—</div></div>
   </div>
   <div class="chart-box" style="height:190px"><canvas id="simChart"></canvas></div>
   <div class="foot" id="simEngine">—</div>
@@ -445,7 +458,9 @@ function renderKpis(live) {
   }
 }
 function renderV4Kpis(ls, eqd) {
-  const wr = ls.win_rate_pct, be = eqd && eqd.breakeven_win_rate ? eqd.breakeven_win_rate * 100 : null;
+  // 16-oct: el acierto necesario sale de la ganancia y la pérdida media reales (antes suponía que cada pérdida era −100 %)
+  const _g = eqd ? Number(eqd.avg_win || 0) : 0, _p = eqd ? Math.abs(Number(eqd.avg_loss || 0)) : 0;
+  const wr = ls.win_rate_pct, be = (_g + _p) > 0 ? 100 * (1 - _g / (_g + _p)) : (eqd && eqd.breakeven_win_rate ? eqd.breakeven_win_rate * 100 : null);
   const good = (wr != null && be != null) ? wr >= be : true;
   const e = $('kWr'); e.textContent = wr != null ? Number(wr).toFixed(1) + '%' : '—'; e.className = 'val ' + (wr == null ? '' : (good ? 'pos' : 'neg'));
   setT('kWrSub', be != null ? `necesario ${be.toFixed(1)}% para no perder` : `${ls.wins ?? 0} ganadas · ${ls.losses ?? 0} perdidas`);
@@ -536,12 +551,27 @@ function renderPerf(eqd, ls) {
   paint(eqChart, ['inicio'].concat(labels), [0].concat(data));
   paint(sparkPnl, ['0'].concat(labels), [0].concat(data));
   setT('perfScope', (eqd.mode === 'sim' ? 'papel · desde el reset' : ('dinero real' + (eqd.since ? ' · desde ' + utcTxt(eqd.since) : ''))) + ` · ${eqd.trades} operaciones`);
-  const wr = eqd.win_rate != null ? eqd.win_rate * 100 : null, be = eqd.breakeven_win_rate != null ? eqd.breakeven_win_rate * 100 : null;
-  setT('mWr', wr != null ? wr.toFixed(1) + '%' : '—'); setT('mBe', be != null ? be.toFixed(1) + '%' : '—');
-  // Escala con zoom: del (be-8)% al 100% para que se aprecie la diferencia en acierto alto
-  const lo = be != null ? Math.max(0, Math.min(be, wr ?? be) - 8) : 0, sc = (x) => ((x - lo) / (100 - lo) * 100);
-  const f = $('mWrFill'); if (f) { f.style.width = (wr != null ? Math.max(0, sc(wr)) : 0) + '%'; f.style.background = (wr != null && be != null && wr >= be) ? 'linear-gradient(90deg,#065f46,#34d399)' : 'linear-gradient(90deg,#7f1d1d,#f87171)'; }
+  // 16-oct (Sergio): medir en pérdidas por operación, sin saldo. Punto muerto = la proporción de pérdidas con la que se
+  // queda en 0 con la ganancia y la pérdida media reales (con las ventas de emergencia una pérdida no es −100 %).
+  const pnls = pts.map(p => Number(p.pnl || 0)), nT = pnls.length, nL = pnls.filter(x => x < 0).length;
+  const gm = Number(eqd.avg_win || 0), pm = Math.abs(Number(eqd.avg_loss || 0));
+  const lr = nT ? 100 * nL / nT : null, be = (gm + pm) > 0 ? 100 * gm / (gm + pm) : null;
+  setT('mWr', lr != null ? `${lr.toFixed(1)}%` + (nL ? ` · 1 de cada ${Math.round(nT / nL)}` : '') : '—');
+  setT('mBe', be != null ? be.toFixed(1) + '%' : '—');
+  const top = Math.max(1, (be ?? 0) * 2, (lr ?? 0) * 1.25), sc = (x) => Math.min(100, x / top * 100);
+  const f = $('mWrFill'); if (f) { f.style.width = (lr != null ? sc(lr) : 0) + '%'; f.style.background = (lr != null && be != null && lr < be) ? 'linear-gradient(90deg,#065f46,#34d399)' : 'linear-gradient(90deg,#7f1d1d,#f87171)'; }
   const mk = $('mBeMark'); if (mk) mk.style.left = (be != null ? sc(be) : 0) + '%';
+  let peor = 0, cur = 0, cum = 0, pk = 0, dd = 0;
+  for (let i = 0; i < nT; i++) {
+    if (pnls[i] < 0) cur++;
+    if (i >= 100 && pnls[i - 100] < 0) cur--;
+    peor = Math.max(peor, cur);
+    cum += pnls[i]; pk = Math.max(pk, cum); dd = Math.max(dd, pk - cum);
+  }
+  setT('sUlt100', nT ? `${pnls.slice(-100).filter(x => x < 0).length} pérdidas` : '—');
+  setT('sPeor100', nT ? `${peor} pérdidas` : '—');
+  setT('sDdL', pm > 0 ? `${(dd / pm).toFixed(1)} pérdidas` : '—');
+  setT('sL100', (nT - nL) > 0 ? (100 * nL / (nT - nL)).toFixed(1) : '—');
   setT('sAvgW', eqd.avg_win != null ? '+$' + n(eqd.avg_win) : '—');
   setT('sAvgL', eqd.avg_loss != null ? '-$' + n(Math.abs(eqd.avg_loss)) : '—');
   setT('sRatio', (eqd.avg_win && eqd.avg_loss) ? Math.round(Math.abs(eqd.avg_loss) / eqd.avg_win) + ' ganancias' : '—');
@@ -724,6 +754,17 @@ function renderSim(s, equity) {
   const pn = $('simPnl'); const v = Number(s.total_pnl_usd || 0); pn.textContent = signed(v) + ' $'; pn.className = 'v ' + cls(v);
   setT('simDd', '-$' + n(s.max_drawdown_usd));
   setT('simVer', s.verdict || '—');
+  // 16-oct (Sergio): índices sin saldo — pérdidas por operación frente a su punto muerto
+  const ix = s.idx || {};
+  const lrEl = $('simLr');
+  if (lrEl) {
+    lrEl.textContent = ix.tasa != null ? `${Number(ix.tasa).toFixed(1)} % · 1 de cada ${ix.uno_de_cada != null ? Math.round(ix.uno_de_cada) : '—'}` : '—';
+    lrEl.className = 'v ' + ((ix.tasa != null && ix.punto_muerto != null) ? (ix.tasa < ix.punto_muerto ? 'pos' : 'neg') : '');
+  }
+  setT('simBe', ix.punto_muerto != null ? `${Number(ix.punto_muerto).toFixed(1)} %` : '—');
+  setT('simL100', ix.por_100_ganadas != null ? Number(ix.por_100_ganadas).toFixed(1) : '—');
+  setT('simW100', ix.peor_100 != null ? `${ix.peor_100} pérdidas` : '—');
+  setT('simDdL', ix.caida_en_perdidas != null ? `${Number(ix.caida_en_perdidas).toFixed(1)} pérdidas` : '—');
   const corrected = s.tape_delay_s != null && s.tape_delay_s > 0;
   // 16-oct: con libro real al ms solo cuentan las compras que habrían encontrado vendedores (como la orden real)
   const dia = ts => ts ? new Date(ts * 1000).toLocaleDateString('es-ES', {day: 'numeric', month: 'short', timeZone: 'UTC'}) : '?';
