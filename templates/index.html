@@ -723,8 +723,12 @@ function renderSim(s, equity) {
   setT('simDd', '-$' + n(s.max_drawdown_usd));
   setT('simVer', s.verdict || '—');
   const corrected = s.tape_delay_s != null && s.tape_delay_s > 0;
-  const eng = (s.engine || '').includes('ticks') ? 'libro grabado por el bot' : 'cinta pública de Polymarket';
-  setT('simEngine', `${s.asset || 'BTC'} ${String(s.dur || '5m').replace('m', ' min')} · ${eng} · ` + (corrected ? `cinta corregida +${s.tape_delay_s} s ✓` : ((s.engine || '').includes('ticks') ? 'sin retraso' : '⚠ SIN corregir el retraso de la cinta (resultado inflado): pulsa Simular')) +
+  // 16-oct: con libro real al ms solo cuentan las compras que habrían encontrado vendedores (como la orden real)
+  const dia = ts => ts ? new Date(ts * 1000).toLocaleDateString('es-ES', {day: 'numeric', month: 'short', timeZone: 'UTC'}) : '?';
+  const eng = s.libro ? 'libro real grabado al ms' : ((s.engine || '').includes('ticks') ? 'libro grabado por el bot' : 'cinta pública de Polymarket');
+  const det = s.libro ? `${dia(s.libro_desde)} → ${dia(s.libro_hasta)} · solo compras con vendedores al llegar la orden ✓`
+    : (corrected ? `cinta corregida +${s.tape_delay_s} s` + (s.libro_error ? ' · ⚠ sin libro: compras sin comprobar' : '') : ((s.engine || '').includes('ticks') ? 'sin retraso' : '⚠ SIN corregir el retraso de la cinta (resultado inflado): pulsa Simular'));
+  setT('simEngine', `${s.asset || 'BTC'} ${String(s.dur || '5m').replace('m', ' min')} · ${eng} · ` + det +
     (s.timestamp ? ' · ' + String(s.timestamp).slice(0, 16).replace('T', ' ') + ' UTC' : '') + (s.initial_balance ? ` · $${n(s.initial_balance, 0)} → $${n(s.final_balance)}` : ''));
   if (equity && equity.length) paint(simChart, equity.map((_, i) => i), equity);
 }
