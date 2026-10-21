@@ -1,7 +1,7 @@
 {
   "schema": 2,
-  "timestamp": "2026-10-21T12:09:11.552432+00:00",
-  "timestamp_epoch": 1792584551,
+  "timestamp": "2026-10-21T12:09:31.343629+00:00",
+  "timestamp_epoch": 1792584571,
   "bot_online": true,
   "simulation_mode": true,
   "balance": 50.3596,
@@ -235,23 +235,10 @@
     "v4_real": null,
     "v4_version": "4.5",
     "recorder": {
-      "max_age_s": 681.0,
-      "ok": false,
+      "max_age_s": 1.0,
+      "ok": true,
       "procs": 13,
-      "stale": [
-        "aux",
-        "bnb",
-        "btc",
-        "btc15m",
-        "btc5m",
-        "doge",
-        "eth",
-        "eth15m",
-        "eth5m",
-        "hype",
-        "sol",
-        "xrp"
-      ]
+      "stale": []
     },
     "cobros": {
       "avg_latency_s": 32.3,
@@ -259,7 +246,7 @@
       "collected_value": 1332.0,
       "failed_count": 0,
       "failed_value": 0.0,
-      "last_collected_age_s": 4121.9,
+      "last_collected_age_s": 4141.3,
       "last_error": null,
       "mode": "sim",
       "no_value_count": 0,
@@ -268,32 +255,171 @@
       "real_claim_method": "auto-canje de Polymarket o reclamación manual (el bot solo lo vigila)",
       "sent_count": 0,
       "sim_delay_s": 30.0,
-      "worker_alive": false,
+      "worker_alive": true,
       "worker_error": null
     },
     "ws_feed": {
       "alimentador": {
-        "aplicados": 0,
-        "conectado": false,
-        "conexiones": 0,
-        "edad_fotograma_ms": null,
-        "fotograma": null,
-        "hace_s": null,
-        "instantaneas": 0,
-        "max_de_golpe": 0,
-        "recibidos": 0,
-        "sin_vuelta": 0,
-        "ultimo_error": null
+        "aplicados": 196,
+        "conectado": true,
+        "conexiones": 1,
+        "edad_fotograma_ms": 31,
+        "fotograma": 212,
+        "hace_s": 0.03,
+        "instantaneas": 1,
+        "max_de_golpe": 28,
+        "recibidos": 197,
+        "sin_vuelta": 28,
+        "ultimo_error": "ConnectionRefusedError: [WinError 10061] No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión"
       },
-      "connected": false,
-      "tokens": 0
+      "connected": true,
+      "connected_for_s": 4.0,
+      "data_age_s": {
+        "…057941": 0.0,
+        "…059544": 0.0,
+        "…467741": 0.2,
+        "…486530": 0.0,
+        "…595804": 0.0,
+        "…683898": 0.0,
+        "…686652": 0.0,
+        "…720317": 0.0,
+        "…721726": 0.0,
+        "…949032": 0.2,
+        "…982630": 0.0,
+        "…983711": 0.0
+      },
+      "kb_per_s": 0.0,
+      "lag_ms_max": null,
+      "lag_ms_p50": null,
+      "lag_tokens": {
+        "102294550906597272375294540841919097462033762757263848107277235745322925683898": -402,
+        "103847835119001932709152673555058488958604485614099518748289431168132281721726": -402,
+        "18158855452764982758255033546478310273623287374981988466691860508587029720317": -402,
+        "25105624892764897732022205417130108232123467368693783522149170718901353057941": -402,
+        "29848449666328892596657043461491611139316158860031111901722423100210946486530": -402,
+        "41321050825759240182496231572003270794305207875359110853145904151471578059544": -402,
+        "45668937499854102182518597385381816323944842803034113300746150924495410467741": -400,
+        "52148801332449140427884442663190461682583789680556470983352432983696292982630": -402,
+        "52370213339109575660904510014398445005237129839306115320489921922878427595804": -402,
+        "56239502188106247544159941953080705390965872230959578522453454894799719983711": -402,
+        "67462212119046432609651046825170321363501823697947524557902291904839876949032": -400,
+        "70112209676010997316297967105360979881619641751244553931358739087333201686652": -402
+      },
+      "last_hour": {
+        "1013": 0,
+        "cierres_normales": 0,
+        "error": 0,
+        "huecos": 0,
+        "limpio": 0,
+        "primeros_datos": 36,
+        "reconexiones": 0,
+        "resuscripcion": 0,
+        "vigilancia": 0
+      },
+      "max_data_age_s": 0.2,
+      "msgs_per_s": 0.0,
+      "procesos": 8,
+      "redundancia": 3,
+      "restarts": 0,
+      "sin_conexion_ahora": 0,
+      "sin_conexion_tokens": {},
+      "slots": 18,
+      "subprocess": true,
+      "tokens": 12,
+      "tokens_waiting_first_data": 0,
+      "totals": {
+        "closes": {
+          "1013": 0,
+          "error": 0,
+          "limpio": 0,
+          "vigilancia": 0
+        },
+        "connects": 18,
+        "msgs": 16415,
+        "parse_errors": 0,
+        "pongs": 0,
+        "resubscribes": 0
+      }
     },
     "active_positions": [],
     "v4": {
       "available": true,
       "active": true,
       "exclusive": true,
-      "markets": [],
+      "markets": [
+        {
+          "K": null,
+          "S": null,
+          "ask_down": null,
+          "ask_up": 0.01,
+          "asset": "BTC",
+          "bid_down": 0.99,
+          "bid_up": null,
+          "cl_ref": 83455.32426381847,
+          "cl_strike": null,
+          "cl_twap": 83428.76327660386,
+          "cl_twap_age_s": 0.71,
+          "dist": null,
+          "dur": "5m",
+          "edge_down": null,
+          "edge_up": null,
+          "p_min": 0.985,
+          "p_up": null,
+          "pm_strike": null,
+          "quote_age": 0.0,
+          "sigma": null,
+          "signal": null,
+          "signal_p": null,
+          "signal_side": null,
+          "slug": "btc-updown-5m-1792584300",
+          "status": "Modelo en espera: historial insuficiente",
+          "t": 271,
+          "t_eff": 271,
+          "updated": 1792584571.4338486,
+          "window_s": 300,
+          "window_ts": 1792584300,
+          "zone": [
+            195,
+            292
+          ]
+        },
+        {
+          "K": null,
+          "S": null,
+          "ask_down": 0.4,
+          "ask_up": 0.61,
+          "asset": "BTC",
+          "bid_down": 0.39,
+          "bid_up": 0.6,
+          "cl_ref": 83455.32426381847,
+          "cl_strike": null,
+          "cl_twap": 83428.76327660386,
+          "cl_twap_age_s": 0.76,
+          "dist": null,
+          "dur": "15m",
+          "edge_down": null,
+          "edge_up": null,
+          "p_min": 0.993,
+          "p_up": null,
+          "pm_strike": null,
+          "quote_age": 0.0,
+          "sigma": null,
+          "signal": null,
+          "signal_p": null,
+          "signal_side": null,
+          "slug": "btc-updown-15m-1792584000",
+          "status": "Modelo en espera: historial insuficiente",
+          "t": 571,
+          "t_eff": -29,
+          "updated": 1792584571.4838119,
+          "window_s": 900,
+          "window_ts": 1792584000,
+          "zone": [
+            795,
+            892
+          ]
+        }
+      ],
       "chainlink_twap": {
         "authed": false,
         "conexiones": 2,
@@ -312,76 +438,82 @@
         "started_at": null,
         "symbols": {
           "bnbusd": {
-            "fresh": false,
-            "ref": null,
-            "ref_age_s": null,
-            "twap": null,
-            "twap_age_s": null,
-            "twap_lag_s": null
+            "fresh": true,
+            "ref": 745.647,
+            "ref_age_s": 0.86,
+            "twap": 745.55937,
+            "twap_age_s": 0.78,
+            "twap_lag_s": 0.71
           },
           "btcusd": {
-            "fresh": false,
-            "ref": null,
-            "ref_age_s": null,
-            "twap": null,
-            "twap_age_s": null,
-            "twap_lag_s": null
+            "fresh": true,
+            "ref": 83455.3243,
+            "ref_age_s": 0.85,
+            "twap": 83428.763277,
+            "twap_age_s": 0.76,
+            "twap_lag_s": 0.73
           },
           "dogeusd": {
-            "fresh": false,
-            "ref": null,
-            "ref_age_s": null,
-            "twap": null,
-            "twap_age_s": null,
-            "twap_lag_s": null
+            "fresh": true,
+            "ref": 0.082,
+            "ref_age_s": 0.88,
+            "twap": 0.081969,
+            "twap_age_s": 0.77,
+            "twap_lag_s": 0.72
           },
           "ethusd": {
-            "fresh": false,
-            "ref": null,
-            "ref_age_s": null,
-            "twap": null,
-            "twap_age_s": null,
-            "twap_lag_s": null
+            "fresh": true,
+            "ref": 2466.8807,
+            "ref_age_s": 0.87,
+            "twap": 2466.435765,
+            "twap_age_s": 0.77,
+            "twap_lag_s": 0.72
           },
           "hypeusd": {
-            "fresh": false,
-            "ref": null,
-            "ref_age_s": null,
-            "twap": null,
-            "twap_age_s": null,
-            "twap_lag_s": null
+            "fresh": true,
+            "ref": 81.159,
+            "ref_age_s": 0.85,
+            "twap": 81.175721,
+            "twap_age_s": 0.74,
+            "twap_lag_s": 0.75
           },
           "solusd": {
-            "fresh": false,
-            "ref": null,
-            "ref_age_s": null,
-            "twap": null,
-            "twap_age_s": null,
-            "twap_lag_s": null
+            "fresh": true,
+            "ref": 106.8359,
+            "ref_age_s": 0.84,
+            "twap": 106.804122,
+            "twap_age_s": 0.79,
+            "twap_lag_s": 0.7
           },
           "xrpusd": {
-            "fresh": false,
-            "ref": null,
-            "ref_age_s": null,
-            "twap": null,
-            "twap_age_s": null,
-            "twap_lag_s": null
+            "fresh": true,
+            "ref": 1.3557,
+            "ref_age_s": 0.83,
+            "twap": 1.355481,
+            "twap_age_s": 0.75,
+            "twap_lag_s": 0.74
           }
         },
         "ultima_discrepancia": null
       },
       "event_loop": {
-        "cycles": 0,
+        "cycles": 169,
         "enabled": true,
-        "last_cycle": 0.0,
-        "last_slow": null,
+        "last_cycle": 1792584571.4868295,
+        "last_slow": {
+          "partes": {
+            "descubrimiento": 0.0
+          },
+          "s": 1.4,
+          "ts": 1792584566.437976
+        },
         "max_s": 0.25,
         "min_s": 0.05,
-        "slow_1s": 0,
+        "slow_1s": 1,
         "slow_3s": 0,
-        "wakes_by_data": 0,
+        "wakes_by_data": 169,
         "wakes_by_timeout": 0,
-        "work_max_s": 0.0
+        "work_max_s": 1.4
       },
       "depth_recorder": {
         "book_rows": 0,
@@ -389,7 +521,7 @@
         "enabled": false,
         "files": 0,
         "last_error": null,
-        "live_tokens": 0,
+        "live_tokens": 8,
         "queue": 0,
         "running": false,
         "trade_rows": 0
@@ -581,6 +713,38 @@
         "trades": 250,
         "win_rate_pct": 99.2,
         "wins": 248
+      },
+      "last_simulation": {
+        "asset": "TODOS",
+        "avg_entry_price": 0.9727,
+        "by_side": {
+          "DOWN": {
+            "n": 490,
+            "pf": 1.88,
+            "pnl": 35.14
+          },
+          "UP": {
+            "n": 419,
+            "pf": 1.14,
+            "pnl": 8.21
+          }
+        },
+        "dataset": "BTC 5m + BTC 15m juntos con un solo saldo · libro real grabado al ms (05-Oct → 16-Oct): cada compra solo se llena si a los 257 ms de enviarla había vendedores ≤ límite · apuesta como el bot (Kelly 9 %, filtro de gasto) · motor sim_core",
+        "engine": "TWAP_LOCK_V4/v5-libro-cartera",
+        "final_balance": 143.35,
+        "initial_balance": 100.0,
+        "latency_s": 1,
+        "losses": 23,
+        "max_drawdown_usd": 16.46,
+        "profit_factor": 1.44,
+        "roi_per_trade_pct": 0.79,
+        "timestamp": "2026-10-19T18:41:44.755530Z",
+        "total_pnl_usd": 43.34,
+        "total_trades": 909,
+        "verdict": "REVIEW",
+        "win_rate_pct": 97.47,
+        "windows_replayed": 7986,
+        "wins": 886
       },
       "sim_running": false,
       "params": {
