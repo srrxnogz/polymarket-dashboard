@@ -1,7 +1,7 @@
 {
   "schema": 2,
-  "timestamp": "2026-10-21T12:09:48.527239+00:00",
-  "timestamp_epoch": 1792584588,
+  "timestamp": "2026-10-21T12:10:06.049815+00:00",
+  "timestamp_epoch": 1792584606,
   "bot_online": true,
   "simulation_mode": true,
   "balance": 50.3596,
@@ -235,7 +235,7 @@
     "v4_real": null,
     "v4_version": "4.5",
     "recorder": {
-      "max_age_s": 8.0,
+      "max_age_s": 5.0,
       "ok": true,
       "procs": 13,
       "stale": []
@@ -246,7 +246,7 @@
       "collected_value": 1332.0,
       "failed_count": 0,
       "failed_value": 0.0,
-      "last_collected_age_s": 4158.4,
+      "last_collected_age_s": 4175.9,
       "last_error": null,
       "mode": "sim",
       "no_value_count": 0,
@@ -260,23 +260,23 @@
     },
     "ws_feed": {
       "alimentador": {
-        "aplicados": 539,
+        "aplicados": 889,
         "conectado": true,
         "conexiones": 1,
-        "edad_fotograma_ms": 33,
-        "fotograma": 555,
-        "hace_s": 0.03,
+        "edad_fotograma_ms": 41,
+        "fotograma": 905,
+        "hace_s": 0.04,
         "instantaneas": 1,
         "max_de_golpe": 28,
-        "recibidos": 540,
+        "recibidos": 890,
         "sin_vuelta": 28,
         "ultimo_error": "ConnectionRefusedError: [WinError 10061] No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión"
       },
       "connected": true,
-      "connected_for_s": 21.0,
+      "connected_for_s": 40.0,
       "data_age_s": {
         "…057941": 0.0,
-        "…059544": 0.1,
+        "…059544": 0.8,
         "…467741": 0.0,
         "…486530": 0.0,
         "…595804": 0.0,
@@ -285,24 +285,24 @@
         "…720317": 0.1,
         "…721726": 0.0,
         "…949032": 0.0,
-        "…982630": 0.1,
+        "…982630": 0.8,
         "…983711": 0.0
       },
       "kb_per_s": 0.0,
       "lag_ms_max": null,
       "lag_ms_p50": null,
       "lag_tokens": {
-        "102294550906597272375294540841919097462033762757263848107277235745322925683898": -398,
-        "103847835119001932709152673555058488958604485614099518748289431168132281721726": -398,
-        "18158855452764982758255033546478310273623287374981988466691860508587029720317": -398,
+        "102294550906597272375294540841919097462033762757263848107277235745322925683898": -401,
+        "103847835119001932709152673555058488958604485614099518748289431168132281721726": -400,
+        "18158855452764982758255033546478310273623287374981988466691860508587029720317": -401,
         "25105624892764897732022205417130108232123467368693783522149170718901353057941": -399,
         "29848449666328892596657043461491611139316158860031111901722423100210946486530": -400,
         "41321050825759240182496231572003270794305207875359110853145904151471578059544": -401,
-        "45668937499854102182518597385381816323944842803034113300746150924495410467741": -397,
+        "45668937499854102182518597385381816323944842803034113300746150924495410467741": -403,
         "52148801332449140427884442663190461682583789680556470983352432983696292982630": -401,
         "52370213339109575660904510014398445005237129839306115320489921922878427595804": -399,
-        "56239502188106247544159941953080705390965872230959578522453454894799719983711": -398,
-        "67462212119046432609651046825170321363501823697947524557902291904839876949032": -397,
+        "56239502188106247544159941953080705390965872230959578522453454894799719983711": -400,
+        "67462212119046432609651046825170321363501823697947524557902291904839876949032": -403,
         "70112209676010997316297967105360979881619641751244553931358739087333201686652": -400
       },
       "last_hour": {
@@ -316,7 +316,7 @@
         "resuscripcion": 0,
         "vigilancia": 0
       },
-      "max_data_age_s": 0.1,
+      "max_data_age_s": 0.8,
       "msgs_per_s": 0.0,
       "procesos": 8,
       "redundancia": 3,
@@ -335,9 +335,9 @@
           "vigilancia": 0
         },
         "connects": 18,
-        "msgs": 81702,
+        "msgs": 153814,
         "parse_errors": 0,
-        "pongs": 36,
+        "pongs": 57,
         "resubscribes": 0
       }
     },
@@ -350,51 +350,15 @@
         {
           "K": null,
           "S": null,
-          "ask_down": null,
-          "ask_up": 0.01,
+          "ask_down": 0.37,
+          "ask_up": 0.64,
           "asset": "BTC",
-          "bid_down": 0.99,
-          "bid_up": null,
-          "cl_ref": 83450.80699310277,
+          "bid_down": 0.36,
+          "bid_up": 0.63,
+          "cl_ref": 83447.03551497357,
           "cl_strike": null,
-          "cl_twap": 83434.67761088739,
-          "cl_twap_age_s": 0.76,
-          "dist": null,
-          "dur": "5m",
-          "edge_down": null,
-          "edge_up": null,
-          "p_min": 0.985,
-          "p_up": null,
-          "pm_strike": 83462.48445599333,
-          "quote_age": 0.0,
-          "sigma": null,
-          "signal": null,
-          "signal_p": null,
-          "signal_side": null,
-          "slug": "btc-updown-5m-1792584300",
-          "status": "Modelo en espera: historial insuficiente",
-          "t": 288,
-          "t_eff": 288,
-          "updated": 1792584588.5839987,
-          "window_s": 300,
-          "window_ts": 1792584300,
-          "zone": [
-            195,
-            292
-          ]
-        },
-        {
-          "K": null,
-          "S": null,
-          "ask_down": 0.36,
-          "ask_up": 0.65,
-          "asset": "BTC",
-          "bid_down": 0.35,
-          "bid_up": 0.64,
-          "cl_ref": 83450.80699310277,
-          "cl_strike": null,
-          "cl_twap": 83434.67761088739,
-          "cl_twap_age_s": 0.76,
+          "cl_twap": 83444.23488273752,
+          "cl_twap_age_s": 0.46,
           "dist": null,
           "dur": "15m",
           "edge_down": null,
@@ -409,14 +373,50 @@
           "signal_side": null,
           "slug": "btc-updown-15m-1792584000",
           "status": "Modelo en espera: historial insuficiente",
-          "t": 588,
-          "t_eff": -12,
-          "updated": 1792584588.5839987,
+          "t": 606,
+          "t_eff": 6,
+          "updated": 1792584606.0837703,
           "window_s": 900,
           "window_ts": 1792584000,
           "zone": [
             795,
             892
+          ]
+        },
+        {
+          "K": null,
+          "S": null,
+          "ask_down": 0.49,
+          "ask_up": 0.52,
+          "asset": "BTC",
+          "bid_down": 0.48,
+          "bid_up": 0.51,
+          "cl_ref": 83447.03551497357,
+          "cl_strike": 83441.48639383391,
+          "cl_twap": 83444.23488273752,
+          "cl_twap_age_s": 0.45,
+          "dist": null,
+          "dur": "5m",
+          "edge_down": null,
+          "edge_up": null,
+          "p_min": 0.985,
+          "p_up": null,
+          "pm_strike": null,
+          "quote_age": 0.0,
+          "sigma": null,
+          "signal": null,
+          "signal_p": null,
+          "signal_side": null,
+          "slug": "btc-updown-5m-1792584600",
+          "status": "Modelo en espera: historial insuficiente",
+          "t": 6,
+          "t_eff": 6,
+          "updated": 1792584606.0837703,
+          "window_s": 300,
+          "window_ts": 1792584600,
+          "zone": [
+            195,
+            292
           ]
         }
       ],
@@ -439,67 +439,67 @@
         "symbols": {
           "bnbusd": {
             "fresh": true,
-            "ref": 745.5714,
-            "ref_age_s": 0.89,
-            "twap": 745.551101,
-            "twap_age_s": 0.82,
-            "twap_lag_s": 0.8
+            "ref": 745.535,
+            "ref_age_s": 0.52,
+            "twap": 745.575948,
+            "twap_age_s": 0.48,
+            "twap_lag_s": 1.65
           },
           "btcusd": {
             "fresh": true,
-            "ref": 83450.807,
-            "ref_age_s": 0.86,
-            "twap": 83434.677611,
-            "twap_age_s": 0.79,
-            "twap_lag_s": 0.83
+            "ref": 83447.0355,
+            "ref_age_s": 0.53,
+            "twap": 83444.234883,
+            "twap_age_s": 0.49,
+            "twap_lag_s": 1.63
           },
           "dogeusd": {
             "fresh": true,
             "ref": 0.082,
-            "ref_age_s": 0.84,
-            "twap": 0.081971,
-            "twap_age_s": 0.81,
-            "twap_lag_s": 0.81
+            "ref_age_s": 0.52,
+            "twap": 0.081977,
+            "twap_age_s": 0.48,
+            "twap_lag_s": 1.64
           },
           "ethusd": {
             "fresh": true,
-            "ref": 2466.4592,
-            "ref_age_s": 0.88,
-            "twap": 2466.441439,
-            "twap_age_s": 0.84,
-            "twap_lag_s": 0.78
+            "ref": 2465.8409,
+            "ref_age_s": 0.54,
+            "twap": 2466.538622,
+            "twap_age_s": 0.45,
+            "twap_lag_s": 1.67
           },
           "hypeusd": {
             "fresh": true,
-            "ref": 81.1574,
-            "ref_age_s": 0.86,
-            "twap": 81.158927,
-            "twap_age_s": 0.8,
-            "twap_lag_s": 0.82
+            "ref": 81.1623,
+            "ref_age_s": 0.51,
+            "twap": 81.153036,
+            "twap_age_s": 0.49,
+            "twap_lag_s": 1.64
           },
           "solusd": {
             "fresh": true,
-            "ref": 106.827,
-            "ref_age_s": 0.88,
-            "twap": 106.807661,
-            "twap_age_s": 0.83,
-            "twap_lag_s": 0.79
+            "ref": 106.8135,
+            "ref_age_s": 0.56,
+            "twap": 106.81814,
+            "twap_age_s": 0.46,
+            "twap_lag_s": 1.66
           },
           "xrpusd": {
             "fresh": true,
-            "ref": 1.3556,
-            "ref_age_s": 0.9,
-            "twap": 1.355509,
-            "twap_age_s": 0.81,
-            "twap_lag_s": 0.81
+            "ref": 1.3555,
+            "ref_age_s": 0.54,
+            "twap": 1.355633,
+            "twap_age_s": 0.45,
+            "twap_lag_s": 1.68
           }
         },
         "ultima_discrepancia": null
       },
       "event_loop": {
-        "cycles": 511,
+        "cycles": 861,
         "enabled": true,
-        "last_cycle": 1792584588.5860288,
+        "last_cycle": 1792584606.0861268,
         "last_slow": {
           "partes": {
             "descubrimiento": 0.0
@@ -511,7 +511,7 @@
         "min_s": 0.05,
         "slow_1s": 1,
         "slow_3s": 0,
-        "wakes_by_data": 511,
+        "wakes_by_data": 861,
         "wakes_by_timeout": 0,
         "work_max_s": 1.4
       },
@@ -521,7 +521,7 @@
         "enabled": false,
         "files": 0,
         "last_error": null,
-        "live_tokens": 8,
+        "live_tokens": 12,
         "queue": 0,
         "running": false,
         "trade_rows": 0
