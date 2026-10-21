@@ -1,7 +1,7 @@
 {
   "schema": 2,
-  "timestamp": "2026-10-21T12:10:23.311598+00:00",
-  "timestamp_epoch": 1792584623,
+  "timestamp": "2026-10-21T12:10:40.443186+00:00",
+  "timestamp_epoch": 1792584640,
   "bot_online": true,
   "simulation_mode": true,
   "balance": 50.3596,
@@ -235,7 +235,7 @@
     "v4_real": null,
     "v4_version": "4.5",
     "recorder": {
-      "max_age_s": 3.0,
+      "max_age_s": 10.0,
       "ok": true,
       "procs": 13,
       "stale": []
@@ -246,7 +246,7 @@
       "collected_value": 1332.0,
       "failed_count": 0,
       "failed_value": 0.0,
-      "last_collected_age_s": 4193.2,
+      "last_collected_age_s": 4210.3,
       "last_error": null,
       "mode": "sim",
       "no_value_count": 0,
@@ -260,32 +260,32 @@
     },
     "ws_feed": {
       "alimentador": {
-        "aplicados": 1234,
+        "aplicados": 1576,
         "conectado": true,
         "conexiones": 1,
-        "edad_fotograma_ms": 25,
-        "fotograma": 1250,
-        "hace_s": 0.02,
+        "edad_fotograma_ms": 39,
+        "fotograma": 1592,
+        "hace_s": 0.04,
         "instantaneas": 1,
         "max_de_golpe": 28,
-        "recibidos": 1235,
+        "recibidos": 1577,
         "sin_vuelta": 28,
         "ultimo_error": "ConnectionRefusedError: [WinError 10061] No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión"
       },
       "connected": true,
-      "connected_for_s": 56.0,
+      "connected_for_s": 73.0,
       "data_age_s": {
         "…057941": 0.0,
-        "…059544": 6.6,
+        "…059544": 9.3,
         "…467741": 0.0,
         "…486530": 0.0,
         "…595804": 0.0,
-        "…683898": 8.0,
+        "…683898": 6.7,
         "…686652": 0.0,
-        "…720317": 8.0,
+        "…720317": 6.7,
         "…721726": 0.0,
         "…949032": 0.0,
-        "…982630": 6.6,
+        "…982630": 9.3,
         "…983711": 0.0
       },
       "kb_per_s": 1679.2,
@@ -293,16 +293,16 @@
       "lag_ms_p50": -399,
       "lag_tokens": {
         "102294550906597272375294540841919097462033762757263848107277235745322925683898": 0,
-        "103847835119001932709152673555058488958604485614099518748289431168132281721726": -400,
+        "103847835119001932709152673555058488958604485614099518748289431168132281721726": -402,
         "18158855452764982758255033546478310273623287374981988466691860508587029720317": 0,
-        "25105624892764897732022205417130108232123467368693783522149170718901353057941": -401,
+        "25105624892764897732022205417130108232123467368693783522149170718901353057941": -400,
         "29848449666328892596657043461491611139316158860031111901722423100210946486530": -400,
         "41321050825759240182496231572003270794305207875359110853145904151471578059544": 0,
-        "45668937499854102182518597385381816323944842803034113300746150924495410467741": -400,
+        "45668937499854102182518597385381816323944842803034113300746150924495410467741": -401,
         "52148801332449140427884442663190461682583789680556470983352432983696292982630": 0,
-        "52370213339109575660904510014398445005237129839306115320489921922878427595804": -401,
-        "56239502188106247544159941953080705390965872230959578522453454894799719983711": -400,
-        "67462212119046432609651046825170321363501823697947524557902291904839876949032": -400,
+        "52370213339109575660904510014398445005237129839306115320489921922878427595804": -400,
+        "56239502188106247544159941953080705390965872230959578522453454894799719983711": -402,
+        "67462212119046432609651046825170321363501823697947524557902291904839876949032": -401,
         "70112209676010997316297967105360979881619641751244553931358739087333201686652": -400
       },
       "last_hour": {
@@ -316,7 +316,7 @@
         "resuscripcion": 0,
         "vigilancia": 0
       },
-      "max_data_age_s": 8.0,
+      "max_data_age_s": 9.3,
       "msgs_per_s": 2752.6,
       "procesos": 8,
       "redundancia": 3,
@@ -335,9 +335,9 @@
           "vigilancia": 0
         },
         "connects": 18,
-        "msgs": 224045,
+        "msgs": 313730,
         "parse_errors": 0,
-        "pongs": 90,
+        "pongs": 126,
         "resubscribes": 0
       }
     },
@@ -350,14 +350,14 @@
         {
           "K": null,
           "S": null,
-          "ask_down": 0.31,
-          "ask_up": 0.7,
+          "ask_down": 0.33,
+          "ask_up": 0.68,
           "asset": "BTC",
-          "bid_down": 0.3,
-          "bid_up": 0.69,
-          "cl_ref": 83446.66704228231,
+          "bid_down": 0.32,
+          "bid_up": 0.67,
+          "cl_ref": 83450.64065791207,
           "cl_strike": null,
-          "cl_twap": 83450.75756067249,
+          "cl_twap": 83449.79388222977,
           "cl_twap_age_s": 0.83,
           "dist": null,
           "dur": "15m",
@@ -373,9 +373,9 @@
           "signal_side": null,
           "slug": "btc-updown-15m-1792584000",
           "status": "Modelo en espera: strike TWAP no disponible (bot arrancado tarde)",
-          "t": 623,
-          "t_eff": 23,
-          "updated": 1792584623.3340404,
+          "t": 640,
+          "t_eff": 40,
+          "updated": 1792584640.4340293,
           "window_s": 900,
           "window_ts": 1792584000,
           "zone": [
@@ -386,14 +386,14 @@
         {
           "K": null,
           "S": null,
-          "ask_down": 0.44,
-          "ask_up": 0.57,
+          "ask_down": 0.49,
+          "ask_up": 0.52,
           "asset": "BTC",
-          "bid_down": 0.43,
-          "bid_up": 0.56,
-          "cl_ref": 83446.66704228231,
+          "bid_down": 0.48,
+          "bid_up": 0.51,
+          "cl_ref": 83450.64065791207,
           "cl_strike": 83441.48639383391,
-          "cl_twap": 83450.75756067249,
+          "cl_twap": 83449.79388222977,
           "cl_twap_age_s": 0.83,
           "dist": null,
           "dur": "5m",
@@ -409,9 +409,9 @@
           "signal_side": null,
           "slug": "btc-updown-5m-1792584600",
           "status": "Modelo en espera: volatilidad aún no estimable",
-          "t": 23,
-          "t_eff": 23,
-          "updated": 1792584623.3340404,
+          "t": 40,
+          "t_eff": 40,
+          "updated": 1792584640.4340293,
           "window_s": 300,
           "window_ts": 1792584600,
           "zone": [
@@ -439,67 +439,67 @@
         "symbols": {
           "bnbusd": {
             "fresh": true,
-            "ref": 745.5362,
+            "ref": 745.6221,
             "ref_age_s": 0.93,
-            "twap": 745.580893,
-            "twap_age_s": 0.89,
-            "twap_lag_s": 0.47
+            "twap": 745.574985,
+            "twap_age_s": 0.88,
+            "twap_lag_s": 0.59
           },
           "btcusd": {
             "fresh": true,
-            "ref": 83446.667,
-            "ref_age_s": 0.91,
-            "twap": 83450.757561,
-            "twap_age_s": 0.86,
-            "twap_lag_s": 0.5
+            "ref": 83450.6407,
+            "ref_age_s": 0.94,
+            "twap": 83449.793882,
+            "twap_age_s": 0.87,
+            "twap_lag_s": 0.61
           },
           "dogeusd": {
             "fresh": true,
             "ref": 0.082,
-            "ref_age_s": 0.92,
-            "twap": 0.081979,
-            "twap_age_s": 0.87,
-            "twap_lag_s": 0.49
+            "ref_age_s": 0.85,
+            "twap": 0.081976,
+            "twap_age_s": 0.91,
+            "twap_lag_s": 0.57
           },
           "ethusd": {
             "fresh": true,
-            "ref": 2465.7584,
-            "ref_age_s": 0.04,
-            "twap": 2466.347007,
+            "ref": 2465.975,
+            "ref_age_s": 0.91,
+            "twap": 2466.10193,
             "twap_age_s": 0.86,
-            "twap_lag_s": 0.5
+            "twap_lag_s": 0.61
           },
           "hypeusd": {
             "fresh": true,
-            "ref": 81.2016,
-            "ref_age_s": 0.9,
-            "twap": 81.16289,
-            "twap_age_s": 0.85,
-            "twap_lag_s": 0.52
+            "ref": 81.2074,
+            "ref_age_s": 0.94,
+            "twap": 81.180095,
+            "twap_age_s": 0.89,
+            "twap_lag_s": 0.59
           },
           "solusd": {
             "fresh": true,
-            "ref": 106.797,
-            "ref_age_s": 0.03,
-            "twap": 106.820801,
-            "twap_age_s": 0.88,
-            "twap_lag_s": 0.48
+            "ref": 106.804,
+            "ref_age_s": 0.95,
+            "twap": 106.813278,
+            "twap_age_s": 0.87,
+            "twap_lag_s": 0.6
           },
           "xrpusd": {
             "fresh": true,
-            "ref": 1.3552,
+            "ref": 1.3553,
             "ref_age_s": 0.92,
-            "twap": 1.355589,
-            "twap_age_s": 0.9,
-            "twap_lag_s": 0.46
+            "twap": 1.355462,
+            "twap_age_s": 0.89,
+            "twap_lag_s": 0.58
           }
         },
         "ultima_discrepancia": null
       },
       "event_loop": {
-        "cycles": 1206,
+        "cycles": 1548,
         "enabled": true,
-        "last_cycle": 1792584623.3351657,
+        "last_cycle": 1792584640.4350808,
         "last_slow": {
           "partes": {
             "descubrimiento": 0.0
@@ -511,7 +511,7 @@
         "min_s": 0.05,
         "slow_1s": 1,
         "slow_3s": 0,
-        "wakes_by_data": 1206,
+        "wakes_by_data": 1548,
         "wakes_by_timeout": 0,
         "work_max_s": 1.4
       },
