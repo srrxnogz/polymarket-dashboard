@@ -103,6 +103,9 @@ select { background: #16213a; color: var(--text); border: 1px solid var(--line);
 .oracle div { background: #0c1426; border: 1px solid var(--line2); border-radius: 10px; padding: 8px 10px; }
 .oracle .k { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; font-weight: 700; }
 .oracle .v { font-size: 15px; font-weight: 800; margin-top: 2px; }
+.clpath { margin-top: 10px; background: #0c1426; border: 1px solid var(--line2); border-radius: 10px; padding: 6px 8px 4px; }
+.clpath svg { display: block; width: 100%; height: auto; }
+.clpath .sub { font-size: 10px; margin-top: 2px; }
 .prob-bar.unk { background: #1b2336; }
 .watch { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
 .watch .w { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; border: 1px solid var(--line2); background: var(--panel2); color: var(--muted); }
@@ -473,6 +476,27 @@ function renderV4Kpis(ls, eqd) {
 }
 
 // ─── Render: ventana en vivo ──────────────────────────────────────────────────
+// 22-oct (Sergio): la gráfica de la web de Polymarket sin animar. Recorrido de la media de 60 s de Chainlink desde el
+// inicio de la ventana (cl_path: [segundo, precio]) frente al precio a superar (discontinua); el punto es el último valor.
+function clPathSvg(path, strike, T) {
+  if (!Array.isArray(path) || path.length < 2 || strike == null) return '';
+  const W = 600, H = 96, px = 6, py = 8;
+  const vals = path.map(p => Number(p[1])).concat([Number(strike)]);
+  let lo = Math.min(...vals), hi = Math.max(...vals);
+  const span = Math.max(hi - lo, 1e-9);
+  lo -= span * 0.15; hi += span * 0.15;
+  const x = (t) => px + (W - 2 * px) * Math.min(1, Math.max(0, t / T));
+  const y = (v) => py + (H - 2 * py) * (hi - v) / (hi - lo);
+  const last = path[path.length - 1], col = Number(last[1]) >= Number(strike) ? 'var(--green)' : 'var(--red)';
+  const pts = path.map(p => x(p[0]).toFixed(1) + ',' + y(p[1]).toFixed(1)).join(' ');
+  const ys = y(strike).toFixed(1);
+  return `<div class="clpath"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Recorrido del precio frente al precio a superar">
+      <line x1="${px}" x2="${W - px}" y1="${ys}" y2="${ys}" stroke="#7c8aa5" stroke-dasharray="5 5" stroke-width="1.2"/>
+      <polyline points="${pts}" fill="none" stroke="${col}" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+      <circle cx="${x(last[0]).toFixed(1)}" cy="${y(last[1]).toFixed(1)}" r="4.5" fill="${col}"/>
+    </svg><div class="sub">Media de 60 s de Chainlink desde el inicio, como la gráfica de la web · discontinua: precio a superar</div></div>`;
+}
+
 function renderLive(v4) {
   const box = $('liveMarkets'); if (!box || !v4) return;
   const p = v4.params || {}, tmin0 = p.V4_T_MIN ?? 210, tmax0 = p.V4_T_MAX ?? 292, pmin0 = p.V4_P_MIN ?? 0.993;
@@ -504,8 +528,11 @@ function renderLive(v4) {
     const upPct = pu === null ? 50 : pu * 100;
     const inZone = t >= tmin && t <= tmax;
     const edge = (e) => (e === null || e === undefined) ? '—' : `<span class="${e > 0 ? 'pos' : 'muted'}">${(e * 100).toFixed(1)} ¢</span>`;
-    const strike = (m.pm_strike != null ? m.pm_strike : m.cl_strike), twap = m.cl_twap, spot = m.cl_ref;   // oficial de Polymarket
-    const diff = (strike != null && spot != null) ? spot - strike : null;   // precio actual − precio a superar
+    // 22-oct (Sergio): lo mismo que la web de Polymarket. Precio a superar = media de 60 s de Chainlink al empezar (la que
+    // resuelve); precio actual = media de 60 s ahora (la web no enseña el precio puntual, que va aparte).
+    const strike = (m.pm_strike != null ? m.pm_strike : m.cl_strike), spot = m.cl_ref;
+    const cur = (m.cl_twap != null ? m.cl_twap : spot);
+    const diff = (strike != null && cur != null) ? cur - strike : null;   // precio actual − precio a superar
     const dec = (m.asset === 'BTC' || m.asset === 'ETH') ? 2 : 4;
     const status = m.signal ? `<span class="sig">🎯 SEÑAL: ${esc(m.signal)}</span>` : esc(m.status || '—');
     return `<div class="mkt">
@@ -534,10 +561,11 @@ function renderLive(v4) {
       </div>
       <div class="oracle">
         <div><div class="k">Precio a superar</div><div class="v">${strike != null ? '$' + Number(strike).toLocaleString('es-ES', {minimumFractionDigits: dec, maximumFractionDigits: dec}) : '—'}</div></div>
-        <div><div class="k">Precio actual</div><div class="v">${spot != null ? '$' + Number(spot).toLocaleString('es-ES', {minimumFractionDigits: dec, maximumFractionDigits: dec}) : '—'}</div>
-          <div class="sub" style="font-size:10px">TWAP 60 s: ${twap != null ? '$' + Number(twap).toLocaleString('es-ES', {minimumFractionDigits: dec, maximumFractionDigits: dec}) : '—'}</div></div>
-        <div><div class="k">Diferencia (${diff == null ? '—' : (diff >= 0 ? 'va ganando UP' : 'va ganando DOWN')})</div><div class="v ${cls(diff)}">${diff != null ? signed(diff, dec) + ' $' : '—'}</div></div>
+        <div><div class="k">Precio actual</div><div class="v">${cur != null ? '$' + Number(cur).toLocaleString('es-ES', {minimumFractionDigits: dec, maximumFractionDigits: dec}) : '—'}</div>
+          <div class="sub" style="font-size:10px">puntual: ${spot != null ? '$' + Number(spot).toLocaleString('es-ES', {minimumFractionDigits: dec, maximumFractionDigits: dec}) : '—'}</div></div>
+        <div><div class="k">Diferencia (${diff == null ? '—' : (diff >= 0 ? 'va ganando UP' : 'va ganando DOWN')})</div><div class="v ${cls(diff)}">${diff != null ? (diff >= 0 ? '▲ ' : '▼ ') + signed(diff, dec) + ' $' : '—'}</div></div>
       </div>
+      ${clPathSvg(m.cl_path, strike, T)}
       <div class="status-line">${status}</div>
     </div>`;
   }).join('');
