@@ -634,11 +634,16 @@ function cobroTag(t) {
 function renderTrades() {
   const tb = $('tradeBody'); if (!tb) return;
   let rows = (_trades || []).filter(t => t.status !== 'OPEN');
-  if (_filter === 'v4') rows = rows.filter(t => /^TWAP_LOCK_(V4|PC|EARLY|COH)/.test(String(t.strategy || '')));
+  if (_filter === 'v4') rows = rows.filter(t => t.status === 'RETIRO' || /^TWAP_LOCK_(V4|PC|EARLY|COH)/.test(String(t.strategy || '')));
   rows.sort((a, b) => (b.id || 0) - (a.id || 0));
   if (!rows.length) { tb.innerHTML = `<tr class="empty"><td colspan="7">${_filter === 'v4' ? 'Sin operaciones V4 en este modo todavía' : 'Sin operaciones cerradas'}</td></tr>`; return; }
   tb.innerHTML = rows.slice(0, 60).map(t => {
     const pnl = Number(t.pnl || 0);
+    if (t.status === 'RETIRO') {   // 22-oct: retiro de saldo (no es una operación): coste = lo retirado, pnl = saldo que queda
+      return `<tr title="Retiro de saldo: no cuenta como pérdida ni entra en el Kelly ni en las estadísticas"><td>${esc(utcTxt(t.close_time || t.timestamp))}</td>
+        <td class="slug">retiro</td><td><span class="tag other">retiro</span></td><td>—</td><td>—</td>
+        <td>$${n(t.cost_usdc)}</td><td class="pos" title="saldo que queda en la cuenta"><b>$${n(t.pnl)}</b></td></tr>`;
+    }
     return `<tr><td>${esc(utcTxt(t.close_time || t.timestamp))}</td><td class="slug">${esc(t.market_slug || '-')}${pcTag(t.strategy)}</td>
       <td>${entryType(t.strategy, t.entry_price)}</td><td>${sideTag(t.outcome)}</td><td>${n(t.entry_price, 3)}</td>
       <td>${t.cost_usdc != null ? '$' + n(t.cost_usdc) : '—'}</td>
