@@ -1,7 +1,7 @@
 {
   "schema": 2,
-  "timestamp": "2026-10-23T20:23:31.023465+00:00",
-  "timestamp_epoch": 1792787011,
+  "timestamp": "2026-10-23T20:23:50.759413+00:00",
+  "timestamp_epoch": 1792787030,
   "bot_online": true,
   "simulation_mode": true,
   "balance": 51.7892,
@@ -235,7 +235,7 @@
     "v4_real": null,
     "v4_version": "4.5",
     "recorder": {
-      "max_age_s": 9541.0,
+      "max_age_s": 9560.0,
       "ok": false,
       "procs": 13,
       "stale": [
@@ -248,7 +248,7 @@
       "collected_value": 2289.0,
       "failed_count": 0,
       "failed_value": 0.0,
-      "last_collected_age_s": 10089.4,
+      "last_collected_age_s": 10108.5,
       "last_error": null,
       "mode": "sim",
       "no_value_count": 0,
@@ -257,21 +257,21 @@
       "real_claim_method": "auto-canje de Polymarket o reclamación manual (el bot solo lo vigila)",
       "sent_count": 0,
       "sim_delay_s": 30.0,
-      "worker_alive": false,
+      "worker_alive": true,
       "worker_error": null
     },
     "ws_feed": {
       "alimentador": {
-        "aplicados": 0,
+        "aplicados": 76,
         "conectado": true,
         "conexiones": 1,
-        "edad_fotograma_ms": 99,
-        "fotograma": 1881,
-        "hace_s": 0.1,
+        "edad_fotograma_ms": 177,
+        "fotograma": 1957,
+        "hace_s": 0.18,
         "instantaneas": 1,
-        "max_de_golpe": 0,
-        "recibidos": 1,
-        "sin_vuelta": 0,
+        "max_de_golpe": 6,
+        "recibidos": 77,
+        "sin_vuelta": 5,
         "ultimo_error": null
       },
       "connected": false,
@@ -400,17 +400,21 @@
         "ultima_discrepancia": null
       },
       "event_loop": {
-        "cycles": 0,
+        "cycles": 73,
         "enabled": true,
-        "last_cycle": 0.0,
-        "last_slow": null,
+        "last_cycle": 1792787030.6397061,
+        "last_slow": {
+          "partes": {},
+          "s": 1.73,
+          "ts": 1792787013.828391
+        },
         "max_s": 0.25,
         "min_s": 0.05,
-        "slow_1s": 0,
+        "slow_1s": 1,
         "slow_3s": 0,
-        "wakes_by_data": 0,
-        "wakes_by_timeout": 0,
-        "work_max_s": 0.0
+        "wakes_by_data": 71,
+        "wakes_by_timeout": 2,
+        "work_max_s": 1.73
       },
       "depth_recorder": {
         "book_rows": 0,
@@ -610,6 +614,38 @@
         "trades": 417,
         "win_rate_pct": 98.56,
         "wins": 411
+      },
+      "last_simulation": {
+        "asset": "TODOS",
+        "avg_entry_price": 0.9722,
+        "by_side": {
+          "DOWN": {
+            "n": 1013,
+            "pf": 2.0,
+            "pnl": 838.28
+          },
+          "UP": {
+            "n": 850,
+            "pf": 1.07,
+            "pnl": 87.11
+          }
+        },
+        "dataset": "BTC 5m + BTC 15m juntos con un solo saldo · libro real grabado al ms (24-Sep → 20-Oct): cada compra solo se llena si a los 257 ms de enviarla había vendedores ≤ límite · apuesta como el bot (Kelly 13 %, filtro de gasto) · motor sim_core",
+        "engine": "TWAP_LOCK_V4/v5-libro-cartera",
+        "final_balance": 1125.38,
+        "initial_balance": 200.0,
+        "latency_s": 1,
+        "losses": 49,
+        "max_drawdown_usd": 245.09,
+        "profit_factor": 1.43,
+        "roi_per_trade_pct": 0.78,
+        "timestamp": "2026-10-22T15:17:29.497491Z",
+        "total_pnl_usd": 925.39,
+        "total_trades": 1863,
+        "verdict": "REVIEW",
+        "win_rate_pct": 97.37,
+        "windows_replayed": 9243,
+        "wins": 1814
       },
       "sim_running": false,
       "params": {
