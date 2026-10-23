@@ -683,7 +683,9 @@ function renderTrades() {
 const COINS = [['btcusd', 'BTC', 2], ['ethusd', 'ETH', 2], ['solusd', 'SOL', 3], ['xrpusd', 'XRP', 4], ['dogeusd', 'DOGE', 5], ['bnbusd', 'BNB', 2], ['hypeusd', 'HYPE', 3]];
 function renderOracle(v4, live) {
   const cl = (v4 || {}).chainlink_twap || {}, sy = cl.symbols || {};
-  const ok = cl.authed && cl.connected;
+  // 23-oct: con el alimentador común el bot no abre su propia conexión a Chainlink (los datos le llegan en los fotogramas):
+  // el oráculo está bien si su dato de BTC está al día, venga de donde venga.
+  const ok = (cl.authed && cl.connected) || !!(sy.btcusd && sy.btcusd.fresh);
   pill('clPill', ok ? 'Oráculo' : (cl.enabled === false ? 'Oráculo off' : 'Oráculo …'), ok ? 'on' : (cl.enabled === false ? '' : 'warn'));
   $('coins').innerHTML = COINS.map(([k, name, d]) => {
     const s = sy[k] || {};
