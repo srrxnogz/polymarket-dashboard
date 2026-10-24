@@ -1,7 +1,7 @@
 {
   "schema": 2,
-  "timestamp": "2026-10-24T11:53:03.340903+00:00",
-  "timestamp_epoch": 1792842783,
+  "timestamp": "2026-10-24T11:53:20.187743+00:00",
+  "timestamp_epoch": 1792842800,
   "bot_online": true,
   "simulation_mode": true,
   "balance": 54.0458,
@@ -235,7 +235,7 @@
     "v4_real": null,
     "v4_version": "4.5",
     "recorder": {
-      "max_age_s": 7.0,
+      "max_age_s": 9.0,
       "ok": true,
       "procs": 13,
       "stale": []
@@ -246,7 +246,7 @@
       "collected_value": 2318.5,
       "failed_count": 0,
       "failed_value": 0.0,
-      "last_collected_age_s": 1050.4,
+      "last_collected_age_s": 1067.3,
       "last_error": null,
       "mode": "sim",
       "no_value_count": 0,
@@ -260,45 +260,45 @@
     },
     "ws_feed": {
       "alimentador": {
-        "aplicados": 30573,
+        "aplicados": 30898,
         "conectado": true,
         "conexiones": 1,
-        "edad_fotograma_ms": 17,
-        "fotograma": 30590,
-        "hace_s": 0.02,
+        "edad_fotograma_ms": 31,
+        "fotograma": 30915,
+        "hace_s": 0.03,
         "instantaneas": 1,
         "max_de_golpe": 83,
-        "recibidos": 30574,
+        "recibidos": 30899,
         "sin_vuelta": 194,
         "ultimo_error": null
       },
       "connected": true,
-      "connected_for_s": 177.0,
+      "connected_for_s": 195.0,
       "data_age_s": {
         "…063133": 0.0,
         "…174232": 0.0,
-        "…216003": 1.1,
+        "…216003": 2.1,
         "…259634": 0.0,
         "…327247": 0.0,
         "…369383": 0.0,
-        "…380754": 2.0,
-        "…538073": 2.0,
+        "…380754": 7.4,
+        "…538073": 7.4,
         "…685839": 0.0,
         "…731450": 0.0,
         "…817082": 0.0,
-        "…832882": 1.1
+        "…832882": 2.1
       },
       "kb_per_s": 2839.6,
       "lag_ms_max": 594,
       "lag_ms_p50": 118,
       "lag_tokens": {
-        "102564100367125479736661693942277314114632677494240810089208448467127467327247": 120,
+        "102564100367125479736661693942277314114632677494240810089208448467127467327247": 122,
         "1417264017099077563923330983283999673638740560601995541136892220530691369383": 118,
         "15047502583381554228803030423653632840893250815123686727217257118358562174232": 118,
         "24544838488251047421629595685821752848670937699731162814777436459225353216003": 0,
         "3528459682734301845829932820618705502362614076659386389810249624126423259634": 118,
         "38639719368253042611564030862606890112508691671092615830413251983062004817082": 118,
-        "42512377560799088499730132088538740987399079991690123588087840857795336063133": 120,
+        "42512377560799088499730132088538740987399079991690123588087840857795336063133": 122,
         "51784016833075455611896535322330365349708196055704972377418690146722708731450": 118,
         "70354976550927413345350785214141009340401369447666694830949328363795744538073": 0,
         "83168683834688701640237061823889201909543938573323671750542446331224938685839": 118,
@@ -316,7 +316,7 @@
         "resuscripcion": 0,
         "vigilancia": 0
       },
-      "max_data_age_s": 2.0,
+      "max_data_age_s": 7.4,
       "msgs_per_s": 4568.1,
       "procesos": 8,
       "redundancia": 3,
@@ -335,9 +335,9 @@
           "vigilancia": 0
         },
         "connects": 65,
-        "msgs": 5233721,
+        "msgs": 5304136,
         "parse_errors": 0,
-        "pongs": 3696,
+        "pongs": 3724,
         "resubscribes": 0
       }
     },
@@ -349,7 +349,7 @@
       "markets": [
         {
           "K": 80620.36,
-          "S": 80617.86,
+          "S": 80616.51,
           "ask_down": 0.52,
           "ask_up": 0.49,
           "asset": "BTC",
@@ -841,31 +841,47 @@
               80508.1062
             ],
             [
-              482,
-              80507.9479
+              484,
+              80507.6376
+            ],
+            [
+              488,
+              80507.391
+            ],
+            [
+              492,
+              80507.3461
+            ],
+            [
+              496,
+              80507.3126
+            ],
+            [
+              498,
+              80507.2906
             ]
           ],
-          "cl_ref": 80509.850267785,
+          "cl_ref": 80509.68724186892,
           "cl_strike": 80514.79210632389,
-          "cl_twap": 80507.94786121917,
-          "cl_twap_age_s": 0.11,
-          "dist": -2.5,
+          "cl_twap": 80507.2905581949,
+          "cl_twap_age_s": 1.21,
+          "dist": -3.86,
           "dur": "15m",
-          "edge_down": -0.0081,
-          "edge_up": -0.0368,
+          "edge_down": 0.0084,
+          "edge_up": -0.0533,
           "p_min": 0.993,
-          "p_up": 0.47065,
+          "p_up": 0.45416,
           "pm_strike": 80514.79210632389,
           "quote_age": 0.0,
-          "sigma": 1.648,
+          "sigma": 1.66,
           "signal": null,
           "signal_p": null,
           "signal_side": null,
           "slug": "btc-updown-15m-1792842300",
-          "status": "Fuera de zona: espera hasta t≥795s (ahora t=483s)",
-          "t": 483,
-          "t_eff": -117,
-          "updated": 1792842783.3547363,
+          "status": "Fuera de zona: espera hasta t≥795s (ahora t=500s)",
+          "t": 500,
+          "t_eff": -100,
+          "updated": 1792842800.1881962,
           "window_s": 900,
           "window_ts": 1792842300,
           "zone": [
@@ -875,12 +891,12 @@
         },
         {
           "K": 80630.46,
-          "S": 80617.86,
-          "ask_down": 0.8,
-          "ask_up": 0.21,
+          "S": 80616.51,
+          "ask_down": 0.84,
+          "ask_up": 0.17,
           "asset": "BTC",
-          "bid_down": 0.79,
-          "bid_up": 0.2,
+          "bid_down": 0.83,
+          "bid_up": 0.16,
           "cl_path": [
             [
               0,
@@ -1249,29 +1265,61 @@
             [
               182,
               80507.9479
+            ],
+            [
+              184,
+              80507.6376
+            ],
+            [
+              186,
+              80507.5106
+            ],
+            [
+              188,
+              80507.391
+            ],
+            [
+              190,
+              80507.3565
+            ],
+            [
+              192,
+              80507.3461
+            ],
+            [
+              194,
+              80507.3367
+            ],
+            [
+              196,
+              80507.3126
+            ],
+            [
+              198,
+              80507.2906
             ]
           ],
-          "cl_ref": 80509.850267785,
+          "cl_ref": 80509.68724186892,
           "cl_strike": 80522.705873946,
-          "cl_twap": 80507.94786121917,
-          "cl_twap_age_s": 0.11,
-          "dist": -12.6,
+          "cl_twap": 80507.2905581949,
+          "cl_twap_age_s": 1.21,
+          "dist": -13.96,
           "dur": "5m",
-          "edge_down": -0.0079,
-          "edge_up": -0.0249,
+          "edge_down": 0.0029,
+          "edge_up": -0.0322,
           "p_min": 0.985,
-          "p_up": 0.19668,
+          "p_up": 0.14767,
           "pm_strike": 80522.74458631003,
           "quote_age": 0.0,
-          "sigma": 1.648,
+          "sigma": 1.66,
           "signal": null,
           "signal_p": null,
           "signal_side": null,
           "slug": "btc-updown-5m-1792842600",
-          "status": "Fuera de zona: espera hasta t≥195s (ahora t=183s)",
-          "t": 183,
-          "t_eff": 183,
-          "updated": 1792842783.3547363,
+          "status": "Buscando: ningún lado cumple p≥P_MIN y margen tras comisión",
+          "t": 200,
+          "t_eff": 200,
+          "updated": 1792842800.1881962,
           "window_s": 300,
           "window_ts": 1792842600,
           "zone": [
@@ -1299,67 +1347,67 @@
         "symbols": {
           "bnbusd": {
             "fresh": true,
-            "ref": 730.8734,
-            "ref_age_s": 0.22,
-            "twap": 730.911099,
-            "twap_age_s": 0.19,
-            "twap_lag_s": 1.19
+            "ref": 730.8553,
+            "ref_age_s": 0.06,
+            "twap": 730.882071,
+            "twap_age_s": 1.25,
+            "twap_lag_s": 0.97
           },
           "btcusd": {
             "fresh": true,
-            "ref": 80509.8503,
-            "ref_age_s": 0.24,
-            "twap": 80507.947861,
-            "twap_age_s": 0.13,
-            "twap_lag_s": 1.25
+            "ref": 80509.6872,
+            "ref_age_s": 0.03,
+            "twap": 80507.290558,
+            "twap_age_s": 1.22,
+            "twap_lag_s": 1.0
           },
           "dogeusd": {
             "fresh": true,
             "ref": 0.0775,
-            "ref_age_s": 0.22,
-            "twap": 0.077458,
-            "twap_age_s": 0.19,
-            "twap_lag_s": 1.18
+            "ref_age_s": 0.04,
+            "twap": 0.077464,
+            "twap_age_s": 1.26,
+            "twap_lag_s": 0.96
           },
           "ethusd": {
             "fresh": true,
-            "ref": 2363.4028,
-            "ref_age_s": 0.21,
-            "twap": 2363.132139,
-            "twap_age_s": 0.16,
-            "twap_lag_s": 1.21
+            "ref": 2363.4056,
+            "ref_age_s": 0.05,
+            "twap": 2363.196931,
+            "twap_age_s": 1.2,
+            "twap_lag_s": 1.02
           },
           "hypeusd": {
             "fresh": true,
-            "ref": 75.5629,
-            "ref_age_s": 0.21,
-            "twap": 75.543416,
-            "twap_age_s": 0.18,
-            "twap_lag_s": 1.19
+            "ref": 75.5809,
+            "ref_age_s": 1.31,
+            "twap": 75.550114,
+            "twap_age_s": 1.2,
+            "twap_lag_s": 1.02
           },
           "solusd": {
             "fresh": true,
-            "ref": 101.3582,
-            "ref_age_s": 0.2,
-            "twap": 101.338641,
-            "twap_age_s": 0.15,
-            "twap_lag_s": 1.22
+            "ref": 101.3733,
+            "ref_age_s": 0.06,
+            "twap": 101.347377,
+            "twap_age_s": 1.23,
+            "twap_lag_s": 0.99
           },
           "xrpusd": {
             "fresh": true,
-            "ref": 1.2785,
-            "ref_age_s": 0.25,
-            "twap": 1.278381,
-            "twap_age_s": 0.16,
-            "twap_lag_s": 1.21
+            "ref": 1.2789,
+            "ref_age_s": 0.07,
+            "twap": 1.278508,
+            "twap_age_s": 1.24,
+            "twap_lag_s": 0.98
           }
         },
         "ultima_discrepancia": null
       },
       "event_loop": {
-        "cycles": 30380,
+        "cycles": 30705,
         "enabled": true,
-        "last_cycle": 1792842783.3558145,
+        "last_cycle": 1792842800.1894734,
         "last_slow": {
           "partes": {
             "descubrimiento": 0.0
@@ -1371,7 +1419,7 @@
         "min_s": 0.05,
         "slow_1s": 5,
         "slow_3s": 5,
-        "wakes_by_data": 30379,
+        "wakes_by_data": 30704,
         "wakes_by_timeout": 1,
         "work_max_s": 9.38
       },
