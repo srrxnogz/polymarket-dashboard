@@ -170,6 +170,8 @@ tr.waiting td { background: rgba(251,191,36,.05); }
 .decisions time { color: var(--dim); min-width: 62px; }
 .error-box { background: #3b1414; border: 1px solid #7f1d1d; border-radius: 12px; padding: 10px 14px; color: #fca5a5; font-size: 13px; margin-bottom: 12px; display: none; }
 .foot { font-size: 11px; color: var(--dim); text-align: right; margin-top: 6px; }
+.stat .s { font-size: 10px; color: var(--muted); margin-top: 2px; line-height: 1.35; }
+.sec-t { font-size: 11px; color: var(--muted); font-weight: 700; letter-spacing: .04em; margin: 12px 0 6px; }
 .chips { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-bottom: 12px; }
 @media (max-width: 1100px) { .chips { grid-template-columns: repeat(3, 1fr); } }
 .dlg-back { position: fixed; inset: 0; background: rgba(2, 6, 23, .72); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 16px; }
@@ -304,8 +306,8 @@ tr.waiting td { background: rgba(251,191,36,.05); }
 <div class="card" style="margin-bottom:14px">
   <div class="card-h">
     <div>
-      <h2>Simulador V4 · datos reales</h2>
-      <div class="sub" id="simSub">Reproduce V4 en todos los mercados que opera el bot a la vez, con un solo saldo, comprando contra el libro real grabado al milisegundo: una compra solo cuenta si, al llegar la orden, había vendedores. Apuesta como el bot (Kelly real, filtro de gasto y tramo barato) y vende con su salida de emergencia.</div>
+      <h2>Simulación del panel · lo que habría hecho el bot de hoy</h2>
+      <div class="sub" id="simSub"><b>Pasado:</b> repite cada ventana grabada desde el 24-sep con las reglas y la apuesta de hoy, en todos los mercados que opera el bot y con un solo saldo. Ve lo mismo que el bot: su precio, su precio a batir y su volatilidad (los que apuntó el REAL o el PAPEL; si no estaban encendidos, reconstruidos con los exchanges grabados), y compra y vende contra el libro real al milisegundo. <b>Fidelidad:</b> se compara ventana a ventana con lo que hicieron de verdad el REAL y el PAPEL. <b>Proyección:</b> no adivina el mercado; extiende hacia delante la ventaja medida con las reglas actuales, con su incertidumbre.</div>
     </div>
     <div style="display:flex;gap:8px;align-items:center">
       <label for="simBal" class="sub" style="white-space:nowrap">Saldo inicial $</label>
@@ -329,7 +331,25 @@ tr.waiting td { background: rgba(251,191,36,.05); }
     <div class="stat"><div class="k">Peor tramo de 100</div><div class="v" id="simW100">—</div></div>
     <div class="stat"><div class="k">Peor caída</div><div class="v" id="simDdL">—</div></div>
   </div>
-  <div class="chart-box" style="height:190px"><canvas id="simChart"></canvas></div>
+  <div class="chart-box" style="height:220px"><canvas id="simChart"></canvas></div>
+  <div class="sec-t" id="fiT">Fidelidad · la simulación frente a lo que hicieron de verdad el REAL y el PAPEL (ventanas con el bot encendido)</div>
+  <div class="chips">
+    <div class="stat" title="De las compras que hizo el bot, cuántas hizo también la simulación en la misma ventana"><div class="k">Compras del REAL que repite</div><div class="v" id="fiBot">—</div><div class="s" id="fiBotS">—</div></div>
+    <div class="stat" title="De las compras de la simulación, cuántas hizo también el bot en la misma ventana"><div class="k">Compras de la sim. que hizo el REAL</div><div class="v" id="fiSim">—</div><div class="s" id="fiSimS">—</div></div>
+    <div class="stat" title="En las compras comunes y del mismo lado: ganan o pierden igual"><div class="k">Mismo resultado</div><div class="v" id="fiRes">—</div><div class="s" id="fiResS">—</div></div>
+    <div class="stat" title="Ventaja por $ apostado en las ventanas comparadas"><div class="k">Por $ · sim. / REAL</div><div class="v" id="fiPd">—</div><div class="s" id="fiPdS">—</div></div>
+    <div class="stat"><div class="k">Ventanas comparadas</div><div class="v" id="fiVen">—</div><div class="s" id="fiVenS">—</div></div>
+    <div class="stat" title="De dónde salía el precio en el segundo de cada compra simulada"><div class="k">Origen del precio</div><div class="v" id="fiOri" style="font-size:12px">—</div><div class="s" id="fiOriS">—</div></div>
+  </div>
+  <div class="sec-t" id="pyT">Proyección · no es una predicción del mercado: extiende la ventaja medida con las reglas actuales</div>
+  <div class="chips">
+    <div class="stat" title="Resultado medio por $ apostado y su intervalo del 95 % (si incluye el 0, aún no está demostrado que haya ventaja)"><div class="k">Ventaja medida</div><div class="v" id="pyV">—</div><div class="s" id="pyVS">—</div></div>
+    <div class="stat" title="Saldo mediano tras 7 días y rango del 80 % de los casos"><div class="k">Saldo a 7 días</div><div class="v" id="py7">—</div><div class="s" id="py7S">—</div></div>
+    <div class="stat" title="Saldo mediano tras 30 días y rango del 80 % de los casos"><div class="k">Saldo a 30 días</div><div class="v" id="py30">—</div><div class="s" id="py30S">—</div></div>
+    <div class="stat" title="Probabilidad de tener menos que el saldo inicial dentro de 30 días"><div class="k">Acabar por debajo (30 d)</div><div class="v" id="pyBajo">—</div><div class="s" id="pyBajoS">—</div></div>
+    <div class="stat" title="Probabilidad de bajar de 4,9 $ (ya no se puede comprar el mínimo de 5 participaciones) en 30 días"><div class="k">Saldo inoperable (30 d)</div><div class="v" id="pyIno">—</div><div class="s" id="pyInoS">—</div></div>
+    <div class="stat" title="Probabilidad de que el saldo caiga a la mitad desde un máximo en algún momento de los 30 días"><div class="k">Caída ≥ 50 % (30 d)</div><div class="v" id="pyDd">—</div><div class="s" id="pyDdS">—</div></div>
+  </div>
   <div class="foot" id="simEngine">—</div>
 </div>
 
@@ -417,6 +437,67 @@ function lineChart(id, color, opts = {}) {
 const eqChart = lineChart('eqChart', '#2dd4bf', {unit: '$'});
 const sparkPnl = lineChart('sparkPnl', '#2dd4bf', {spark: true});
 const simChart = lineChart('simChart', '#60a5fa', {unit: '$'});
+// 24-oct (Sergio): una línea de cada color por mercado y, encima, la combinada (el saldo total)
+const MK_COLOR = {'BTC:5M': '#60a5fa', 'BTC:15M': '#a78bfa', 'ETH:5M': '#fbbf24', 'ETH:15M': '#f472b6'};
+function paintSim(labels, equity, porMercado) {
+  if (!simChart) return;
+  const up = equity.length ? equity[equity.length - 1] >= (equity[0] ?? 0) : true;
+  const c = up ? '#34d399' : '#f87171';
+  const ds = [{label: 'Combinado (saldo total)', data: equity, borderColor: c, backgroundColor: c + '22', fill: true,
+               pointRadius: 0, borderWidth: 2.5, tension: .2, order: 0}];
+  Object.entries(porMercado || {}).forEach(([mk, serie], i) => {
+    const col = MK_COLOR[mk.toUpperCase()] || ['#2dd4bf', '#fb923c', '#e879f9'][i % 3];
+    ds.push({label: mk.replace(':', ' ').replace('M', 'm') + ' (saldo inicial + lo que aporta)', data: serie, borderColor: col,
+             backgroundColor: col, fill: false, pointRadius: 0, borderWidth: 1.4, tension: .2, order: 1});
+  });
+  simChart.data.labels = labels; simChart.data.datasets = ds;
+  simChart.options.plugins.legend = {display: ds.length > 1, position: 'top', align: 'end',
+    labels: {color: '#94a3b8', boxWidth: 10, boxHeight: 2, font: {size: 10}}};
+  simChart.options.plugins.tooltip.callbacks.label = (ctx) => ` ${ctx.dataset.label.split(' (')[0]}: $${Number(ctx.parsed.y).toFixed(2)}`;
+  simChart.update();
+}
+const _pc = (x) => x == null ? '—' : Number(x).toFixed(1).replace('.', ',') + ' %';
+const _clsPct = (x) => x == null ? '' : (x >= 90 ? 'pos' : (x >= 75 ? 'warn' : 'neg'));
+function renderFidelidad(s) {
+  const c = s.concordancia || {}, R = c.REAL || {}, P = c.PAPEL || {};
+  const put = (id, txt, cl) => { const e = $(id); if (e) { e.textContent = txt; if (cl !== undefined) e.className = 'v ' + cl; } };
+  if (c.error) { put('fiBot', '—'); setT('fiBotS', 'no se pudo comparar: ' + c.error); return; }
+  setT('fiT', `Fidelidad · la simulación frente a lo que hicieron de verdad el REAL y el PAPEL · ventanas con el bot encendido desde ${c.desde || '—'} UTC (reglas actuales)` +
+    (s.ancladas ? ` · ${s.ancladas} órdenes con el resultado real de la orden del REAL` : ''));
+  put('fiBot', _pc(R.pct_compras_del_bot), _clsPct(R.pct_compras_del_bot));
+  setT('fiBotS', `${R.comunes ?? 0} de ${R.bot ?? 0} · PAPEL ${_pc(P.pct_compras_del_bot)} (${P.comunes ?? 0} de ${P.bot ?? 0})`);
+  put('fiSim', _pc(R.pct_compras_de_la_sim), _clsPct(R.pct_compras_de_la_sim));
+  setT('fiSimS', `${R.comunes ?? 0} de ${R.sim ?? 0} · PAPEL ${_pc(P.pct_compras_de_la_sim)} (${P.comunes ?? 0} de ${P.sim ?? 0})`);
+  put('fiRes', _pc(R.pct_mismo_resultado), _clsPct(R.pct_mismo_resultado));
+  setT('fiResS', `${R.mismo_resultado ?? 0} de ${R.mismo_lado ?? 0} · PAPEL ${_pc(P.pct_mismo_resultado)}`);
+  const pd = (a, b) => `${a == null ? '—' : signed(a)} / ${b == null ? '—' : signed(b)} %`;
+  put('fiPd', pd(R.por_dolar_sim, R.por_dolar_bot), '');
+  setT('fiPdS', 'PAPEL: ' + pd(P.por_dolar_sim, P.por_dolar_bot));
+  put('fiVen', String(R.ventanas ?? '—'), '');
+  setT('fiVenS', `PAPEL ${P.ventanas ?? '—'} · solo sim. ${R.solo_sim ?? 0} · solo REAL ${R.solo_bot ?? 0}`);
+  const o = s.precio_origen || {};
+  put('fiOri', Object.entries(o).filter(([, v]) => v > 0).map(([k, v]) => `${k.replace('cinta del ', '').replace('reconstruido del grabador', 'reconstruido')} ${_pc(v)}`).join(' · ') || '—', '');
+  setT('fiOriS', 'de las compras simuladas');
+}
+function renderProyeccion(s) {
+  const py = s.proyeccion || {}, F = py.fuentes || {}, ref = py.referencia, f = ref ? F[ref] : null;
+  const put = (id, txt, cl) => { const e = $(id); if (e) { e.textContent = txt; if (cl !== undefined) e.className = 'v ' + cl; } };
+  if (!f) { setT('pyT', 'Proyección · ' + (py.error ? 'no se pudo calcular: ' + py.error : 'aún no hay operaciones suficientes con las reglas actuales')); return; }
+  setT('pyT', `Proyección · no es una predicción del mercado: extiende la ventaja medida con las reglas actuales (desde ${py.desde} UTC) · referencia: ${ref} · saldo inicial $${n(py.saldo_inicial, 0)}`);
+  const otras = (fn) => Object.entries(F).filter(([k]) => k !== ref).map(([k, x]) => `${k} ${fn(x)}`).join(' · ');
+  put('pyV', `${signed(f.por_dolar)} % por $`, f.ic95 && f.ic95[0] > 0 ? 'pos' : (f.por_dolar > 0 ? 'warn' : 'neg'));
+  setT('pyVS', `IC 95 %: ${signed(f.ic95[0])} … ${signed(f.ic95[1])} · ${f.operaciones} op en ${f.dias} d · ` + otras(x => `${signed(x.por_dolar)} %`));
+  put('py7', `$${n(f.a7.mediana)}`, f.a7.mediana >= py.saldo_inicial ? 'pos' : 'neg');
+  setT('py7S', `80 % de los casos: $${n(f.a7.p10)} – $${n(f.a7.p90)} · ${f.a7.operaciones} op`);
+  put('py30', `$${n(f.a30.mediana)}`, f.a30.mediana >= py.saldo_inicial ? 'pos' : 'neg');
+  setT('py30S', `80 % de los casos: $${n(f.a30.p10)} – $${n(f.a30.p90)} · ${f.a30.operaciones} op`);
+  put('pyBajo', _pc(f.a30.prob_por_debajo), f.a30.prob_por_debajo <= 10 ? 'pos' : (f.a30.prob_por_debajo <= 30 ? 'warn' : 'neg'));
+  setT('pyBajoS', otras(x => _pc(x.a30.prob_por_debajo)));
+  put('pyIno', _pc(f.a30.prob_inoperable), f.a30.prob_inoperable <= 1 ? 'pos' : (f.a30.prob_inoperable <= 5 ? 'warn' : 'neg'));
+  setT('pyInoS', otras(x => _pc(x.a30.prob_inoperable)));
+  put('pyDd', _pc(f.a30.prob_caida_50), f.a30.prob_caida_50 <= 10 ? 'pos' : (f.a30.prob_caida_50 <= 30 ? 'warn' : 'neg'));
+  setT('pyDdS', otras(x => _pc(x.a30.prob_caida_50)));
+}
 function paint(chart, labels, data) {
   if (!chart) return;
   const up = data.length ? data[data.length - 1] >= (data[0] ?? 0) : true;
@@ -803,7 +884,7 @@ function renderSim(s, equity) {
   const corrected = s.tape_delay_s != null && s.tape_delay_s > 0;
   // 16-oct: con libro real al ms solo cuentan las compras que habrían encontrado vendedores (como la orden real)
   const dia = ts => ts ? new Date(ts * 1000).toLocaleDateString('es-ES', {day: 'numeric', month: 'short', timeZone: 'UTC'}) : '?';
-  const eng = s.libro ? 'libro real grabado al ms' : ((s.engine || '').includes('ticks') ? 'libro grabado por el bot' : 'cinta pública de Polymarket');
+  const eng = s.libro ? 'precio del bot + libro real al ms' : ((s.engine || '').includes('ticks') ? 'libro grabado por el bot' : 'cinta pública de Polymarket');
   const det = s.libro ? `${dia(s.libro_desde)} → ${dia(s.libro_hasta)} · solo compras con vendedores al llegar la orden ✓`
     : (corrected ? `cinta corregida +${s.tape_delay_s} s` + (s.libro_error ? ' · ⚠ sin libro: compras sin comprobar' : '') : ((s.engine || '').includes('ticks') ? 'sin retraso' : '⚠ SIN corregir el retraso de la cinta (resultado inflado): pulsa Simular'));
   // 16-oct: todos los mercados juntos → «BTC 5m + BTC 15m + ETH 5m», con lo que aporta cada uno
@@ -827,8 +908,10 @@ function renderSim(s, equity) {
         return `operación ${i} · ${f} · ${fmtD(dias(i))} desde el inicio`;
       };
     }
-    paint(simChart, labels, equity);
+    paintSim(labels, equity, s.equity_por_mercado || null);
   }
+  renderFidelidad(s);
+  renderProyeccion(s);
 }
 let _simBalSet = false;
 async function fetchSim() {
@@ -843,7 +926,7 @@ async function runV4Simulation() {
   if (!(bal >= 5)) { setT('simEngine', 'Simulador: escribe un saldo inicial de al menos 5 $'); return; }
   _simBalSet = true;
   const b = $('simBtn'); b.disabled = true; b.textContent = '⏳ Simulando…';
-  setT('simEngine', `Simulando todos los mercados con $${n(bal, 0)} contra el libro real al ms… (1-3 min)`);
+  setT('simEngine', `Poniendo al día los datos y simulando todos los mercados con $${n(bal, 0)}… (2-5 min; la primera vez del día, más)`);
   try {
     const r = await fetch('/api/v4/simulate', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({asset: 'TODOS', initial_balance: bal})});
     const d = await r.json();
