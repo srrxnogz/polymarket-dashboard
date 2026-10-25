@@ -5,28 +5,29 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="bot-token" content="{{ bot_token }}">
 <title>Polymarket Bot · V4</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Crect width='44' height='44' rx='12' fill='%230d1424'/%3E%3Cpath d='M8.5 27 12.6 15.5 16.8 29.5 21 18.6 24.6 25.6 27.8 21.2H35' fill='none' stroke='%23e2e8f0' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='35' cy='21.2' r='3.4' fill='%2334d399'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 :root {
-  --bg: #070b14; --panel: #0d1322; --panel2: #0a101c; --line: #1c2740; --line2: #131c2f;
+  --bg: #04070d; --panel: rgba(12,18,32,.80); --panel-solid: #0d1322; --panel2: #0a101c; --line: #1c2740; --line2: #131c2f;
   --text: #e6ebf5; --muted: #7c8aa5; --dim: #4b5873;
   --blue: #60a5fa; --green: #34d399; --red: #f87171; --amber: #fbbf24; --teal: #2dd4bf; --violet: #a78bfa;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; color: var(--text);
        min-height: 100vh; padding: 16px; font-variant-numeric: tabular-nums;
-       background:
-         radial-gradient(1100px 560px at 8% -8%, rgba(45,212,191,.11), transparent 62%),
-         radial-gradient(900px 520px at 96% -4%, rgba(96,165,250,.13), transparent 60%),
-         radial-gradient(900px 700px at 55% 112%, rgba(167,139,250,.08), transparent 62%),
-         var(--bg);
+       background-color: var(--bg);
+       background-image:
+         radial-gradient(1400px 620px at 14% -16%, rgba(16,185,129,.30), transparent 62%),
+         radial-gradient(1400px 660px at 90% -20%, rgba(37,99,235,.36), transparent 64%),
+         radial-gradient(900px 480px at 52% -6%, rgba(14,165,233,.12), transparent 70%),
+         radial-gradient(1700px 1000px at 50% 118%, rgba(16,42,86,.62), transparent 70%);
        background-attachment: fixed; }
-/* 25-oct: rejilla muy suave que se desvanece hacia abajo (solo decoración de fondo) */
+/* 25-oct: grano fino sobre el fondo (quita las bandas del degradado). Estático: no anima nada ni despierta la gráfica */
 body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
-  background-image: linear-gradient(rgba(148,163,184,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(148,163,184,.045) 1px, transparent 1px);
-  background-size: 46px 46px;
-  -webkit-mask-image: radial-gradient(ellipse 85% 60% at 50% 0%, #000 25%, transparent 78%);
-          mask-image: radial-gradient(ellipse 85% 60% at 50% 0%, #000 25%, transparent 78%); }
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .1 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)'/%3E%3C/svg%3E"); }
 .wrap { max-width: 1480px; margin: 0 auto; position: relative; z-index: 1; }
 h2 { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
 .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
@@ -44,42 +45,61 @@ h2 { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: upp
 .col-stack .fill-card .fill-body { position: absolute; left: 16px; right: 16px; top: 58px; bottom: 16px; overflow: auto; border-radius: 10px; }
 .col-stack .tbl-wrap.short { max-height: 190px; }
 .col-stack .chart-box { height: 170px; }
-.col-stack .fill-body thead th, .col-stack .tbl-wrap thead th { position: sticky; top: 0; background: var(--panel); z-index: 1; }
+.col-stack .fill-body thead th, .col-stack .tbl-wrap thead th { position: sticky; top: 0; background: var(--panel-solid); z-index: 1; }
 @media (max-width: 1100px) { .g-kpi { grid-template-columns: repeat(2, 1fr); } .g-main, .g-2 { grid-template-columns: 1fr; } }
 @media (max-width: 1100px) { .col-stack .fill-card { min-height: 0; display: block; }
   .col-stack .fill-card .fill-body { position: static; max-height: 330px; } }
 
-/* Cabecera */
-.header { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; position: relative; overflow: hidden;
-          background: linear-gradient(135deg, rgba(22,38,74,.94) 0%, rgba(12,20,38,.94) 55%, rgba(14,22,40,.94) 100%);
-          border: 1px solid rgba(96,165,250,.24); border-radius: 18px; padding: 16px 22px; margin-bottom: 14px;
-          box-shadow: 0 14px 44px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.05); }
-.header::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 2px; pointer-events: none;
-          background: linear-gradient(90deg, transparent 0%, #2dd4bf 22%, #60a5fa 50%, #a78bfa 78%, transparent 100%); }
-.header::after { content: ''; position: absolute; right: -90px; top: -140px; width: 360px; height: 360px; pointer-events: none;
-          background: radial-gradient(circle, rgba(45,212,191,.16), transparent 66%); }
-.header > * { position: relative; z-index: 1; }
-.brand { display: flex; align-items: center; gap: 12px; }
-.logo { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; font-size: 23px;
-        background: linear-gradient(135deg, #1d4ed8, #0d9488); animation: brillo 5s ease-in-out infinite;
-        box-shadow: 0 0 0 1px rgba(255,255,255,.08), 0 0 26px rgba(45,212,191,.30); }
-@keyframes brillo { 0%,100% { box-shadow: 0 0 0 1px rgba(255,255,255,.08), 0 0 20px rgba(45,212,191,.24); }
-                    50% { box-shadow: 0 0 0 1px rgba(255,255,255,.12), 0 0 34px rgba(96,165,250,.42); } }
-.title { font-size: 20px; font-weight: 800; letter-spacing: -.01em;
-         background: linear-gradient(90deg, #f1f5f9 0%, #bfdbfe 55%, #99f6e4 100%); -webkit-background-clip: text; background-clip: text;
-         -webkit-text-fill-color: transparent; }
-.title span { -webkit-text-fill-color: var(--teal); color: var(--teal); }
-.tagline { font-size: 12px; color: var(--muted); margin-top: 2px; }
-.hdr-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+/* Cabecera (25-oct, rehecha): marca propia, rótulo en Space Grotesk, estado del sistema en un solo carril */
+.header { position: relative; isolation: isolate; overflow: hidden; display: flex; justify-content: space-between; align-items: center;
+          gap: 14px 22px; flex-wrap: wrap; padding: 14px 16px 14px 14px; margin-bottom: 16px; border-radius: 18px;
+          background: radial-gradient(520px 210px at 0% 0%, rgba(52,211,153,.34), transparent 70%),
+                      radial-gradient(680px 230px at 100% 130%, rgba(59,130,246,.42), transparent 70%),
+                      linear-gradient(100deg, #052720 0%, #0a1b31 50%, #0c1c47 100%);
+          box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 22px 48px -18px rgba(0,0,0,.75); }
+.header::before { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none; border-radius: inherit; padding: 1px;
+          background: linear-gradient(115deg, rgba(52,211,153,.65), rgba(148,163,184,.16) 26%, rgba(148,163,184,.09) 62%, rgba(96,165,250,.65));
+          -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+                  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); }
+.header::after { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none; border-radius: inherit; opacity: .9;
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .1 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)'/%3E%3C/svg%3E"); }
+.brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.marca { width: 44px; height: 44px; flex: none; filter: drop-shadow(0 8px 18px rgba(16,185,129,.16)); }
+.title { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 10px; line-height: 1.15;
+         font-family: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif; font-size: 20px; font-weight: 600; letter-spacing: -.015em; color: #f3f6fb; }
+.ver { font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace; font-size: 10.5px; font-weight: 600; letter-spacing: .06em;
+       color: #6ee7b7; background: rgba(16,185,129,.09); border: 1px solid rgba(52,211,153,.28); border-radius: 6px; padding: 3px 7px; }
+.tagline { font-size: 12.5px; color: #8793aa; margin-top: 5px; }
+.hdr-right { display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
 .pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 999px; font-size: 12px;
         font-weight: 600; background: #111a2d; border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
-.pill.sim { background: #10254a; color: #93c5fd; border-color: #1e3a6b; }
-.pill.real { background: #3b1414; color: #fca5a5; border-color: #7f1d1d; }
+.rail { display: inline-flex; align-items: center; flex-wrap: wrap; padding: 3px; border-radius: 12px;
+        background: rgba(3,6,14,.58); border: 1px solid rgba(148,163,184,.13); }
+.rail .pill { background: none; border: 0; border-radius: 0; padding: 6px 12px; font-weight: 500; color: #b3bdd0; }
+.rail .pill + .pill { box-shadow: inset 1px 0 0 rgba(148,163,184,.13); }
+.hdr-right > .pill { gap: 8px; padding: 8px 13px 8px 12px; border-radius: 11px; font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
+        font-size: 12px; font-weight: 700; letter-spacing: .09em; }
+.hdr-right > .pill::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: currentColor; flex: none; }
+.hdr-right > .pill.real { color: #fda4af; background: rgba(244,63,94,.10); border-color: rgba(251,113,133,.36); }
+.hdr-right > .pill.real::before { background: #fb7185; animation: vivo 1.8s ease-out infinite; }
+.hdr-right > .pill.sim { color: #93c5fd; background: rgba(59,130,246,.10); border-color: rgba(96,165,250,.32); }
+.hdr-right > .pill.pausa { color: #fcd34d; background: rgba(245,158,11,.10); border-color: rgba(251,191,36,.32); }
+@keyframes vivo { 0% { box-shadow: 0 0 0 0 rgba(251,113,133,.6); } 70%, 100% { box-shadow: 0 0 0 7px rgba(251,113,133,0); } }
 .led { width: 8px; height: 8px; border-radius: 50%; background: var(--dim); display: inline-block; }
 .led.on { background: var(--green); box-shadow: 0 0 8px var(--green); animation: pulse 2s infinite; }
 .led.warn { background: var(--amber); box-shadow: 0 0 8px var(--amber); }
 .led.off { background: var(--red); box-shadow: 0 0 8px var(--red); }
 @keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: .45 } }
+@media (prefers-reduced-motion: reduce) { .led.on, .hdr-right > .pill.real::before { animation: none; } }
+.header .btn { font-family: 'Space Grotesk', 'Segoe UI', sans-serif; border-radius: 11px; padding: 8px 16px; font-weight: 600;
+               background: rgba(255,255,255,.04); border: 1px solid rgba(148,163,184,.24); color: #e2e8f0; }
+.header .btn:hover { filter: none; background: rgba(255,255,255,.08); }
+.header .btn.real { color: #fecdd3; background: rgba(244,63,94,.06); border-color: rgba(251,113,133,.36); }
+.header .btn.real:hover { background: rgba(244,63,94,.14); }
+.header .btn.sim { color: #04261a; background: linear-gradient(180deg, #34d399, #10b981); border-color: rgba(110,231,183,.55); }
+.header .btn.sim:hover { background: linear-gradient(180deg, #4ade9f, #15c08a); }
+@media (max-width: 900px) { .header { padding: 14px; } .hdr-right { width: 100%; justify-content: flex-start; }
+  .rail .pill + .pill { box-shadow: none; } }
 .btn { cursor: pointer; border: 1px solid var(--line); border-radius: 10px; padding: 7px 14px; font-size: 12px;
        font-weight: 700; background: #16213a; color: var(--text); transition: filter .15s, transform .05s; }
 .btn:hover { filter: brightness(1.2); } .btn:active { transform: translateY(1px); } .btn:disabled { opacity: .5; cursor: wait; }
@@ -198,7 +218,7 @@ tr.waiting td { background: rgba(251,191,36,.05); }
 .chips { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-bottom: 12px; }
 @media (max-width: 1100px) { .chips { grid-template-columns: repeat(3, 1fr); } }
 .dlg-back { position: fixed; inset: 0; background: rgba(2, 6, 23, .72); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 16px; }
-.dlg { width: 100%; max-width: 380px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 18px; box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+.dlg { width: 100%; max-width: 380px; background: var(--panel-solid); border: 1px solid var(--line); border-radius: 14px; padding: 18px; box-shadow: 0 20px 60px rgba(0,0,0,.5); }
 .dlg-title { font-weight: 800; font-size: 15px; margin-bottom: 6px; }
 .dlg-lbl { display: block; font-size: 11px; font-weight: 700; color: var(--muted); margin: 14px 0 6px; text-transform: uppercase; letter-spacing: .04em; }
 .dlg-inp { width: 100%; box-sizing: border-box; font-size: 20px; font-weight: 800; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--panel2); color: var(--text); }
@@ -212,25 +232,27 @@ tr.waiting td { background: rgba(251,191,36,.05); }
 <div class="wrap">
 
 <!-- ═══════════ CABECERA ═══════════ -->
-<div class="header">
-  <div class="brand">
-    <div class="logo">🎯</div>
+<header class="header">
+  <div class="brand" title="Up/Down de BTC a 5 y 15 min · compra el lado casi decidido en los últimos segundos, sale si se tuerce y cobra con el resultado oficial">
+    <svg class="marca" viewBox="0 0 44 44" aria-hidden="true"><defs><linearGradient id="mkF" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#18233b"/><stop offset="1" stop-color="#080c17"/></linearGradient><linearGradient id="mkL" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#64748b"/><stop offset=".6" stop-color="#e2e8f0"/><stop offset=".8" stop-color="#6ee7b7"/></linearGradient></defs><rect x=".5" y=".5" width="43" height="43" rx="12.5" fill="url(#mkF)" stroke="rgba(255,255,255,.11)"/><path d="M8.5 27 12.6 15.5 16.8 29.5 21 18.6 24.6 25.6 27.8 21.2H35" fill="none" stroke="url(#mkL)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="35" cy="21.2" r="6" fill="#34d399" opacity=".16"/><circle cx="35" cy="21.2" r="2.7" fill="#34d399"/></svg>
     <div>
-      <div class="title">Polymarket Bot · <span id="verTag">V4.5 TWAP-LOCK</span></div>
-      <div class="tagline" id="tagline">Up/Down de BTC a 5 y 15 min · compra el lado casi decidido en los últimos segundos, sale si se tuerce y cobra con el resultado oficial</div>
+      <div class="title">Polymarket Bot <span class="ver" id="verTag">V4.5 TWAP-LOCK</span></div>
+      <div class="tagline" id="tagline">BTC Up/Down a 5 y 15 min · entra en los últimos segundos con el lado casi decidido</div>
     </div>
   </div>
   <div class="hdr-right">
-    <span class="pill sim" id="modePill">⚙ SIMULACIÓN</span>
-    <span class="pill" id="runPill"><span class="led"></span> —</span>
-    <span class="pill" id="v4Pill"><span class="led"></span> V4</span>
-    <span class="pill" id="clPill" title="TWAP-60s oficial de Chainlink (el dato con el que resuelve Polymarket)"><span class="led"></span> Oráculo</span>
-    <span class="pill" id="wsPill" title="Libro de órdenes de Polymarket en tiempo real"><span class="led"></span> Libro</span>
-    <span class="pill" id="recPill" title="Grabador de mercado (datos para el simulador y los análisis)"><span class="led"></span> Grabador</span>
+    <div class="rail">
+      <span class="pill" id="runPill"><span class="led"></span> —</span>
+      <span class="pill" id="v4Pill"><span class="led"></span> V4</span>
+      <span class="pill" id="clPill" title="TWAP-60s oficial de Chainlink (el dato con el que resuelve Polymarket)"><span class="led"></span> Oráculo</span>
+      <span class="pill" id="wsPill" title="Libro de órdenes de Polymarket en tiempo real"><span class="led"></span> Libro</span>
+      <span class="pill" id="recPill" title="Grabador de mercado (datos para el simulador y los análisis)"><span class="led"></span> Grabador</span>
+    </div>
+    <span class="pill sim" id="modePill">SIMULACIÓN</span>
     <button class="btn" id="resetSimBtn" onclick="openResetDialog()" title="Restablecer el saldo de simulación con la cantidad que elijas">↺ Reset saldo</button>
     <button class="btn sim" id="modeBtn" onclick="toggleMode()">Cambiar a REAL</button>
   </div>
-</div>
+</header>
 
 <div class="error-box" id="errorBox"></div>
 
@@ -990,17 +1012,17 @@ let _mode = 'SIM', _role = 'single';   // role: real (:5000, botón arranca/apag
 function updateModeUI(mode) {
   const p = $('modePill'), b = $('modeBtn'), r = $('resetSimBtn');
   if (_role === 'paper') {       // bot de papel: siempre simulación, sin botón de modo
-    p.className = 'pill sim'; p.textContent = '⚙ PAPEL (simulación)'; b.style.display = 'none'; r.style.display = ''; return;
+    p.className = 'pill sim'; p.textContent = 'PAPEL · SIMULACIÓN'; b.style.display = 'none'; r.style.display = ''; return;
   }
   b.style.display = '';
   if (_role === 'real') {        // bot real: el botón arranca o apaga el real (apagado = no opera)
     r.style.display = 'none';
-    if (mode === 'REAL') { p.className = 'pill real'; p.textContent = '⚡ EN VIVO'; b.textContent = 'Pausar'; b.className = 'btn real'; }
-    else { p.className = 'pill sim'; p.textContent = '⏸ EN PAUSA'; b.textContent = 'Reanudar'; b.className = 'btn sim'; }
+    if (mode === 'REAL') { p.className = 'pill real'; p.textContent = 'EN VIVO'; b.textContent = 'Pausar'; b.className = 'btn real'; }
+    else { p.className = 'pill pausa'; p.textContent = 'EN PAUSA'; b.textContent = 'Reanudar'; b.className = 'btn sim'; }
     return;
   }
-  if (mode === 'REAL') { p.className = 'pill real'; p.textContent = '⚡ EN VIVO'; b.textContent = 'Volver a SIMULACIÓN'; b.className = 'btn real'; r.style.display = 'none'; }
-  else { p.className = 'pill sim'; p.textContent = '⚙ SIMULACIÓN'; b.textContent = 'Cambiar a REAL'; b.className = 'btn sim'; r.style.display = ''; }
+  if (mode === 'REAL') { p.className = 'pill real'; p.textContent = 'EN VIVO'; b.textContent = 'Volver a SIMULACIÓN'; b.className = 'btn real'; r.style.display = 'none'; }
+  else { p.className = 'pill sim'; p.textContent = 'SIMULACIÓN'; b.textContent = 'Cambiar a REAL'; b.className = 'btn sim'; r.style.display = ''; }
 }
 async function toggleMode() {
   const newMode = _mode === 'SIM' ? 'REAL' : 'SIM';
