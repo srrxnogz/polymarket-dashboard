@@ -128,8 +128,9 @@ with st.sidebar:
     if st.button("🔄 Refrescar ahora", use_container_width=True):
         st.cache_data.clear()
         st.rerun()
-    st.caption("Vista de solo lectura del panel local: cambiar de modo, resetear el saldo o lanzar el simulador "
-               "solo se puede hacer en http://localhost:5000.")
+    st.caption("Vista de solo lectura del panel local: cambiar de modo o resetear el saldo solo se puede hacer en "
+               "http://localhost:5000. La simulación se puede pedir al PC desde aquí si en Secrets hay GITHUB_TOKEN_ESCRITURA "
+               "(token de GitHub con permiso de escritura en el repositorio de la telemetría; solo en la app privada).")
 
 
 data, source_label, poll_url = get_telemetry()
@@ -357,6 +358,66 @@ def build_page(snapshot: Dict[str, Any], source: str, url: Optional[str]) -> str
     html = html[:script_at] + boot + html[script_at:]
     return html.replace("</body>", REMOTE_TAIL + "</body>", 1)
 
+
+# ── 25-oct: «Simular en el PC» (Sergio: «¿ese botón no puede mandar la orden a mi ordenador y luego que mande los datos?») ──
+# La simulación necesita el libro grabado (~1 GB) que solo está en el PC. Este botón deja un ENCARGO (peticion_simulacion.json)
+# en la rama de telemetría del mismo repositorio; el bot del PC lo ve (telemetry_sync.revisar_peticion), simula y sube el resultado
+# con la telemetría de siempre. Solo aparece si en Secrets hay GITHUB_TOKEN_ESCRITURA (token con permiso de escritura en ese repo):
+# ponerlo SOLO en la app privada del REAL. Con CLAVE_SIMULAR en Secrets, además pide esa clave.
+def _repo_rama(url: str) -> tuple:
+    """(repositorio, rama) del feed: raw.githubusercontent.com/<dueño>/<repo>/<rama>/… o api.github.com/repos/…/contents/…?ref=…"""
+    import re
+    m = re.match(r"https://raw\.githubusercontent\.com/([^/]+/[^/]+)/([^/]+)/", url or "")
+    if m:
+        return m.group(1), m.group(2)
+    m = re.match(r"https://api\.github\.com/repos/([^/]+/[^/]+)/contents/[^?]+(?:\?ref=([^&]+))?", url or "")
+    if m:
+        return m.group(1), (m.group(2) or "main")
+    return None, None
+
+
+def pedir_simulacion(repo: str, rama: str, token: str, saldo: float) -> str:
+    import base64
+    import uuid
+    from datetime import datetime, timezone
+    url = f"https://api.github.com/repos/{repo}/contents/peticion_simulacion.json"
+    h = {"Authorization": f"Bearer {token}", "Accept": "application/vnd.github.v3+json"}
+    pid = uuid.uuid4().hex[:12]
+    cuerpo = {"id": pid, "saldo": float(saldo), "pedido_utc": datetime.now(timezone.utc).isoformat(timespec="seconds")}
+    payload = {"message": f"encargo de simulación {pid}", "branch": rama,
+               "content": base64.b64encode(json.dumps(cuerpo).encode("utf-8")).decode("ascii")}
+    r = requests.get(f"{url}?ref={rama}", headers=h, timeout=8.0)
+    if r.status_code == 200:
+        payload["sha"] = r.json().get("sha")
+    r = requests.put(url, headers=h, json=payload, timeout=10.0)
+    if r.status_code not in (200, 201):
+        raise RuntimeError(f"GitHub respondió {r.status_code}" + (" (el token no tiene permiso de escritura)" if r.status_code in (403, 404) else ""))
+    return pid
+
+
+_tok_w = _secret("GITHUB_TOKEN_ESCRITURA")
+if _tok_w:
+    _repo, _rama = _repo_rama(st.session_state.get("telemetry_url", "").strip() or _secret("TELEMETRY_URL", DEFAULT_FEED))
+    _pet = data.get("peticion_simulacion") or {}
+    _ini = float(((data.get("v4_sim") or {}).get("initial_balance")) or 100.0)
+    c1, c2, c3, c4 = st.columns([1.1, 1.0, 1.3, 6.0])
+    _saldo = c1.number_input("Saldo inicial $", min_value=5.0, max_value=1_000_000.0, value=_ini, step=5.0,
+                             label_visibility="collapsed", help="Saldo con el que empieza la simulación")
+    _clave = c2.text_input("Clave", type="password", placeholder="clave", label_visibility="collapsed") if _secret("CLAVE_SIMULAR") else None
+    if c3.button("▶ Simular en el PC", use_container_width=True, disabled=not _repo):
+        if _clave is not None and _clave != _secret("CLAVE_SIMULAR"):
+            c4.error("Clave incorrecta")
+        else:
+            try:
+                st.session_state["pet_id"] = pedir_simulacion(_repo, _rama, _tok_w, _saldo)
+                c4.success(f"Encargo enviado con {_saldo:.0f} $: tu PC lo verá en ≤ 30 s y tarda ~2 min (tiene que estar encendido).")
+            except Exception as e:
+                c4.error(f"No se pudo enviar el encargo: {e}")
+    if _pet:
+        _e = _pet.get("estado") or "pendiente"
+        _txt = {"simulando": "⏳ simulando en el PC…", "hecha": "✅ hecha: resultado abajo", "caducada": "caducada (pedida hace más de 30 min)"}.get(_e, _e)
+        c4.caption(f"Último encargo ({float(_pet.get('saldo') or 0):.0f} $, pedido {str(_pet.get('pedido') or '')[11:16]} UTC): {_txt}"
+                   + (f" · {_pet.get('error')}" if _pet.get("error") else ""))
 
 components.html(build_page(data, source_label, poll_url if auto_refresh else None), height=2200, scrolling=False)
 
