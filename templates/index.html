@@ -13,9 +13,21 @@
   --blue: #60a5fa; --green: #34d399; --red: #f87171; --amber: #fbbf24; --teal: #2dd4bf; --violet: #a78bfa;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text);
-       min-height: 100vh; padding: 16px; font-variant-numeric: tabular-nums; }
-.wrap { max-width: 1480px; margin: 0 auto; }
+body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; color: var(--text);
+       min-height: 100vh; padding: 16px; font-variant-numeric: tabular-nums;
+       background:
+         radial-gradient(1100px 560px at 8% -8%, rgba(45,212,191,.11), transparent 62%),
+         radial-gradient(900px 520px at 96% -4%, rgba(96,165,250,.13), transparent 60%),
+         radial-gradient(900px 700px at 55% 112%, rgba(167,139,250,.08), transparent 62%),
+         var(--bg);
+       background-attachment: fixed; }
+/* 25-oct: rejilla muy suave que se desvanece hacia abajo (solo decoración de fondo) */
+body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image: linear-gradient(rgba(148,163,184,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(148,163,184,.045) 1px, transparent 1px);
+  background-size: 46px 46px;
+  -webkit-mask-image: radial-gradient(ellipse 85% 60% at 50% 0%, #000 25%, transparent 78%);
+          mask-image: radial-gradient(ellipse 85% 60% at 50% 0%, #000 25%, transparent 78%); }
+.wrap { max-width: 1480px; margin: 0 auto; position: relative; z-index: 1; }
 h2 { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
 .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
 .card-h { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
@@ -38,14 +50,25 @@ h2 { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: upp
   .col-stack .fill-card .fill-body { position: static; max-height: 330px; } }
 
 /* Cabecera */
-.header { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;
-          background: linear-gradient(135deg, #0f1a33 0%, #0b1222 60%, #0d1322 100%); border: 1px solid var(--line);
-          border-radius: 16px; padding: 14px 20px; margin-bottom: 14px; }
+.header { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; position: relative; overflow: hidden;
+          background: linear-gradient(135deg, rgba(22,38,74,.94) 0%, rgba(12,20,38,.94) 55%, rgba(14,22,40,.94) 100%);
+          border: 1px solid rgba(96,165,250,.24); border-radius: 18px; padding: 16px 22px; margin-bottom: 14px;
+          box-shadow: 0 14px 44px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.05); }
+.header::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 2px; pointer-events: none;
+          background: linear-gradient(90deg, transparent 0%, #2dd4bf 22%, #60a5fa 50%, #a78bfa 78%, transparent 100%); }
+.header::after { content: ''; position: absolute; right: -90px; top: -140px; width: 360px; height: 360px; pointer-events: none;
+          background: radial-gradient(circle, rgba(45,212,191,.16), transparent 66%); }
+.header > * { position: relative; z-index: 1; }
 .brand { display: flex; align-items: center; gap: 12px; }
-.logo { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; font-size: 22px;
-        background: linear-gradient(135deg, #1d4ed8, #0d9488); box-shadow: 0 0 24px rgba(45,212,191,.25); }
-.title { font-size: 19px; font-weight: 800; letter-spacing: -.01em; }
-.title span { color: var(--teal); }
+.logo { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; font-size: 23px;
+        background: linear-gradient(135deg, #1d4ed8, #0d9488); animation: brillo 5s ease-in-out infinite;
+        box-shadow: 0 0 0 1px rgba(255,255,255,.08), 0 0 26px rgba(45,212,191,.30); }
+@keyframes brillo { 0%,100% { box-shadow: 0 0 0 1px rgba(255,255,255,.08), 0 0 20px rgba(45,212,191,.24); }
+                    50% { box-shadow: 0 0 0 1px rgba(255,255,255,.12), 0 0 34px rgba(96,165,250,.42); } }
+.title { font-size: 20px; font-weight: 800; letter-spacing: -.01em;
+         background: linear-gradient(90deg, #f1f5f9 0%, #bfdbfe 55%, #99f6e4 100%); -webkit-background-clip: text; background-clip: text;
+         -webkit-text-fill-color: transparent; }
+.title span { -webkit-text-fill-color: var(--teal); color: var(--teal); }
 .tagline { font-size: 12px; color: var(--muted); margin-top: 2px; }
 .hdr-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 999px; font-size: 12px;
@@ -194,7 +217,7 @@ tr.waiting td { background: rgba(251,191,36,.05); }
     <div class="logo">🎯</div>
     <div>
       <div class="title">Polymarket Bot · <span id="verTag">V4.5 TWAP-LOCK</span></div>
-      <div class="tagline" id="tagline">Mercados Up/Down de 5 y 15 min · compra el lado casi seguro al final de la ventana, vende si se tuerce y liquida con el resultado oficial</div>
+      <div class="tagline" id="tagline">Up/Down de BTC a 5 y 15 min · compra el lado casi decidido en los últimos segundos, sale si se tuerce y cobra con el resultado oficial</div>
     </div>
   </div>
   <div class="hdr-right">
@@ -219,24 +242,24 @@ tr.waiting td { background: rgba(251,191,36,.05); }
     <div class="small" id="kBalSub">—</div>
   </div>
   <div class="card kpi">
-    <div class="lbl" id="kPnlLbl">PnL desde el reset</div>
+    <div class="lbl" id="kPnlLbl">Beneficio desde el reset</div>
     <div class="val" id="kPnl">—</div>
     <div class="small" id="kPnlSub">—</div>
     <canvas class="spark" id="sparkPnl"></canvas>
   </div>
   <div class="card kpi">
-    <div class="lbl">Acierto V4</div>
+    <div class="lbl">Acierto</div>
     <div class="val" id="kWr">—</div>
     <div class="small" id="kWrSub">—</div>
     <svg class="ring" viewBox="0 0 36 36" id="kWrRing"></svg>
   </div>
   <div class="card kpi">
-    <div class="lbl">Profit factor V4</div>
+    <div class="lbl">Profit factor</div>
     <div class="val" id="kPf">—</div>
-    <div class="small" id="kPfSub">ganancias ÷ pérdidas · &gt;1 gana dinero</div>
+    <div class="small" id="kPfSub">lo ganado entre lo perdido · por encima de 1, gana</div>
   </div>
   <div class="card kpi">
-    <div class="lbl">Operaciones V4</div>
+    <div class="lbl">Operaciones</div>
     <div class="val" id="kOps">—</div>
     <div class="small" id="kOpsSub">—</div>
   </div>
@@ -257,7 +280,10 @@ tr.waiting td { background: rgba(251,191,36,.05); }
     <div class="card">
       <div class="card-h">
         <h2>Rendimiento V4</h2>
-        <span class="sub" id="perfScope">—</span>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end">
+          <span class="sub" id="perfScope">—</span>
+          <div class="toggle" title="Qué enseña la gráfica"><button class="act" id="eqVPnl" onclick="setEqView('pnl')">Beneficio</button><button id="eqVSaldo" onclick="setEqView('saldo')">Saldo</button></div>
+        </div>
       </div>
       <div class="chart-box"><canvas id="eqChart"></canvas></div>
       <div class="meter" title="Operaciones perdidas por cada 100 realizadas; el punto muerto es la proporción con la que se queda en 0 (no dependen del saldo)">
@@ -290,7 +316,7 @@ tr.waiting td { background: rgba(251,191,36,.05); }
     <div class="card fill-card">
       <div class="card-h">
         <h2>Operaciones cerradas</h2>
-        <div class="toggle"><button class="act" id="fV4" onclick="setTradeFilter('v4')">V4</button><button id="fAll" onclick="setTradeFilter('all')">Todas</button></div>
+        <span class="sub" id="tradeSub">—</span>
       </div>
       <div class="fill-body">
         <table>
@@ -522,7 +548,7 @@ function renderKpis(live) {
     const eq = Number(L.equity || 0), pnl = Number(L.pnl_since_reset || 0), pc = Number(L.pending_collect || 0);
     setT('kBal', '$' + eq.toFixed(2));
     setT('kBalSub', `libre $${n(L.cash)} · en juego $${n(L.open_cost)}` + (pc > 0 ? ` · por cobrar $${pc.toFixed(2)}` : ''));
-    setT('kPnlLbl', 'PnL desde el reset');
+    setT('kPnlLbl', 'Beneficio desde el reset');
     const e = $('kPnl'); e.textContent = signed(pnl) + ' $'; e.className = 'val ' + cls(pnl);
     setT('kPnlSub', `reset ${utcTxt(L.anchor && L.anchor.ts)} · saldo inicial $${n(L.anchor && L.anchor.balance)}`);
   } else {
@@ -533,12 +559,12 @@ function renderKpis(live) {
     // solo lo que aún NO ha llegado a la cartera (el servidor descuenta lo ya ingresado), así nunca marca de más.
     const falta = Math.max(0, Number(cb.pending_to_collect || 0));
     setT('kBal', '$' + (bal + falta).toFixed(2));
-    setT('kBalSub', falta > 0.005 ? `cartera $${n(bal)} · por cobrar $${n(falta)} (Polymarket la canjea en 1-2 min)`
-                  : pend > 0.005 ? `cartera real · cobro de $${n(pend)} ya en la cartera o llegando` : 'cartera real');
-    setT('kPnlLbl', vr ? 'PnL real V' + (vr.version || live.v4_version || '4.5') : 'PnL de la sesión real');
+    setT('kBalSub', falta > 0.005 ? `disponible $${n(bal)} · por cobrar $${n(falta)} (llega en 1-2 min)`
+                  : pend > 0.005 ? `cobro de $${n(pend)} entrando` : 'disponible');
+    setT('kPnlLbl', vr ? 'Beneficio V' + (vr.version || live.v4_version || '4.5') : 'Beneficio de la sesión');
     const e = $('kPnl'); e.textContent = signed(pnl) + ' $'; e.className = 'val ' + cls(pnl);
-    setT('kPnlSub', vr ? `${vr.trades} operaciones reales · ${vr.wins} ganadas · desde ${vr.since ? utcTxt(vr.since) : '—'}`
-                       : 'desde que se activó el modo real');
+    setT('kPnlSub', vr ? `${vr.trades} operaciones · ${vr.wins} ganadas · desde ${vr.since ? utcTxt(vr.since) : '—'}`
+                       : 'desde el arranque');
   }
 }
 function renderV4Kpis(ls, eqd) {
@@ -653,13 +679,37 @@ function renderLive(v4) {
 }
 
 // ─── Render: rendimiento ──────────────────────────────────────────────────────
+// 25-oct (Sergio): botón arriba a la derecha para ver la gráfica en beneficio acumulado o en saldo absoluto
+let _eqView = 'pnl', _eqLast = null;
+try { _eqView = localStorage.getItem('eqView') === 'saldo' ? 'saldo' : 'pnl'; } catch (e) {}
+function setEqView(v) {
+  _eqView = v === 'saldo' ? 'saldo' : 'pnl';
+  try { localStorage.setItem('eqView', _eqView); } catch (e) {}
+  paintEq();
+}
+function paintEq() {
+  const a = $('eqVPnl'), b = $('eqVSaldo');
+  if (a) a.className = _eqView === 'pnl' ? 'act' : '';
+  if (b) b.className = _eqView === 'saldo' ? 'act' : '';
+  const eqd = _eqLast; if (!eqd) return;
+  const pts = eqd.points || [], labels = ['inicio'].concat(pts.map(p => utcTxt(p.ts)));
+  const conSaldo = pts.length && pts[0].saldo != null;
+  if (b) { b.disabled = !conSaldo; b.title = conSaldo ? 'Saldo de la cuenta después de cada operación' : 'El bot aún no publica el saldo por operación'; }
+  if (_eqView === 'saldo' && conSaldo) {
+    paint(eqChart, labels, [Number(pts[0].saldo) - Number(pts[0].pnl || 0)].concat(pts.map(p => Number(p.saldo))));
+  } else {
+    paint(eqChart, labels, [0].concat(pts.map(p => p.cum)));
+  }
+}
 function renderPerf(eqd, ls) {
   if (!eqd || eqd.status !== 'ok') return;
   const pts = eqd.points || [];
   const labels = pts.map(p => utcTxt(p.ts)), data = pts.map(p => p.cum);
-  paint(eqChart, ['inicio'].concat(labels), [0].concat(data));
+  _eqLast = eqd;
+  paintEq();
   paint(sparkPnl, ['0'].concat(labels), [0].concat(data));
-  setT('perfScope', (eqd.mode === 'sim' ? 'papel · desde el reset' : ('dinero real' + (eqd.since ? ' · desde ' + utcTxt(eqd.since) : ''))) + ` · ${eqd.trades} operaciones`);
+  setT('perfScope', (eqd.mode === 'sim' ? 'desde el reset' : (eqd.since ? 'desde ' + utcTxt(eqd.since) : 'todo el historial')) + ` · ${eqd.trades} operaciones`
+    + (eqd.saldo_ahora != null ? ` · saldo $${n(eqd.saldo_ahora)}` : ''));
   // 16-oct (Sergio): medir en pérdidas por operación, sin saldo. Punto muerto = la proporción de pérdidas con la que se
   // queda en 0 con la ganancia y la pérdida media reales (con las ventas de emergencia una pérdida no es −100 %).
   const pnls = pts.map(p => Number(p.pnl || 0)), nT = pnls.length, nL = pnls.filter(x => x < 0).length;
@@ -726,8 +776,7 @@ function renderPositions(pos) {
       <td class="${w && !fz ? '' : cls(up)}">${w && !fz ? '<span class="muted">pendiente</span>' : signed(up, 3) + ' $' + (fz ? ' <span class="muted" style="font-size:10px">al cierre</span>' : '')}</td></tr>`;
   }).join('');
 }
-let _trades = [], _filter = 'v4';
-function setTradeFilter(f) { _filter = f; $('fV4').className = f === 'v4' ? 'act' : ''; $('fAll').className = f === 'all' ? 'act' : ''; renderTrades(); }
+let _trades = [];
 function resultTag(t) {
   const s = String(t.status || ''), pnl = Number(t.pnl || 0);
   if (s.includes('RESOLVED_WIN') || (pnl > 0)) return '<span class="tag win">GANADA</span>';
@@ -743,9 +792,9 @@ function cobroTag(t) {
 function renderTrades() {
   const tb = $('tradeBody'); if (!tb) return;
   let rows = (_trades || []).filter(t => t.status !== 'OPEN');
-  if (_filter === 'v4') rows = rows.filter(t => t.status === 'RETIRO' || /^TWAP_LOCK_(V4|PC|EARLY|COH)/.test(String(t.strategy || '')));
   rows.sort((a, b) => (b.id || 0) - (a.id || 0));
-  if (!rows.length) { tb.innerHTML = `<tr class="empty"><td colspan="7">${_filter === 'v4' ? 'Sin operaciones V4 en este modo todavía' : 'Sin operaciones cerradas'}</td></tr>`; return; }
+  setT('tradeSub', rows.length ? `últimas ${Math.min(rows.length, 60)}` : '—');
+  if (!rows.length) { tb.innerHTML = `<tr class="empty"><td colspan="7">Sin operaciones cerradas todavía</td></tr>`; return; }
   tb.innerHTML = rows.slice(0, 60).map(t => {
     const pnl = Number(t.pnl || 0);
     if (t.status === 'RETIRO') {   // 22-oct: retiro de saldo (no es una operación): coste = lo retirado, pnl = saldo que queda
@@ -833,7 +882,7 @@ function renderOracle(v4, live) {
   const cbBad = cb.failed_count || cb.worker_alive === false;
   led('hCobLed', cbBad ? 'off' : ((cb.pending_count || 0) > 0 ? 'warn' : 'on'));
   setT('hCob', (cb.pending_count || 0) ? `${cb.pending_count} pendiente(s) · $${n(cb.pending_value)}` : 'al día');
-  setT('hCobSub', `${cb.collected_count || 0} cobrados` + (cb.avg_latency_s != null ? ` · ${Math.round(cb.avg_latency_s)} s de media` : '') + (cb.mode === 'real' ? ' · real: auto-canje de Polymarket' : ''));
+  setT('hCobSub', `${cb.collected_count || 0} cobrados` + (cb.avg_latency_s != null ? ` · ${Math.round(cb.avg_latency_s)} s de media` : '') + (cb.mode === 'real' ? ' · auto-canje de Polymarket' : ''));
 }
 function renderParams(p) {
   const box = $('params'); if (!box || !p) return;
@@ -946,17 +995,17 @@ function updateModeUI(mode) {
   b.style.display = '';
   if (_role === 'real') {        // bot real: el botón arranca o apaga el real (apagado = no opera)
     r.style.display = 'none';
-    if (mode === 'REAL') { p.className = 'pill real'; p.textContent = '⚡ DINERO REAL'; b.textContent = 'Apagar REAL'; b.className = 'btn real'; }
-    else { p.className = 'pill sim'; p.textContent = '⏸ REAL APAGADO'; b.textContent = 'Arrancar REAL'; b.className = 'btn sim'; }
+    if (mode === 'REAL') { p.className = 'pill real'; p.textContent = '⚡ EN VIVO'; b.textContent = 'Pausar'; b.className = 'btn real'; }
+    else { p.className = 'pill sim'; p.textContent = '⏸ EN PAUSA'; b.textContent = 'Reanudar'; b.className = 'btn sim'; }
     return;
   }
-  if (mode === 'REAL') { p.className = 'pill real'; p.textContent = '⚡ DINERO REAL'; b.textContent = 'Volver a SIMULACIÓN'; b.className = 'btn real'; r.style.display = 'none'; }
+  if (mode === 'REAL') { p.className = 'pill real'; p.textContent = '⚡ EN VIVO'; b.textContent = 'Volver a SIMULACIÓN'; b.className = 'btn real'; r.style.display = 'none'; }
   else { p.className = 'pill sim'; p.textContent = '⚙ SIMULACIÓN'; b.textContent = 'Cambiar a REAL'; b.className = 'btn sim'; r.style.display = ''; }
 }
 async function toggleMode() {
   const newMode = _mode === 'SIM' ? 'REAL' : 'SIM';
   const offTxt = _role === 'real'
-    ? '¿Apagar el REAL?\n\nEl bot dejará de abrir operaciones con dinero real. Si hay una posición abierta, se cobrará igualmente al resolver, pero sin salida de emergencia.'
+    ? '¿Pausar el bot?\n\nDejará de abrir operaciones. Si hay una posición abierta, se cobrará igualmente al resolver, pero sin salida de emergencia.'
     : '¿Volver a SIMULACIÓN?\n\nEl bot dejará de operar con dinero real.';
   if (newMode === 'SIM' && !confirm(offTxt)) return;
   if (newMode === 'REAL' && !confirm('Vas a ARRANCAR EL MODO REAL.\n\nA partir de ese momento el bot compra y vende con USDC de verdad usando la clave de la wallet, y el modo se mantiene aunque reinicies el bot.\n\n¿Seguro que quieres continuar?')) return;
