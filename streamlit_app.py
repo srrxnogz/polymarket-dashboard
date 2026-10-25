@@ -30,7 +30,8 @@ st.set_page_config(page_title="Polymarket Bot · V4.5", page_icon="🎯", layout
 # Streamlit sin cromo: el panel ocupa toda la página con el mismo fondo que el local
 st.markdown("""
 <style>
-.stApp { background: #070b14 !important; }
+.stApp { background: radial-gradient(1100px 560px at 8% -8%, rgba(45,212,191,.11), transparent 62%),
+                      radial-gradient(900px 520px at 96% -4%, rgba(96,165,250,.13), transparent 60%), #070b14 !important; }
 header[data-testid="stHeader"] { background: transparent !important; }
 .block-container { padding: 0.6rem 0.4rem 0 0.4rem !important; max-width: 100% !important; }
 footer, #MainMenu, [data-testid="stToolbar"], [data-testid="stDecoration"] { visibility: hidden; }
@@ -128,9 +129,8 @@ with st.sidebar:
     if st.button("🔄 Refrescar ahora", use_container_width=True):
         st.cache_data.clear()
         st.rerun()
-    st.caption("Vista de solo lectura del panel local: cambiar de modo o resetear el saldo solo se puede hacer en "
-               "http://localhost:5000. La simulación se puede pedir al PC desde aquí si en Secrets hay GITHUB_TOKEN_ESCRITURA "
-               "(token de GitHub con permiso de escritura en el repositorio de la telemetría; solo en la app privada).")
+    st.caption("Vista remota del panel local: cambiar de modo o resetear el saldo solo se puede hacer en http://localhost:5000. "
+               "El botón «Simular» pide la simulación a tu PC (hace falta en Secrets un token de GitHub con permiso de escritura).")
 
 
 data, source_label, poll_url = get_telemetry()
@@ -156,7 +156,7 @@ if not TEMPLATE.exists():
 # 1) Se ocultan los controles que cambian el estado del bot (solo lectura).
 REMOTE_CSS = """
 <style>
-#resetSimBtn, #modeBtn, #simBtn, #simAsset, #resetDlg { display: none !important; }
+#resetSimBtn, #modeBtn, #simAsset, #resetDlg { display: none !important; }
 html, body { overflow: hidden; }
 body { min-height: 0 !important; }
 .grid > *, .mkt, .sides > *, .oracle > * { min-width: 0; }
@@ -193,7 +193,22 @@ REMOTE_BOOT = """
 window.__SNAP = __SNAP_JSON__;
 window.__LOADED = Date.now();   // cuándo llegaron a esta página los datos (render del servidor o sondeo)
 window.__FEED = { url: __POLL_URL__, source: __SOURCE__, every: __EVERY__ };
+window.__PETICION = __PETICION_JSON__;
 (function () {
+  // 25-oct: el botón «Simular» de la tarjeta avisa a la parte de Python de Streamlit por un campo oculto de la página; Streamlit
+  // deja el encargo en GitHub y el bot del PC simula (telemetry_sync.revisar_peticion). El token nunca llega a esta página.
+  function pedirAlPC(bal) {
+    try {
+      const inp = window.parent.document.querySelector('input[aria-label="puente_simular"]');
+      if (!inp) return false;
+      const setter = Object.getOwnPropertyDescriptor(Object.getPrototypeOf(inp), 'value').set;
+      setter.call(inp, bal + '|' + Date.now());
+      inp.dispatchEvent(new Event('input', {bubbles: true}));
+      inp.dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter', code: 'Enter', keyCode: 13, which: 13, bubbles: true}));
+      inp.blur();
+      return true;
+    } catch (e) { return false; }
+  }
   const ok = (obj) => Promise.resolve(new Response(JSON.stringify(obj), {status: 200, headers: {'Content-Type': 'application/json'}}));
   const deny = () => Promise.resolve(new Response(JSON.stringify({status: 'error', ok: false,
     message: 'Panel remoto de solo lectura: usa http://localhost:5000'}), {status: 403, headers: {'Content-Type': 'application/json'}}));
@@ -203,6 +218,14 @@ window.__FEED = { url: __POLL_URL__, source: __SOURCE__, every: __EVERY__ };
     if (!url.startsWith('/api/')) return nativeFetch(input, init);
     const S = window.__SNAP || {};
     const method = ((init && init.method) || 'GET').toUpperCase();
+    if (method === 'POST' && url.split('?')[0] === '/api/v4/simulate') {
+      let bal = 100;
+      try { bal = Number(JSON.parse((init && init.body) || '{}').initial_balance) || 100; } catch (e) {}
+      const hecho = pedirAlPC(bal);
+      return ok({status: 'pedido', message: hecho
+        ? 'pedida a tu PC con $' + Math.round(bal) + ': la verá en ≤ 30 s y tarda ~2 min (tiene que estar encendido); el resultado aparecerá aquí'
+        : 'no se pudo avisar a Streamlit: recarga la página'});
+    }
     if (method !== 'GET') return deny();
     const path = url.split('?')[0];
     if (path === '/api/live') {
@@ -229,7 +252,7 @@ REMOTE_TOP = """
   <span><span class="led" id="telLed"></span> Telemetría <b id="telAge">—</b></span>
   <span>snapshot <b id="telTs">—</b></span>
   <span>origen <b id="telSrc">—</b></span>
-  <span class="r">vista remota de solo lectura · los controles están en http://localhost:5000</span>
+  <span class="r">vista remota · «Simular» lo hace tu PC · modo y reset solo en localhost</span>
 </div>
 """
 
@@ -254,6 +277,17 @@ REMOTE_BOTTOM = """
 
 # 4) Después del script del panel: extras, sondeo del feed y altura automática del iframe.
 REMOTE_TAIL = """
+<script>
+(function () {
+  const P = window.__PETICION || {};
+  if (!P.texto) return;
+  function pinta() {
+    const el = document.getElementById('simEngine');
+    if (el && el.textContent.indexOf(P.texto) < 0) el.textContent = P.texto + ' · ' + el.textContent;
+  }
+  setTimeout(pinta, 1500); setTimeout(pinta, 4000);
+})();
+</script>
 <script>
 (function () {
   function ageTxt(s) { s = Math.max(0, Math.round(s)); return s < 90 ? s + ' s' : (s < 5400 ? Math.round(s / 60) + ' min' : Math.round(s / 3600) + ' h'); }
@@ -341,13 +375,14 @@ REMOTE_TAIL = """
 """
 
 
-def build_page(snapshot: Dict[str, Any], source: str, url: Optional[str]) -> str:
+def build_page(snapshot: Dict[str, Any], source: str, url: Optional[str], peticion: str = "") -> str:
     html = TEMPLATE.read_text(encoding="utf-8").replace("{{ bot_token }}", "")
     snap_json = json.dumps(snapshot, ensure_ascii=False).replace("</", "<\\/")
     boot = (REMOTE_BOOT.replace("__SNAP_JSON__", snap_json)
             .replace("__POLL_URL__", json.dumps(url))
             .replace("__SOURCE__", json.dumps(source))
-            .replace("__EVERY__", str(REFRESH_S)))
+            .replace("__EVERY__", str(REFRESH_S))
+            .replace("__PETICION_JSON__", json.dumps({"texto": peticion}, ensure_ascii=False).replace("</", "<\\/")))
     html = html.replace("</head>", REMOTE_CSS + "</head>", 1)
     html = html.replace('<div class="error-box" id="errorBox"></div>', REMOTE_TOP + '<div class="error-box" id="errorBox"></div>', 1)
     foot = '<div class="foot">Actualizado'
@@ -359,11 +394,11 @@ def build_page(snapshot: Dict[str, Any], source: str, url: Optional[str]) -> str
     return html.replace("</body>", REMOTE_TAIL + "</body>", 1)
 
 
-# ── 25-oct: «Simular en el PC» (Sergio: «¿ese botón no puede mandar la orden a mi ordenador y luego que mande los datos?») ──
-# La simulación necesita el libro grabado (~1 GB) que solo está en el PC. Este botón deja un ENCARGO (peticion_simulacion.json)
-# en la rama de telemetría del mismo repositorio; el bot del PC lo ve (telemetry_sync.revisar_peticion), simula y sube el resultado
-# con la telemetría de siempre. Solo aparece si en Secrets hay GITHUB_TOKEN_ESCRITURA (token con permiso de escritura en ese repo):
-# ponerlo SOLO en la app privada del REAL. Con CLAVE_SIMULAR en Secrets, además pide esa clave.
+# ── 25-oct: «Simular» también desde aquí (Sergio: «el botón debe estar en el mismo sitio que en localhost») ──
+# La simulación necesita el libro grabado (~1 GB) que solo está en el PC. El botón de la tarjeta (el mismo del panel local) avisa a
+# esta parte por un campo oculto; aquí se deja un ENCARGO (peticion_simulacion.json) en la rama de telemetría del mismo repositorio
+# con el token de Secrets (GITHUB_TOKEN_ESCRITURA o GITHUB_TOKEN, con permiso de escritura); el bot del PC lo ve
+# (telemetry_sync.revisar_peticion), simula y el resultado llega con la telemetría de siempre. El token nunca va a la página.
 def _repo_rama(url: str) -> tuple:
     """(repositorio, rama) del feed: raw.githubusercontent.com/<dueño>/<repo>/<rama>/… o api.github.com/repos/…/contents/…?ref=…"""
     import re
@@ -395,31 +430,61 @@ def pedir_simulacion(repo: str, rama: str, token: str, saldo: float) -> str:
     return pid
 
 
-_tok_w = _secret("GITHUB_TOKEN_ESCRITURA")
-if _tok_w:
+st.markdown("<style>div[data-testid='stTextInput']:has(input[aria-label='puente_simular']) {position: absolute !important; "
+            "left: -10000px !important; height: 0 !important; overflow: hidden !important;}</style>", unsafe_allow_html=True)
+_puente = st.text_input("puente_simular", key="puente_simular", label_visibility="collapsed")
+if _puente and _puente != st.session_state.get("_puente_hecho"):
+    st.session_state["_puente_hecho"] = _puente
+    st.session_state.pop("pet_err", None)
+    _tok_w = _secret("GITHUB_TOKEN_ESCRITURA") or _secret("GITHUB_TOKEN") or st.session_state.get("gh_token", "").strip()
     _repo, _rama = _repo_rama(st.session_state.get("telemetry_url", "").strip() or _secret("TELEMETRY_URL", DEFAULT_FEED))
-    _pet = data.get("peticion_simulacion") or {}
-    _ini = float(((data.get("v4_sim") or {}).get("initial_balance")) or 100.0)
-    c1, c2, c3, c4 = st.columns([1.1, 1.0, 1.3, 6.0])
-    _saldo = c1.number_input("Saldo inicial $", min_value=5.0, max_value=1_000_000.0, value=_ini, step=5.0,
-                             label_visibility="collapsed", help="Saldo con el que empieza la simulación")
-    _clave = c2.text_input("Clave", type="password", placeholder="clave", label_visibility="collapsed") if _secret("CLAVE_SIMULAR") else None
-    if c3.button("▶ Simular en el PC", use_container_width=True, disabled=not _repo):
-        if _clave is not None and _clave != _secret("CLAVE_SIMULAR"):
-            c4.error("Clave incorrecta")
-        else:
-            try:
-                st.session_state["pet_id"] = pedir_simulacion(_repo, _rama, _tok_w, _saldo)
-                c4.success(f"Encargo enviado con {_saldo:.0f} $: tu PC lo verá en ≤ 30 s y tarda ~2 min (tiene que estar encendido).")
-            except Exception as e:
-                c4.error(f"No se pudo enviar el encargo: {e}")
-    if _pet:
-        _e = _pet.get("estado") or "pendiente"
-        _txt = {"simulando": "⏳ simulando en el PC…", "hecha": "✅ hecha: resultado abajo", "caducada": "caducada (pedida hace más de 30 min)"}.get(_e, _e)
-        c4.caption(f"Último encargo ({float(_pet.get('saldo') or 0):.0f} $, pedido {str(_pet.get('pedido') or '')[11:16]} UTC): {_txt}"
-                   + (f" · {_pet.get('error')}" if _pet.get("error") else ""))
+    try:
+        _saldo = min(max(float(_puente.split("|")[0]), 5.0), 1_000_000.0)
+    except ValueError:
+        _saldo = 100.0
+    if not _tok_w:
+        st.session_state["pet_err"] = "falta en Secrets de esta app un token de GitHub con permiso de escritura (GITHUB_TOKEN)"
+    elif not _repo:
+        st.session_state["pet_err"] = "no se reconoce el repositorio del feed"
+    else:
+        try:
+            st.session_state["pet_env"] = (pedir_simulacion(_repo, _rama, _tok_w, _saldo), _saldo, time.time())
+        except Exception as e:
+            st.session_state["pet_err"] = str(e)
 
-components.html(build_page(data, source_label, poll_url if auto_refresh else None), height=2200, scrolling=False)
+
+def _texto_peticion() -> str:
+    """Cómo va el encargo, para la línea de estado de la tarjeta del simulador."""
+    from datetime import datetime
+    hhmm = lambda iso: str(iso or "")[11:16]
+    if st.session_state.get("pet_err"):
+        return "⚠ No se pudo pedir la simulación al PC: " + st.session_state["pet_err"]
+    env = st.session_state.get("pet_env")
+    pet = data.get("peticion_simulacion") or {}
+    if pet and ((env and pet.get("id") == env[0]) or not env):
+        if not env:                                   # encargo de otra visita: solo si es reciente
+            try:
+                t = datetime.fromisoformat(str(pet.get("terminado") or pet.get("pedido")).replace("Z", "+00:00")).timestamp()
+            except ValueError:
+                return ""
+            if time.time() - t > 900:
+                return ""
+        e, saldo = pet.get("estado") or "", float(pet.get("saldo") or 0)
+        if e == "simulando":
+            return f"⏳ Tu PC está simulando con ${saldo:.0f} (pedida a las {hhmm(pet.get('pedido'))} UTC, ~2 min)…"
+        if e == "hecha":
+            return f"✅ Simulación pedida desde aquí con ${saldo:.0f}, hecha a las {hhmm(pet.get('terminado'))} UTC"
+        if e == "error":
+            return "⚠ El PC no pudo simular: " + str(pet.get("error") or "")
+        if e:
+            return f"⏳ Encargo con ${saldo:.0f}: {e}"
+    if env:
+        return (f"📨 Encargo enviado con ${env[1]:.0f} a las {time.strftime('%H:%M', time.gmtime(env[2]))} UTC: "
+                f"esperando a que tu PC lo vea (tiene que estar encendido)…")
+    return ""
+
+
+components.html(build_page(data, source_label, poll_url if auto_refresh else None, _texto_peticion()), height=2200, scrolling=False)
 
 # Si el navegador no puede sondear el feed (archivo local o feed privado), se refresca desde el servidor
 if auto_refresh and not poll_url:
