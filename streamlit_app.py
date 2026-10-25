@@ -25,15 +25,19 @@ TEMPLATE = BASE_DIR / "templates" / "index.html"
 DEFAULT_FEED = "https://raw.githubusercontent.com/srrxnogz/polymarket-dashboard/telemetry/telemetry_snapshot.json"
 REFRESH_S = 15
 
-st.set_page_config(page_title="Polymarket Bot · V4.5", page_icon="🎯", layout="wide", initial_sidebar_state="collapsed")
+MARCA = BASE_DIR / "templates" / "marca.png"     # 25-oct: icono de la pestaña = la marca del panel (antes una diana)
+st.set_page_config(page_title="Polymarket Bot · V4.5", page_icon=str(MARCA) if MARCA.exists() else "📈", layout="wide",
+                   initial_sidebar_state="collapsed")
 
 # Streamlit sin cromo: el panel ocupa toda la página con el mismo fondo que el local
 st.markdown("""
 <style>
-.stApp { background: radial-gradient(1100px 560px at 8% -8%, rgba(45,212,191,.11), transparent 62%),
-                      radial-gradient(900px 520px at 96% -4%, rgba(96,165,250,.13), transparent 60%), #070b14 !important; }
+.stApp { background: radial-gradient(1400px 620px at 14% -16%, rgba(16,185,129,.30), transparent 62%),
+                      radial-gradient(1400px 660px at 90% -20%, rgba(37,99,235,.36), transparent 64%),
+                      radial-gradient(900px 480px at 52% -6%, rgba(14,165,233,.12), transparent 70%), #04070d !important; }
 header[data-testid="stHeader"] { background: transparent !important; }
 .block-container { padding: 0.6rem 0.4rem 0 0.4rem !important; max-width: 100% !important; }
+.block-container [data-testid="stVerticalBlock"] { gap: 0 !important; }   /* 25-oct: sin el hueco de los bloques invisibles de arriba */
 footer, #MainMenu, [data-testid="stToolbar"], [data-testid="stDecoration"] { visibility: hidden; }
 iframe[title="st.iframe"], .element-container iframe { border: 0 !important; }
 </style>
@@ -170,8 +174,8 @@ body { min-height: 0 !important; }
   .ring { width: 48px; height: 48px; }
   .tel-bar .r { margin-left: 0; }
 }
-.tel-bar { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; font-size: 12px; color: #cbd5e1;
-           background: #0b1324; border: 1px dashed var(--line); border-radius: 10px; padding: 8px 12px; margin-bottom: 14px; }
+.tel-bar { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; font-size: 12px; color: #b3bdd0;
+           background: rgba(8,12,22,.72); border: 1px solid rgba(148,163,184,.13); border-radius: 12px; padding: 8px 14px; margin-bottom: 14px; }
 .tel-bar b { color: var(--text); }
 /* Datos congelados: el bot no publica (apagado, PC suspendido o sin conexión) */
 .stale-banner { display: none; border-radius: 12px; padding: 14px 18px; margin-bottom: 14px; font-size: 15px; font-weight: 800; }
