@@ -160,7 +160,7 @@ if not TEMPLATE.exists():
 # 1) Se ocultan los controles que cambian el estado del bot (solo lectura).
 REMOTE_CSS = """
 <style>
-#resetSimBtn, #modeBtn, #simAsset, #resetDlg { display: none !important; }
+#resetSimBtn, #modeBtn, #simAsset, #resetDlg, #apagarBtn, #menuApagar, #veloApagado { display: none !important; }
 html, body { overflow: hidden; }
 body { min-height: 0 !important; }
 .grid > *, .mkt, .sides > *, .oracle > * { min-width: 0; }
