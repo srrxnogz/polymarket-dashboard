@@ -98,6 +98,35 @@ h2 { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: upp
 .header .btn.real:hover { background: rgba(244,63,94,.14); }
 .header .btn.sim { color: #04261a; background: linear-gradient(180deg, #34d399, #10b981); border-color: rgba(110,231,183,.55); }
 .header .btn.sim:hover { background: linear-gradient(180deg, #4ade9f, #15c08a); }
+/* 29-oct (Sergio): «Apagar» al lado de «Pausar», con un menú como el de apagado de Windows (real y papel, o todo el sistema) */
+.btn[hidden] { display: none !important; }
+.header .btn.apagar { display: inline-flex; align-items: center; gap: 7px; }
+.header .btn.apagar svg { width: 14px; height: 14px; }
+.header .btn.apagar[aria-expanded="true"] { background: rgba(255,255,255,.12); }
+.menu-apagar { position: fixed; z-index: 1200; width: 340px; max-width: calc(100vw - 16px); padding: 6px; border-radius: 12px;
+  background: rgba(14,19,33,.98); border: 1px solid rgba(148,163,184,.2); box-shadow: 0 24px 60px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.05); }
+.menu-apagar[hidden], .velo-apagado[hidden] { display: none; }
+.menu-apagar .op { display: flex; gap: 12px; align-items: flex-start; width: 100%; text-align: left; padding: 11px 12px; border: 0; border-radius: 8px;
+  background: none; color: var(--text); cursor: pointer; font: inherit; }
+.menu-apagar .op:hover, .menu-apagar .op:focus-visible { background: rgba(148,163,184,.12); outline: none; }
+.menu-apagar .op svg { width: 18px; height: 18px; flex: none; margin-top: 1px; color: #fbbf24; }
+.menu-apagar .op.todo svg { color: #fb7185; }
+.menu-apagar .op b { display: block; font-family: 'Space Grotesk', 'Segoe UI', sans-serif; font-size: 13.5px; font-weight: 600; }
+.menu-apagar .op span { display: block; font-size: 11.5px; color: var(--muted); margin-top: 3px; line-height: 1.45; }
+.menu-apagar .sep { height: 1px; margin: 4px 10px; background: rgba(148,163,184,.14); }
+.menu-apagar .conf { padding: 12px 12px 8px; }
+.menu-apagar .conf p { font-size: 12.5px; color: #cbd5e1; line-height: 1.5; margin-bottom: 10px; }
+.menu-apagar .conf p b { color: var(--text); }
+.menu-apagar .conf .aviso { color: #fcd34d; }
+.menu-apagar .botones { display: flex; gap: 8px; justify-content: flex-end; }
+.btn.peligro { background: linear-gradient(180deg, #f43f5e, #e11d48); color: #fff; border-color: rgba(251,113,133,.6); }
+.velo-apagado { position: fixed; inset: 0; z-index: 1300; display: grid; place-items: center; padding: 16px; background: rgba(3,6,12,.82); }
+.velo-apagado .caja { max-width: 440px; text-align: center; padding: 28px 26px; border-radius: 16px; background: rgba(14,19,33,.98);
+  border: 1px solid rgba(148,163,184,.2); box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+.velo-apagado svg { width: 40px; height: 40px; color: #fb7185; }
+.velo-apagado h3 { font-family: 'Space Grotesk', 'Segoe UI', sans-serif; font-size: 20px; margin: 10px 0 8px; }
+.velo-apagado p { font-size: 13px; color: #cbd5e1; line-height: 1.55; }
+.velo-apagado code { font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace; color: #6ee7b7; }
 @media (max-width: 900px) { .header { padding: 14px; } .hdr-right { width: 100%; justify-content: flex-start; }
   .rail .pill + .pill { box-shadow: none; } }
 .btn { cursor: pointer; border: 1px solid var(--line); border-radius: 10px; padding: 7px 14px; font-size: 12px;
@@ -271,8 +300,12 @@ tr.waiting td { background: rgba(251,191,36,.05); }
     <span class="pill sim" id="modePill">SIMULACIÓN</span>
     <button class="btn" id="resetSimBtn" onclick="openResetDialog()" title="Restablecer el saldo de simulación con la cantidad que elijas">↺ Reset saldo</button>
     <button class="btn sim" id="modeBtn" onclick="toggleMode()">Cambiar a REAL</button>
+    <button class="btn apagar" id="apagarBtn" onclick="menuApagar(event)" aria-haspopup="menu" aria-expanded="false" hidden
+            title="Apagar los bots o todo el sistema"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 3.5v8"/><path d="M6.6 6.8a7.6 7.6 0 1 0 10.8 0"/></svg>Apagar</button>
   </div>
 </header>
+<div class="menu-apagar" id="menuApagar" role="menu" hidden></div>
+<div class="velo-apagado" id="veloApagado" hidden><div class="caja"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 3.5v8"/><path d="M6.6 6.8a7.6 7.6 0 1 0 10.8 0"/></svg><h3 id="veloT">Apagando…</h3><p id="veloD"></p></div></div>
 
 <div class="error-box" id="errorBox"></div>
 
@@ -1053,7 +1086,8 @@ async function runV4Simulation() {
 // ─── Modo real / simulación y reset ───────────────────────────────────────────
 let _mode = 'SIM', _role = 'single';   // role: real (:5000, botón arranca/apaga el real) · paper (:5001) · single
 function updateModeUI(mode) {
-  const p = $('modePill'), b = $('modeBtn'), r = $('resetSimBtn');
+  const p = $('modePill'), b = $('modeBtn'), r = $('resetSimBtn'), ap = $('apagarBtn');
+  if (ap) ap.hidden = _role !== 'real';      // 29-oct: «Apagar» solo en el panel del REAL
   if (_role === 'paper') {       // bot de papel: siempre simulación, sin botón de modo
     p.className = 'pill sim'; p.textContent = 'PAPEL · SIMULACIÓN'; b.style.display = 'none'; r.style.display = ''; return;
   }
@@ -1067,6 +1101,56 @@ function updateModeUI(mode) {
   if (mode === 'REAL') { p.className = 'pill real'; p.textContent = 'EN VIVO'; b.textContent = 'Volver a SIMULACIÓN'; b.className = 'btn real'; r.style.display = 'none'; }
   else { p.className = 'pill sim'; p.textContent = 'SIMULACIÓN'; b.textContent = 'Cambiar a REAL'; b.className = 'btn sim'; r.style.display = ''; }
 }
+// ─── Apagar (29-oct, Sergio: «un botón al lado de pausar que ponga apagar, con un menú tipo Windows») ─────────────────
+let _abiertas = 0, _apagando = null;
+const OP_APAGAR = {
+  bots: {t: 'Apagar real y papel', d: 'El grabador y el alimentador siguen grabando. El vigilante no vuelve a encender los bots hasta que los enciendas tú.'},
+  todo: {t: 'Apagar todo', d: 'Bots, alimentador, grabador y vigilantes: no queda nada en marcha y la tarea programada tampoco enciende nada. El PC sigue encendido.'},
+};
+const ICO_APAGAR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 3.5v8"/><path d="M6.6 6.8a7.6 7.6 0 1 0 10.8 0"/></svg>';
+function menuApagar(ev) {
+  if (ev) ev.stopPropagation();
+  const m = $('menuApagar'), b = $('apagarBtn');
+  if (!m.hidden) { cerrarMenuApagar(); return; }
+  m.innerHTML = Object.entries(OP_APAGAR).map(([k, o], i) => (i ? '<div class="sep"></div>' : '') +
+    `<button class="op ${k}" role="menuitem" onclick="confirmarApagado('${k}', event)">${ICO_APAGAR}<div><b>${o.t}</b><span>${o.d}</span></div></button>`).join('');
+  m.hidden = false; b.setAttribute('aria-expanded', 'true'); colocarMenuApagar();
+  const pri = m.querySelector('.op'); if (pri) pri.focus();
+}
+function colocarMenuApagar() {
+  const m = $('menuApagar'), r = $('apagarBtn').getBoundingClientRect(), w = m.offsetWidth || 340;
+  m.style.top = Math.round(r.bottom + 8) + 'px';
+  m.style.left = Math.round(Math.max(8, Math.min(window.innerWidth - w - 8, r.right - w))) + 'px';
+}
+function cerrarMenuApagar() {
+  const m = $('menuApagar'), b = $('apagarBtn');
+  if (m) m.hidden = true;
+  if (b) b.setAttribute('aria-expanded', 'false');
+}
+function confirmarApagado(modo, ev) {
+  if (ev) ev.stopPropagation();
+  const o = OP_APAGAR[modo], m = $('menuApagar'), k = _abiertas, pl = k > 1;
+  const aviso = k > 0 ? `<p class="aviso">Hay ${k} posición${pl ? 'es' : ''} real${pl ? 'es' : ''} abierta${pl ? 's' : ''}: se cobrará${pl ? 'n' : ''} sola${pl ? 's' : ''} al resolver, pero sin salida de emergencia.</p>` : '';
+  m.innerHTML = `<div class="conf"><p><b>¿${o.t}?</b><br>${o.d}</p>${aviso}<p>Para volver a encender: doble clic en <b>encender_bots.cmd</b>, en la carpeta del bot.</p>
+    <div class="botones"><button class="btn" onclick="cerrarMenuApagar()">Cancelar</button><button class="btn peligro" onclick="apagar('${modo}')">${o.t}</button></div></div>`;
+  colocarMenuApagar();
+}
+async function apagar(modo) {
+  cerrarMenuApagar();
+  try {
+    const r = await fetch('/api/apagar', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({modo})});
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    _apagando = modo; showError('');
+    $('veloT').textContent = modo === 'todo' ? 'Todo el sistema apagado' : 'Real y papel apagados';
+    $('veloD').innerHTML = (modo === 'todo' ? 'Bots, alimentador, grabador y vigilantes parados; nada se vuelve a encender solo.'
+                                            : 'El grabador sigue grabando y el vigilante no vuelve a encender los bots.')
+      + '<br><br>Para volver a encender: doble clic en <code>encender_bots.cmd</code>, en la carpeta del bot.';
+    $('veloApagado').hidden = false;
+  } catch (e) { showError('No se pudo apagar: ' + e.message); }
+}
+document.addEventListener('click', (e) => { const m = $('menuApagar'); if (m && !m.hidden && !m.contains(e.target)) cerrarMenuApagar(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') cerrarMenuApagar(); });
+window.addEventListener('resize', () => { const m = $('menuApagar'); if (m && !m.hidden) colocarMenuApagar(); });
 async function toggleMode() {
   const newMode = _mode === 'SIM' ? 'REAL' : 'SIM';
   const offTxt = _role === 'real'
@@ -1135,9 +1219,11 @@ async function refresh(force = false) {
     if (L && L.since_reset && L.since_reset.v4) { const v = L.since_reset.v4; Object.assign(ls, {trades: v.closed || 0, wins: v.wins || 0, losses: v.losses || 0, win_rate_pct: v.closed ? v.win_rate : null, pnl: v.pnl || 0, profit_factor: v.profit_factor, open: v.open || 0}); }
     renderV4Kpis(ls, _eqd); renderPerf(_eqd, v4.live_stats);
     renderLive(v4); renderPositions(live.active_positions); renderOracle(v4, live); renderParams(v4.params);
+    _abiertas = (live.active_positions || []).length;
     _errors = 0; showError('');
     setT('lastUpdate', new Date().toLocaleTimeString('es-ES') + ` · ${Math.round(performance.now() - t0)} ms`);
   } catch (e) {
+    if (_apagando) return;                           // apagado desde el panel: el aviso ya lo dice
     if (++_errors >= 3) { showError('Sin conexión con el bot: ' + e.message); pill('runPill', 'Sin conexión', 'off'); }
   } finally { _busy = false; }
 }
