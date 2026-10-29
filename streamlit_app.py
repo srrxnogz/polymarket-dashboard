@@ -166,12 +166,10 @@ body { min-height: 0 !important; }
 .grid > *, .mkt, .sides > *, .oracle > * { min-width: 0; }
 @media (max-width: 640px) {
   body { padding: 8px; }
-  .g-kpi { grid-template-columns: 1fr 1fr; }
   .sides, .oracle { grid-template-columns: 1fr; }
   .stats4, .chips, .health { grid-template-columns: 1fr 1fr !important; }
   .coins { grid-template-columns: repeat(3, 1fr); }
   .count { font-size: 24px; }
-  .ring { width: 48px; height: 48px; }
   .tel-bar .r { margin-left: 0; }
 }
 .tel-bar { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; font-size: 12px; color: #b3bdd0;
