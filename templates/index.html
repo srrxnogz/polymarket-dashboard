@@ -35,7 +35,6 @@ h2 { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: upp
 .sub { font-size: 11px; color: var(--muted); }
 .muted { color: var(--muted); } .pos { color: var(--green); } .neg { color: var(--red); } .warn { color: var(--amber); }
 .grid { display: grid; gap: 14px; margin-bottom: 14px; }
-.g-kpi { grid-template-columns: repeat(5, 1fr); }
 .g-main { grid-template-columns: 1.25fr 1fr; }
 .g-2 { grid-template-columns: 1fr 1fr; }
 /* Columna derecha: rendimiento + posiciones abiertas + operaciones cerradas, apiladas.
@@ -46,7 +45,8 @@ h2 { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: upp
 .col-stack .tbl-wrap.short { max-height: 190px; }
 .col-stack .chart-box { height: 170px; }
 .col-stack .fill-body thead th, .col-stack .tbl-wrap thead th { position: sticky; top: 0; background: var(--panel-solid); z-index: 1; }
-@media (max-width: 1100px) { .g-kpi { grid-template-columns: repeat(2, 1fr); } .g-main, .g-2 { grid-template-columns: 1fr; } }
+.grid > * { min-width: 0; }   /* 29-oct: nada empuja la página más ancha que la pantalla (móvil) */
+@media (max-width: 1100px) { .g-main, .g-2 { grid-template-columns: 1fr; } }
 @media (max-width: 1100px) { .col-stack .fill-card { min-height: 0; display: block; }
   .col-stack .fill-card .fill-body { position: static; max-height: 330px; } }
 
@@ -110,12 +110,32 @@ select { background: #16213a; color: var(--text); border: 1px solid var(--line);
 .num-in { background: #16213a; color: var(--text); border: 1px solid var(--line); border-radius: 10px; padding: 6px 10px; font-size: 12px; width: 96px; }
 
 /* KPIs */
-.kpi { position: relative; overflow: hidden; min-height: 118px; padding-bottom: 46px; }
-.kpi .lbl { font-size: 11px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: .07em; }
-.kpi .val { font-size: 27px; font-weight: 800; margin-top: 6px; letter-spacing: -.02em; }
-.kpi .small { font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.45; }
-.kpi canvas.spark { position: absolute; left: 0; right: 0; bottom: 0; height: 38px !important; width: 100% !important; opacity: .9; }
-.ring { width: 64px; height: 64px; position: absolute; right: 14px; top: 16px; }
+/* 29-oct (Sergio): «Capital» (saldo y beneficio) y «Marcador» (acierto, profit factor y operaciones) van juntas encima de
+   «Ventana en vivo» y ocupan su ancho; la columna de la derecha (rendimiento, abiertas y cerradas) empieza arriba del todo */
+.col-left { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.col-left > .card:last-child { flex: 1 1 auto; }
+.kpi-pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 14px; }
+.kpi2 { position: relative; overflow: hidden; display: flex; flex-direction: column; padding-top: 13px; }
+.kpi2 .card-h { margin-bottom: 7px; }
+.kpi2 .lbl { font-size: 10px; color: #6f7d98; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; line-height: 1.3; }
+.kpi2 .val { font-size: 24px; font-weight: 800; margin-top: 3px; letter-spacing: -.02em; line-height: 1.1; white-space: nowrap; }
+.kpi2 .small { font-size: 10.5px; color: var(--muted); margin-top: 4px; line-height: 1.35; }
+.celdas { display: grid; flex: 1 1 auto; }
+.celdas > div { min-width: 0; padding: 2px 14px 0; }
+.celdas > div:first-child { padding-left: 0; }
+.celdas > div:last-child { padding-right: 0; }
+.celdas > div + div { box-shadow: inset 1px 0 0 var(--line2); }
+.kpi-capital { padding-bottom: 48px; }
+.kpi-capital .celdas { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.kpi-capital .val { font-size: 28px; }
+.kpi-capital canvas.spark { position: absolute; left: 0; right: 0; bottom: 0; height: 40px !important; width: 100% !important; opacity: .9; }
+.kpi-marcador .celdas { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.fila-val { display: flex; align-items: center; gap: 8px; }
+.fila-val .val { margin-top: 3px; }
+.kpi-marcador .ring { width: 26px; height: 26px; flex: none; margin-top: 3px; }
+@media (max-width: 760px) { .kpi-pair { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 380px) { .kpi-marcador .celdas { grid-template-columns: minmax(0, 1fr); }
+  .kpi-marcador .celdas > div { padding: 8px 0; } .kpi-marcador .celdas > div + div { box-shadow: inset 0 1px 0 var(--line2); } }
 
 /* Ventana en vivo */
 .mkt { background: var(--panel2); border: 1px solid var(--line2); border-radius: 12px; padding: 14px; }
@@ -256,46 +276,55 @@ tr.waiting td { background: rgba(251,191,36,.05); }
 
 <div class="error-box" id="errorBox"></div>
 
-<!-- ═══════════ KPIs ═══════════ -->
-<div class="grid g-kpi">
-  <div class="card kpi">
-    <div class="lbl">Saldo</div>
-    <div class="val" id="kBal">—</div>
-    <div class="small" id="kBalSub">—</div>
-  </div>
-  <div class="card kpi">
-    <div class="lbl" id="kPnlLbl">Beneficio desde el reset</div>
-    <div class="val" id="kPnl">—</div>
-    <div class="small" id="kPnlSub">—</div>
-    <canvas class="spark" id="sparkPnl"></canvas>
-  </div>
-  <div class="card kpi">
-    <div class="lbl">Acierto</div>
-    <div class="val" id="kWr">—</div>
-    <div class="small" id="kWrSub">—</div>
-    <svg class="ring" viewBox="0 0 36 36" id="kWrRing"></svg>
-  </div>
-  <div class="card kpi">
-    <div class="lbl">Profit factor</div>
-    <div class="val" id="kPf">—</div>
-    <div class="small" id="kPfSub">lo ganado entre lo perdido · por encima de 1, gana</div>
-  </div>
-  <div class="card kpi">
-    <div class="lbl">Operaciones</div>
-    <div class="val" id="kOps">—</div>
-    <div class="small" id="kOpsSub">—</div>
-  </div>
-</div>
-
-<!-- ═══════════ VENTANA EN VIVO + RENDIMIENTO ═══════════ -->
+<!-- ═══════════ CAPITAL + MARCADOR + VENTANA EN VIVO (izquierda) · RENDIMIENTO, ABIERTAS Y CERRADAS (derecha) ═══════════ -->
 <div class="grid g-main">
-  <div class="card">
-    <div class="card-h">
-      <h2>Ventana en vivo</h2>
-      <span class="sub" id="liveSub">—</span>
+  <div class="col-left">
+    <div class="kpi-pair">
+      <div class="card kpi2 kpi-capital">
+        <div class="card-h"><h2>Capital</h2></div>
+        <div class="celdas">
+          <div>
+            <div class="lbl">Saldo</div>
+            <div class="val" id="kBal">—</div>
+            <div class="small" id="kBalSub">—</div>
+          </div>
+          <div>
+            <div class="lbl" id="kPnlLbl">Beneficio desde el reset</div>
+            <div class="val" id="kPnl">—</div>
+            <div class="small" id="kPnlSub">—</div>
+          </div>
+        </div>
+        <canvas class="spark" id="sparkPnl"></canvas>
+      </div>
+      <div class="card kpi2 kpi-marcador">
+        <div class="card-h"><h2>Marcador</h2></div>
+        <div class="celdas">
+          <div>
+            <div class="lbl">Acierto</div>
+            <div class="fila-val"><div class="val" id="kWr">—</div><svg class="ring" viewBox="0 0 36 36" id="kWrRing"></svg></div>
+            <div class="small" id="kWrSub">—</div>
+          </div>
+          <div>
+            <div class="lbl">Profit factor</div>
+            <div class="val" id="kPf">—</div>
+            <div class="small" id="kPfSub">lo ganado entre lo perdido · por encima de 1, gana</div>
+          </div>
+          <div>
+            <div class="lbl">Operaciones</div>
+            <div class="val" id="kOps">—</div>
+            <div class="small" id="kOpsSub">—</div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="watch" id="watch"></div>
-    <div id="liveMarkets"><div class="mkt"><div class="sub">Esperando datos del bot…</div></div></div>
+    <div class="card">
+      <div class="card-h">
+        <h2>Ventana en vivo</h2>
+        <span class="sub" id="liveSub">—</span>
+      </div>
+      <div class="watch" id="watch"></div>
+      <div id="liveMarkets"><div class="mkt"><div class="sub">Esperando datos del bot…</div></div></div>
+    </div>
   </div>
 
   <div class="col-stack">
