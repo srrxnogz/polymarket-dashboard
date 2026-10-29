@@ -819,10 +819,11 @@ function renderTrades() {
   if (!rows.length) { tb.innerHTML = `<tr class="empty"><td colspan="7">Sin operaciones cerradas todavía</td></tr>`; return; }
   tb.innerHTML = rows.slice(0, 60).map(t => {
     const pnl = Number(t.pnl || 0);
-    if (t.status === 'RETIRO') {   // 22-oct: retiro de saldo (no es una operación): coste = lo retirado, pnl = saldo que queda
-      return `<tr title="Retiro de saldo: no cuenta como pérdida ni entra en el Kelly ni en las estadísticas"><td>${esc(utcTxt(t.close_time || t.timestamp))}</td>
-        <td class="slug">retiro</td><td><span class="tag other">retiro</span></td><td>—</td><td>—</td>
-        <td>$${n(t.cost_usdc)}</td><td class="pos" title="saldo que queda en la cuenta"><b>$${n(t.pnl)}</b></td></tr>`;
+    if (t.status === 'RETIRO' || t.status === 'INGRESO') {   // 22/29-oct: retiro o ingreso de saldo (no son operaciones):
+      const ing = t.status === 'INGRESO', q = ing ? 'ingreso' : 'retiro';   // coste = lo movido, pnl = saldo que queda
+      return `<tr title="${ing ? 'Ingreso de saldo: no cuenta como ganancia' : 'Retiro de saldo: no cuenta como pérdida'} ni entra en el Kelly ni en las estadísticas"><td>${esc(utcTxt(t.close_time || t.timestamp))}</td>
+        <td class="slug">${q}</td><td><span class="tag other">${q}</span></td><td>—</td><td>—</td>
+        <td>${ing ? '+' : ''}$${n(t.cost_usdc)}</td><td class="pos" title="saldo en la cuenta después del ${q}"><b>$${n(t.pnl)}</b></td></tr>`;
     }
     return `<tr><td>${esc(utcTxt(t.close_time || t.timestamp))}</td><td class="slug">${esc(t.market_slug || '-')}${pcTag(t.strategy)}</td>
       <td>${entryType(t.strategy, t.entry_price)}</td><td>${sideTag(t.outcome)}</td><td>${n(t.entry_price, 3)}</td>
