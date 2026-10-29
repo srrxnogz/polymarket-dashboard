@@ -738,18 +738,29 @@ function setEqView(v) {
   try { localStorage.setItem('eqView', _eqView); } catch (e) {}
   paintEq();
 }
+// 29-oct (Sergio): la gráfica empieza en el saldo mínimo del REAL, el 17-oct a las 12:00 (hora de Madrid): 21,08 $ tras una
+// pérdida de 4,91 $. El beneficio se cuenta desde ahí (0) y el saldo arranca en ese mínimo; las cifras de debajo siguen siendo de
+// toda la V4.5. Una curva que empiece después (el papel tras un reset) no se recorta.
+const GRAFICA_DESDE = '2026-10-17 10:00:01';   // hora UTC de esa operación
+function tramoGrafica(pts) {
+  const i = pts.findIndex(p => String(p.ts) >= GRAFICA_DESDE);
+  return i > 0 ? {base: pts[i], pts: pts.slice(i + 1)} : {base: null, pts: pts};
+}
 function paintEq() {
   const a = $('eqVPnl'), b = $('eqVSaldo');
   if (a) a.className = _eqView === 'pnl' ? 'act' : '';
   if (b) b.className = _eqView === 'saldo' ? 'act' : '';
   const eqd = _eqLast; if (!eqd) return;
-  const pts = eqd.points || [], labels = ['inicio'].concat(pts.map(p => utcTxt(p.ts)));
-  const conSaldo = pts.length && pts[0].saldo != null;
+  const todos = eqd.points || [], {base, pts} = tramoGrafica(todos);
+  const labels = [base ? utcTxt(base.ts) : 'inicio'].concat(pts.map(p => utcTxt(p.ts)));
+  const conSaldo = todos.length && todos[0].saldo != null;
   if (b) { b.disabled = !conSaldo; b.title = conSaldo ? 'Saldo de la cuenta después de cada operación' : 'El bot aún no publica el saldo por operación'; }
   if (_eqView === 'saldo' && conSaldo) {
-    paint(eqChart, labels, [Number(pts[0].saldo) - Number(pts[0].pnl || 0)].concat(pts.map(p => Number(p.saldo))));
+    const ini = base ? Number(base.saldo) : (pts.length ? Number(pts[0].saldo) - Number(pts[0].pnl || 0) : null);
+    paint(eqChart, labels, [ini].concat(pts.map(p => Number(p.saldo))));
   } else {
-    paint(eqChart, labels, [0].concat(pts.map(p => p.cum)));
+    const b0 = base ? Number(base.cum) : 0;
+    paint(eqChart, labels, [0].concat(pts.map(p => Number(p.cum) - b0)));
   }
 }
 function renderPerf(eqd, ls) {
@@ -759,8 +770,10 @@ function renderPerf(eqd, ls) {
   _eqLast = eqd;
   paintEq();
   paint(sparkPnl, ['0'].concat(labels), [0].concat(data));
-  setT('perfScope', (eqd.mode === 'sim' ? 'desde el reset' : (eqd.since ? 'desde ' + utcTxt(eqd.since) : 'todo el historial')) + ` · ${eqd.trades} operaciones`
-    + (eqd.saldo_ahora != null ? ` · saldo $${n(eqd.saldo_ahora)}` : ''));
+  const tg = tramoGrafica(pts);
+  setT('perfScope', (tg.base ? `gráfica desde ${utcTxt(tg.base.ts)} (saldo mínimo, $${n(tg.base.saldo)})`
+                     : (eqd.mode === 'sim' ? 'desde el reset' : (eqd.since ? 'desde ' + utcTxt(eqd.since) : 'todo el historial')))
+    + ` · ${tg.base ? tg.pts.length : eqd.trades} operaciones` + (eqd.saldo_ahora != null ? ` · saldo $${n(eqd.saldo_ahora)}` : ''));
   // 16-oct (Sergio): medir en pérdidas por operación, sin saldo. Punto muerto = la proporción de pérdidas con la que se
   // queda en 0 con la ganancia y la pérdida media reales (con las ventas de emergencia una pérdida no es −100 %).
   const pnls = pts.map(p => Number(p.pnl || 0)), nT = pnls.length, nL = pnls.filter(x => x < 0).length;
