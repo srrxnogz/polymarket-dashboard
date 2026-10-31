@@ -243,6 +243,15 @@ tr.waiting td { background: rgba(251,191,36,.05); }
 .toggle { display: inline-flex; background: #111a2d; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
 .toggle button { background: transparent; border: 0; color: var(--muted); padding: 6px 12px; font-size: 12px; font-weight: 700; cursor: pointer; }
 .toggle button.act { background: #1d2b4a; color: var(--text); }
+/* Fidelidad ventana a ventana (31-oct) */
+.fi-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 0 0 8px; }
+.fi-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 10px; margin-bottom: 12px; }
+@media (max-width: 1100px) { .fi-grid { grid-template-columns: 1fr; } }
+.fi-grid .tbl-wrap { background: var(--panel2); border: 1px solid var(--line2); }
+.fi-grid thead th { position: sticky; top: 0; background: var(--panel-solid); z-index: 1; }
+.fi-grid td { padding: 6px 8px; }
+.tag.g-est { background: #2e0f0f; color: var(--red); } .tag.g-eje { background: #2b2410; color: #f5c451; }
+.tag.g-dis { background: #10254a; color: #93c5fd; } .tag.g-fue { background: #1b2336; color: var(--muted); }
 
 /* Oráculo y datos */
 .coins { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
@@ -445,11 +454,29 @@ tr.waiting td { background: rgba(251,191,36,.05); }
   <div class="sec-t" id="fiT">Fidelidad · la simulación frente a lo que hicieron de verdad el REAL y el PAPEL (ventanas con el bot encendido)</div>
   <div class="chips">
     <div class="stat" title="De las compras que hizo el bot, cuántas hizo también la simulación en la misma ventana"><div class="k">Compras del REAL que repite</div><div class="v" id="fiBot">—</div><div class="s" id="fiBotS">—</div></div>
-    <div class="stat" title="De las compras de la simulación, cuántas hizo también el bot en la misma ventana"><div class="k">Compras de la sim. que hizo el REAL</div><div class="v" id="fiSim">—</div><div class="s" id="fiSimS">—</div></div>
+    <div class="stat" title="De las compras de la simulación, en cuántas el bot compró o dio señal del mismo lado (si no compró fue por saldo, profundidad, freno o rechazo de Polymarket: disponibilidad, no estrategia)"><div class="k">Compras de la sim. que el REAL quiso hacer</div><div class="v" id="fiSim">—</div><div class="s" id="fiSimS">—</div></div>
     <div class="stat" title="En las compras comunes y del mismo lado: ganan o pierden igual"><div class="k">Mismo resultado</div><div class="v" id="fiRes">—</div><div class="s" id="fiResS">—</div></div>
     <div class="stat" title="Ventaja por $ apostado en las ventanas comparadas"><div class="k">Por $ · sim. / REAL</div><div class="v" id="fiPd">—</div><div class="s" id="fiPdS">—</div></div>
     <div class="stat"><div class="k">Ventanas comparadas</div><div class="v" id="fiVen">—</div><div class="s" id="fiVenS">—</div></div>
-    <div class="stat" title="De dónde salía el precio en el segundo de cada compra simulada"><div class="k">Origen del precio</div><div class="v" id="fiOri" style="font-size:12px">—</div><div class="s" id="fiOriS">—</div></div>
+    <div class="stat" title="De dónde salía el precio en el segundo de cada compra simulada (todo el periodo simulado). Sin cinta de ningún bot se usa el precio reconstruido con los exchanges grabados, que es menos fiel: repitiendo 18→31-oct (BTC 5m, 12,6 días, ventanas con el REAL encendido) la simulación con la cinta repite el 97,5 % de las compras del REAL; solo con el precio reconstruido, el 64,5 %"><div class="k">Origen del precio</div><div class="v" id="fiOri" style="font-size:12px">—</div><div class="s" id="fiOriS">—</div></div>
+  </div>
+  <div class="fi-bar">
+    <div class="toggle" title="Bot con el que se compara la simulación"><button class="act" id="fiSelR" onclick="setFiBot('REAL')">REAL</button><button id="fiSelP" onclick="setFiBot('PAPEL')">PAPEL</button></div>
+    <span class="sub" id="fiMotS">Pulsa Simular para comparar ventana a ventana</span>
+  </div>
+  <div class="fi-grid">
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Qué pasó</th><th>Tipo</th><th>Ventanas</th><th>Sim. $</th><th id="fiMotBotH">REAL $</th></tr></thead>
+        <tbody id="fiMot"><tr class="empty"><td colspan="5">—</td></tr></tbody>
+      </table>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Ventana (hora local)</th><th>Mercado</th><th>Qué pasó</th><th>Simulación</th><th id="fiLisBotH">REAL</th></tr></thead>
+        <tbody id="fiLis"><tr class="empty"><td colspan="5">—</td></tr></tbody>
+      </table>
+    </div>
   </div>
   <div class="sec-t" id="pyT">Proyección · no es una predicción del mercado: extiende la ventaja medida con las reglas actuales</div>
   <div class="chips">
@@ -568,26 +595,86 @@ function paintSim(labels, equity, porMercado) {
 }
 const _pc = (x) => x == null ? '—' : Number(x).toFixed(1).replace('.', ',') + ' %';
 const _clsPct = (x) => x == null ? '' : (x >= 90 ? 'pos' : (x >= 75 ? 'warn' : 'neg'));
+// 31-oct: ventana a ventana, con el motivo de cada diferencia (estrategia, ejecución o disponibilidad del bot)
+const FI_ORDEN = ['comunes', 'sin señal', 'sim sin señal', 'lado distinto', 'sim sin llenar', 'resultado distinto',
+                  'señal sin orden', 'rechazada', 'señal sin compra', 'bot sin cerrar'];
+const FI_GRUPO = {'igual': ['', 'igual'], 'estrategia': ['g-est', 'estrategia'], 'ejecución': ['g-eje', 'ejecución'],
+                  'disponibilidad': ['g-dis', 'disponibilidad']};
+let fiCual = 'REAL', fiData = null;
+try { if (localStorage.getItem('fiCual') === 'PAPEL') fiCual = 'PAPEL'; } catch (e) {}
+function setFiBot(b) {
+  fiCual = b;
+  try { localStorage.setItem('fiCual', b); } catch (e) {}
+  renderFiTablas();
+}
+function renderFiTablas() {
+  const selR = $('fiSelR'), selP = $('fiSelP');
+  if (selR) selR.classList.toggle('act', fiCual === 'REAL');
+  if (selP) selP.classList.toggle('act', fiCual === 'PAPEL');
+  setT('fiMotBotH', fiCual + ' $'); setT('fiLisBotH', fiCual);
+  const c = fiData || {}, B = c[fiCual], info = c.motivos_info || {};
+  if (!B) return;
+  if (B.motivos === undefined) {             // simulación guardada antes del 31-oct: sin comparación ventana a ventana
+    $('fiMot').innerHTML = $('fiLis').innerHTML = '<tr class="empty"><td colspan="5">Simulación anterior al 31-oct: pulsa Simular</td></tr>';
+    setT('fiMotS', 'La comparación ventana a ventana sale al pulsar Simular');
+    return;
+  }
+  const usd = (v) => `<span class="${cls(v)}">${signed(v)}</span>`;
+  const filas = FI_ORDEN.filter(k => B.motivos && B.motivos[k]).map(k => {
+    const m = B.motivos[k], g = FI_GRUPO[(info[k] || [])[0]] || ['', ''];
+    return `<tr title="${esc((info[k] || [])[1] || '')}"><td>${esc(k)}</td><td>${g[0] ? `<span class="tag ${g[0]}">${g[1]}</span>` : g[1]}</td>` +
+           `<td>${m.n}</td><td>${usd(m.sim)}</td><td>${usd(m.bot)}</td></tr>`;
+  });
+  Object.entries(B.fuera || {}).forEach(([k, f]) => {
+    filas.push(`<tr title="Ventanas que no se comparan: el ${fiCual} no pudo decidir. La simulación compró en ${f.sim_n} y el ${fiCual} en ${f.bot_n}">` +
+               `<td>${fiCual} ${k === 'apagado' ? 'apagado' : 'encendido sin datos'}</td><td><span class="tag g-fue">fuera</span></td>` +
+               `<td>${f.n}</td><td>${f.sim_n ? usd(f.sim) : '—'}</td><td>${f.bot_n ? usd(f.bot) : '—'}</td></tr>`);
+  });
+  $('fiMot').innerHTML = filas.join('') || '<tr class="empty"><td colspan="5">Sin ventanas que comparar</td></tr>';
+  const lado = (x) => x ? `${x[0]} @${n(x[1], 2)} → ${signed(x[2])} $` : null;
+  const QUE = {'señal sin orden': 'no envió orden', 'rechazada': 'orden rechazada', 'señal sin compra': 'no compró',
+               'bot sin cerrar': 'compra sin cerrar'};
+  const queHizo = (x) => x.estado.startsWith('S:') ? `señal ${x.estado.slice(2)}` + (QUE[x.motivo] ? ` · ${QUE[x.motivo]}` : '') : x.estado;
+  $('fiLis').innerHTML = (B.lista || []).map(x => {
+    const g = FI_GRUPO[(info[x.motivo] || [])[0]] || ['', ''];
+    const sim = lado(x.sim) || (x.ordenes_sim && x.ordenes_sim[0] ? `orden sin llenar` : 'sin señal');
+    const bot = lado(x.bot) || queHizo(x);
+    return `<tr title="${esc((info[x.motivo] || [])[1] || '')}"><td>${utcTxt(new Date(x.w * 1000).toISOString())}</td><td>${esc(x.mk)}</td>` +
+           `<td>${g[0] ? `<span class="tag ${g[0]}">${esc(x.motivo)}</span>` : esc(x.motivo)}</td>` +
+           `<td class="${x.sim ? cls(x.sim[2]) : 'muted'}">${esc(sim)}</td><td class="${x.bot ? cls(x.bot[2]) : 'muted'}">${esc(bot)}</td></tr>`;
+  }).join('') || `<tr class="empty"><td colspan="5">${B.lista_privada ? 'La lista ventana a ventana solo se ve en el panel del PC' : 'Ninguna diferencia'}</td></tr>`;
+  setT('fiMotS', `${fiCual}: ${B.lista_total ?? 0} ventanas con diferencias` +
+    (B.lista_privada ? ' (lista solo en el panel del PC)' : ((B.lista_total ?? 0) > (B.lista || []).length ? ` (las ${(B.lista || []).length} más recientes)` : '')) +
+    ` · importes a ${n(c.a_por_compra, 0)} $ por compra, iguales para los dos · desde ${c.desde || '—'} UTC`);
+}
 function renderFidelidad(s) {
   const c = s.concordancia || {}, R = c.REAL || {}, P = c.PAPEL || {};
   const put = (id, txt, cl) => { const e = $(id); if (e) { e.textContent = txt; if (cl !== undefined) e.className = 'v ' + cl; } };
   if (c.error) { put('fiBot', '—'); setT('fiBotS', 'no se pudo comparar: ' + c.error); return; }
-  setT('fiT', `Fidelidad · la simulación frente a lo que hicieron de verdad el REAL y el PAPEL · ventanas con el bot encendido desde ${c.desde || '—'} UTC (reglas actuales)` +
+  const o = s.precio_origen || {};
+  const rec = Object.entries(o).filter(([k]) => k.startsWith('reconstruido')).reduce((a, [, v]) => a + (v || 0), 0);
+  setT('fiT', `Fidelidad · la simulación frente a lo que hicieron de verdad el REAL y el PAPEL · ventanas con el bot encendido y con datos desde ${c.desde || '—'} UTC (mismas reglas que el bot)` +
     (s.ancladas ? ` · ${s.ancladas} órdenes con el resultado real de la orden del REAL` : ''));
   put('fiBot', _pc(R.pct_compras_del_bot), _clsPct(R.pct_compras_del_bot));
   setT('fiBotS', `${R.comunes ?? 0} de ${R.bot ?? 0} · PAPEL ${_pc(P.pct_compras_del_bot)} (${P.comunes ?? 0} de ${P.bot ?? 0})`);
-  put('fiSim', _pc(R.pct_compras_de_la_sim), _clsPct(R.pct_compras_de_la_sim));
-  setT('fiSimS', `${R.comunes ?? 0} de ${R.sim ?? 0} · PAPEL ${_pc(P.pct_compras_de_la_sim)} (${P.comunes ?? 0} de ${P.sim ?? 0})`);
+  const nuevo = R.motivos !== undefined;     // las simulaciones guardadas antes del 31-oct no traen motivos
+  const q = nuevo ? R.pct_con_senal : R.pct_compras_de_la_sim;
+  put('fiSim', _pc(q), _clsPct(q));
+  setT('fiSimS', nuevo ? `${R.con_senal ?? 0} de ${R.sim ?? 0} · compró ${_pc(R.pct_compras_de_la_sim)} · PAPEL ${_pc(P.pct_con_senal)}`
+                       : `${R.comunes ?? 0} de ${R.sim ?? 0} las compró · simulación anterior al 31-oct`);
   put('fiRes', _pc(R.pct_mismo_resultado), _clsPct(R.pct_mismo_resultado));
   setT('fiResS', `${R.mismo_resultado ?? 0} de ${R.mismo_lado ?? 0} · PAPEL ${_pc(P.pct_mismo_resultado)}`);
   const pd = (a, b) => `${a == null ? '—' : signed(a)} / ${b == null ? '—' : signed(b)} %`;
   put('fiPd', pd(R.por_dolar_sim, R.por_dolar_bot), '');
-  setT('fiPdS', 'PAPEL: ' + pd(P.por_dolar_sim, P.por_dolar_bot));
+  setT('fiPdS', (nuevo ? `${signed(R.usd_sim)} / ${signed(R.usd_bot)} $ a ${n(c.a_por_compra, 0)} $/compra · ` : '') + 'PAPEL ' + pd(P.por_dolar_sim, P.por_dolar_bot));
   put('fiVen', String(R.ventanas ?? '—'), '');
-  setT('fiVenS', `PAPEL ${P.ventanas ?? '—'} · solo sim. ${R.solo_sim ?? 0} · solo REAL ${R.solo_bot ?? 0}`);
-  const o = s.precio_origen || {};
+  const fu = (B) => Object.entries(B.fuera || {}).map(([k, f]) => `${f.n} ${k}`).join(', ') || 'ninguna';
+  setT('fiVenS', nuevo ? `fuera: ${fu(R)} · PAPEL ${P.ventanas ?? '—'} (fuera: ${fu(P)})`
+                       : `PAPEL ${P.ventanas ?? '—'} · solo sim. ${R.solo_sim ?? 0} · solo REAL ${R.solo_bot ?? 0}`);
   put('fiOri', Object.entries(o).filter(([, v]) => v > 0).map(([k, v]) => `${k.replace('cinta del ', '').replace('reconstruido del grabador', 'reconstruido')} ${_pc(v)}`).join(' · ') || '—', '');
-  setT('fiOriS', 'de las compras simuladas');
+  setT('fiOriS', rec >= 5 ? `de las compras simuladas · ojo: el ${_pc(rec)} sin cinta de ningún bot es menos fiel` : 'de las compras simuladas');
+  fiData = c;
+  renderFiTablas();
 }
 function renderProyeccion(s) {
   const py = s.proyeccion || {}, F = py.fuentes || {}, ref = py.referencia, f = ref ? F[ref] : null;
