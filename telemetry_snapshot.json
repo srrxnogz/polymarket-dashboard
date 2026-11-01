@@ -1,7 +1,7 @@
 {
   "schema": 2,
-  "timestamp": "2026-11-01T05:25:53.929345+00:00",
-  "timestamp_epoch": 1793510753,
+  "timestamp": "2026-11-01T05:26:10.760327+00:00",
+  "timestamp_epoch": 1793510770,
   "bot_online": true,
   "simulation_mode": true,
   "balance": 45.9817,
@@ -235,7 +235,7 @@
     "v4_real": null,
     "v4_version": "4.5",
     "recorder": {
-      "max_age_s": 53.0,
+      "max_age_s": 10.0,
       "ok": true,
       "procs": 12,
       "stale": []
@@ -246,7 +246,7 @@
       "collected_value": 730.3,
       "failed_count": 0,
       "failed_value": 0.0,
-      "last_collected_age_s": 6019.0,
+      "last_collected_age_s": 6035.9,
       "last_error": null,
       "mode": "sim",
       "no_value_count": 0,
@@ -260,39 +260,41 @@
     },
     "ws_feed": {
       "alimentador": {
-        "aplicados": 667602,
+        "aplicados": 667669,
         "conectado": true,
         "conexiones": 1,
-        "edad_fotograma_ms": 93,
-        "fotograma": 667636,
-        "hace_s": 0.09,
+        "edad_fotograma_ms": 163,
+        "fotograma": 667703,
+        "hace_s": 0.16,
         "instantaneas": 1,
         "max_de_golpe": 14,
-        "recibidos": 667603,
+        "recibidos": 667670,
         "sin_vuelta": 178,
         "ultimo_error": null
       },
-      "connected": false,
-      "connected_for_s": 0,
+      "connected": true,
+      "connected_for_s": 17.0,
       "data_age_s": {
-        "…114712": 1709.0,
-        "…148164": 1708.8,
-        "…186077": 1709.0,
-        "…221873": 2009.7,
-        "…684129": 1708.8,
-        "…921681": 2009.7
+        "…114712": 1726.1,
+        "…148164": 1725.9,
+        "…186077": 1726.1,
+        "…221873": 2026.8,
+        "…583321": 2026.6,
+        "…684129": 1725.9,
+        "…744136": 2026.6,
+        "…921681": 2026.8
       },
       "kb_per_s": 0.0,
       "lag_ms_max": null,
       "lag_ms_p50": null,
       "lag_tokens": {
-        "104604586344696134609233963379728791745387639918216671470376402971890460148164": 0,
-        "18724866003713542867891398516682764522235682495272927066790212269353146684129": 0,
+        "104604586344696134609233963379728791745387639918216671470376402971890460148164": 57,
+        "18724866003713542867891398516682764522235682495272927066790212269353146684129": 57,
         "21279512180540612803353863505024509059595362828270773580792092367397392221873": 0,
         "32060517087183522028687950446746838192587837215089873735745962063205210744136": 0,
         "32257265259485833853011752049584996823934768892821228017325986996320887921681": 0,
-        "72031278617428428505677839460992324547956861130108009321859899204738084186077": 0,
-        "72359939705071831375101088513803568613175568203527769585044280218128880114712": 0,
+        "72031278617428428505677839460992324547956861130108009321859899204738084186077": 54,
+        "72359939705071831375101088513803568613175568203527769585044280218128880114712": 54,
         "92939927020848690343936387800439711553364162389789184853020297949150456583321": 0
       },
       "last_hour": {
@@ -306,17 +308,17 @@
         "resuscripcion": 261,
         "vigilancia": 119
       },
-      "max_data_age_s": 2009.7,
+      "max_data_age_s": 2026.8,
       "msgs_per_s": 2.3,
       "procesos": 8,
       "redundancia": 3,
       "restarts": 0,
       "sin_conexion_ahora": 0,
       "sin_conexion_tokens": {},
-      "slots": 7,
+      "slots": 12,
       "subprocess": true,
       "tokens": 8,
-      "tokens_waiting_first_data": 14,
+      "tokens_waiting_first_data": 24,
       "totals": {
         "closes": {
           "1013": 28,
@@ -324,10 +326,10 @@
           "limpio": 778,
           "vigilancia": 128
         },
-        "connects": 1008,
-        "msgs": 69756861,
+        "connects": 1013,
+        "msgs": 69756907,
         "parse_errors": 0,
-        "pongs": 84957,
+        "pongs": 84998,
         "resubscribes": 582
       }
     },
@@ -356,74 +358,74 @@
         "symbols": {
           "bnbusd": {
             "fresh": true,
-            "ref": 704.581,
-            "ref_age_s": 1.1,
-            "twap": 704.517122,
-            "twap_age_s": 1.05,
-            "twap_lag_s": 0.9
+            "ref": 704.578,
+            "ref_age_s": 0.95,
+            "twap": 704.554464,
+            "twap_age_s": 0.91,
+            "twap_lag_s": 0.89
           },
           "btcusd": {
             "fresh": true,
-            "ref": 77702.2811,
-            "ref_age_s": 1.08,
-            "twap": 77701.203718,
-            "twap_age_s": 1.01,
-            "twap_lag_s": 0.95
+            "ref": 77702.7266,
+            "ref_age_s": 0.97,
+            "twap": 77701.502415,
+            "twap_age_s": 0.89,
+            "twap_lag_s": 0.91
           },
           "dogeusd": {
             "fresh": true,
             "ref": 0.0757,
-            "ref_age_s": 1.08,
-            "twap": 0.07566,
-            "twap_age_s": 1.04,
-            "twap_lag_s": 0.91
+            "ref_age_s": 0.96,
+            "twap": 0.075661,
+            "twap_age_s": 0.92,
+            "twap_lag_s": 0.87
           },
           "ethusd": {
             "fresh": true,
-            "ref": 2264.3801,
-            "ref_age_s": 1.11,
-            "twap": 2264.369528,
-            "twap_age_s": 1.02,
-            "twap_lag_s": 0.93
+            "ref": 2264.4015,
+            "ref_age_s": 0.96,
+            "twap": 2264.380829,
+            "twap_age_s": 0.9,
+            "twap_lag_s": 0.89
           },
           "hypeusd": {
             "fresh": true,
-            "ref": 87.8986,
-            "ref_age_s": 1.12,
-            "twap": 87.88186,
-            "twap_age_s": 1.03,
-            "twap_lag_s": 0.93
+            "ref": 87.9052,
+            "ref_age_s": 0.98,
+            "twap": 87.885034,
+            "twap_age_s": 0.93,
+            "twap_lag_s": 0.86
           },
           "solusd": {
             "fresh": true,
-            "ref": 95.4406,
-            "ref_age_s": 1.09,
-            "twap": 95.439896,
-            "twap_age_s": 1.05,
-            "twap_lag_s": 0.91
+            "ref": 95.443,
+            "ref_age_s": 0.94,
+            "twap": 95.440572,
+            "twap_age_s": 0.93,
+            "twap_lag_s": 0.87
           },
           "xrpusd": {
             "fresh": true,
-            "ref": 1.2507,
-            "ref_age_s": 1.1,
-            "twap": 1.250705,
-            "twap_age_s": 1.03,
-            "twap_lag_s": 0.92
+            "ref": 1.2508,
+            "ref_age_s": 0.96,
+            "twap": 1.250724,
+            "twap_age_s": 0.92,
+            "twap_lag_s": 0.88
           }
         },
         "ultima_discrepancia": null
       },
       "event_loop": {
-        "cycles": 668896,
+        "cycles": 668978,
         "enabled": true,
-        "last_cycle": 1793510753.8606384,
+        "last_cycle": 1793510770.6330564,
         "last_slow": null,
         "max_s": 0.25,
         "min_s": 0.05,
         "slow_1s": 0,
         "slow_3s": 0,
-        "wakes_by_data": 667424,
-        "wakes_by_timeout": 1472,
+        "wakes_by_data": 667491,
+        "wakes_by_timeout": 1487,
         "work_max_s": 0.0
       },
       "depth_recorder": {
