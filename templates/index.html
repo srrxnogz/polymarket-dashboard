@@ -191,8 +191,8 @@ select { background: #16213a; color: var(--text); border: 1px solid var(--line);
 .side .h { font-size: 11px; font-weight: 800; letter-spacing: .06em; }
 .side .p { font-size: 22px; font-weight: 800; margin-top: 2px; }
 .side .s { font-size: 11px; color: var(--muted); margin-top: 2px; }
-.oracle { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; }
-.oracle div { background: #0c1426; border: 1px solid var(--line2); border-radius: 10px; padding: 8px 10px; }
+.oracle { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.oracle > div { flex: 1 1 130px; min-width: 0; background: #0c1426; border: 1px solid var(--line2); border-radius: 10px; padding: 8px 10px; }
 .oracle .k { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; font-weight: 700; }
 .oracle .v { font-size: 15px; font-weight: 800; margin-top: 2px; }
 .clpath { margin-top: 10px; background: #0c1426; border: 1px solid var(--line2); border-radius: 10px; padding: 6px 8px 4px; }
@@ -206,6 +206,43 @@ select { background: #16213a; color: var(--text); border: 1px solid var(--line);
 .watch .w.pause { border-color: #713f12; background: #2a1d06; color: var(--amber); }
 .status-line { margin-top: 12px; font-size: 12px; color: #cbd5e1; background: #0b1324; border: 1px dashed var(--line); border-radius: 10px; padding: 8px 10px; }
 .sig { color: var(--green); font-weight: 800; }
+/* 3-nov (Sergio): cada mercado con una tarjeta con el aspecto del widget de Polymarket, pintada aquí (sin iframes ni recargas),
+   y a su lado los datos del bot. Los nodos de la tarjeta son fijos: los sondeos no los repintan y la cascada no se corta. */
+.mkt-cuerpo { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 12px; }
+.mkt-datos { flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+.mkt-datos > * { margin-top: 0; }
+.mkt-datos > .status-line { margin-top: auto; }
+.pm { --pm-fondo: #0c0e13; --pm-gris: #7d8189; --pm-verde: #00ae4b; --pm-rojo: #f0343a; flex: 0 1 400px; min-width: 0; display: flex; flex-direction: column; gap: 14px;
+      padding: 18px 20px 20px; background: var(--pm-fondo); border: 1px solid #45474e; border-radius: 16px; color: #edeff1; }
+.pm a { color: inherit; text-decoration: none; }
+.pm-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 12px; font-weight: 500; color: var(--pm-gris); }
+.pm-top b { font-size: 14px; font-weight: 600; }
+.pm-top .led { width: 6px; height: 6px; margin: 0 2px 1px 6px; vertical-align: middle; }
+.pm-top .led.on { animation: none; box-shadow: none; }
+.pm-tit { display: flex; align-items: flex-start; gap: 12px; }
+.pm-ico { flex: none; width: 46px; height: 46px; border-radius: 10px; background: #f7931a; color: #fff; display: grid; place-items: center; font-size: 30px; font-weight: 700; line-height: 1; }
+.pm-ico.btc { font-style: italic; }
+.pm-tit p { min-width: 0; font-size: 17px; font-weight: 700; line-height: 1.35; }
+.pm-graf { position: relative; flex: 1 1 auto; min-height: 170px; overflow: hidden; }
+.pm-graf svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.pm-pct { position: absolute; left: 0; top: 0; font-size: 24px; font-weight: 600; line-height: 28px; color: #2d9cdb; -webkit-text-stroke: 3px var(--pm-fondo); paint-order: stroke; }
+/* La cascada: entra desde abajo y sube; muelle de Polymarket (rigidez 320, amortiguación 26) muestreado en linear(); solo transform y opacity.
+   En escalones de 30 ms: entre uno y otro nada cambia y no se redibuja (a suave serían ~134 redibujados/s en esta pantalla de 144 Hz; así, ~33) */
+.pm-cascada { position: absolute; left: 4px; bottom: 4px; width: 0; height: 0; pointer-events: none; z-index: 2; contain: layout style; }
+.pm-fila { position: absolute; left: 0; bottom: 0; white-space: nowrap; font-size: 13px; font-weight: 600; line-height: 1; transform-origin: left center; will-change: transform, opacity;
+  text-shadow: 1px 0 0 var(--pm-fondo), -1px 0 0 var(--pm-fondo), 0 1px 0 var(--pm-fondo), 0 -1px 0 var(--pm-fondo), 1px 1px 0 var(--pm-fondo), -1px -1px 0 var(--pm-fondo), 1px -1px 0 var(--pm-fondo), -1px 1px 0 var(--pm-fondo);
+  transform: translateY(0) scale(1); opacity: 1;
+  transition: transform .45s linear(0 0% 6.67%, .11 6.67% 13.33%, .335 13.33% 20%, .567 20% 26.67%, .758 26.67% 33.33%, .893 33.33% 40%, .976 40% 46.67%, 1.018 46.67% 53.33%, 1.034 53.33% 60%, 1.035 60% 66.67%, 1.028 66.67% 73.33%, 1.02 73.33% 80%, 1.012 80% 86.67%, 1.006 86.67% 93.33%, 1.002 93.33% 100%, 1 100%), opacity .3s steps(10, end); }
+@starting-style { .pm-fila { transform: translateY(24px) scale(.5); opacity: 0; } }
+.pm-fila.up, .pm-pie .up { color: var(--pm-verde); } .pm-fila.dn, .pm-pie .dn { color: var(--pm-rojo); }
+.pm-fila.fuera { transition: transform .24s steps(8, end), opacity .24s steps(8, end); }
+@media (prefers-reduced-motion: reduce) { .pm-fila, .pm-fila.fuera { transition: opacity .2s steps(6, end); } }
+.pm-pie { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 2px 8px; margin-top: -8px; font-size: 12px; font-weight: 500; color: var(--pm-gris); }
+.pm-btns { display: flex; gap: 8px; }
+.pm-btn { flex: 1 1 0; min-width: 0; height: 36px; display: flex; align-items: center; justify-content: center; gap: 5px; border-radius: 11px; font-size: 14px; }
+.pm-btn b { font-weight: 700; }
+.pm .pm-btn.up { color: var(--pm-verde); background: rgba(0,148,49,.15); } .pm .pm-btn.dn { color: var(--pm-rojo); background: rgba(223,11,16,.15); }
+.pm .pm-btn.up:hover { background: rgba(0,148,49,.25); } .pm .pm-btn.dn:hover { background: rgba(223,11,16,.25); }
 
 /* Rendimiento */
 .chart-box { position: relative; height: 210px; }
@@ -775,6 +812,262 @@ function clPathSvg(path, strike, T) {
     </svg><div class="sub">Media de 60 s de Chainlink desde el inicio, como la gráfica de la web · discontinua: precio a superar</div></div>`;
 }
 
+// 3-nov (Sergio): la ventana en vivo con el aspecto del widget de Polymarket y, sobre todo, su cascada de compras abajo a la izquierda
+// (verde si compran Up, rojo si compran Down). El widget oficial lleva minutos de retraso, así que la tarjeta se pinta aquí: los precios
+// son los del libro del bot y las compras llegan directas al navegador por el canal público de operaciones de Polymarket (activity/trades,
+// ~15 kB/s; el canal del libro pasa de 160 kB/s). Ese canal manda una fila por participante: la del que cruza es la única con comisión
+// (fee) y es la que enseña el widget (199 de 200 iguales que /v2/trades). Va ~2 s por detrás del cruce, sin tocar los bots.
+const RT_URL = 'wss://ws-live-data.polymarket.com', PM_DATA = 'https://data-api.polymarket.com', PM_GAMMA = 'https://gamma-api.polymarket.com';
+const CASC = {filas: 5, paso: 24, vidaMs: 5000, minUsd: 1, ritmoMs: 150, azarMs: 300};
+const PM_NOMBRE = {BTC: 'Bitcoin', ETH: 'Ethereum', SOL: 'Solana', XRP: 'XRP', DOGE: 'Dogecoin', BNB: 'BNB', HYPE: 'Hyperliquid'};
+const _huecos = {}, _pmv = {};   // _huecos: nodos fijos y conexión de cada mercado; _pmv: datos de cada ventana (por slug)
+const _pmNum = new Intl.NumberFormat('es-ES', {maximumFractionDigits: 0, useGrouping: 'always'}), _pmK =new Intl.NumberFormat('es-ES', {maximumFractionDigits: 1});
+const pmCompra = (v) => v >= 1e6 ? _pmK.format(v / 1e6) + ' M' : (v >= 1e3 ? _pmK.format(v / 1e3) + 'k' : _pmNum.format(v));
+
+function pmVentana(slug, clave, w0, T) {
+  return _pmv[slug] || (_pmv[slug] = {slug, clave, w0, T, vol: 0, up: 0, dn: 0, nUp: 0, nDn: 0, vistos: new Set(), puntos: [], cond: null,
+                                      completa: w0 > Date.now() / 1000 - 5, sembrando: false, cubierto: 0});
+}
+// Cada operación cuenta una vez, llegue por el canal o por el histórico
+function pmCuenta(v, tx, lado, side, usd) {
+  if (!tx || v.vistos.has(tx)) return false;
+  v.vistos.add(tx); v.vol += usd;
+  if (side === 'BUY') { v[lado] += usd; if (lado === 'up') v.nUp++; else v.nDn++; }
+  return true;
+}
+
+// ── Cascada: una cola por mercado y un solo temporizador, que despierta solo cuando toca algo (sin bucle continuo) ──
+function cascadaEntra(h, lado, usd) {     // en ráfaga las compras del mismo lado se suman: nunca se pierde un dólar
+  const c = h.casc, p = c.pend[lado], vacia = !c.pend.up.n && !c.pend.dn.n;
+  if (!p.n) p.desde = performance.now();
+  p.usd += usd; p.n++;
+  if (vacia) cascadaTurno();
+}
+let _cascT = null;
+function cascadaTurno() {
+  clearTimeout(_cascT); _cascT = null;
+  if (document.hidden) return;
+  let prox = Infinity;
+  Object.values(_huecos).forEach(h => {
+    const c = h.casc, vieja = c.filas[c.filas.length - 1];
+    if (vieja) prox = Math.min(prox, vieja.t + CASC.vidaMs);
+    if (c.pend.up.n || c.pend.dn.n) prox = Math.min(prox, c.sig);
+  });
+  if (prox < Infinity) _cascT = setTimeout(cascadaTick, Math.max(0, prox - performance.now()));
+}
+function cascadaTick() {
+  const ahora = performance.now();
+  Object.values(_huecos).forEach(h => {
+    const c = h.casc, {up, dn} = c.pend;
+    while (c.filas.length && ahora - c.filas[c.filas.length - 1].t >= CASC.vidaMs) cascadaSale(c.filas.pop());
+    if (ahora < c.sig || (!up.n && !dn.n)) return;
+    const lado = !dn.n ? 'up' : (!up.n ? 'dn' : (up.desde <= dn.desde ? 'up' : 'dn')), p = c.pend[lado], enCola = up.n + dn.n;
+    cascadaPinta(c, lado, p.usd);
+    p.usd = 0; p.n = 0;
+    c.sig = ahora + CASC.ritmoMs + Math.random() * CASC.azarMs * (1 - .7 * Math.min(enCola / 10, 1));
+  });
+  cascadaTurno();
+}
+function cascadaPinta(c, lado, usd) {
+  const el = document.createElement('div');
+  el.className = 'pm-fila ' + lado; el.textContent = '+ $' + pmCompra(usd);
+  c.capa.appendChild(el);
+  c.filas.unshift({el, t: performance.now(), y: 0});
+  while (c.filas.length > CASC.filas) cascadaSale(c.filas.pop());
+  c.filas.forEach((f, n) => {     // la nueva (n = 0) entra con @starting-style; las demás suben un hueco y se apagan con la altura
+    if (!n) return;
+    const i = n / (CASC.filas - 1);
+    f.y = -n * CASC.paso; f.el.style.transform = `translateY(${f.y}px) scale(1)`; f.el.style.opacity = 1 - i * i * .75;
+  });
+}
+function cascadaSale(f) {
+  f.el.classList.add('fuera');
+  f.el.style.transform = `translateY(${f.y - 10}px) scale(.7)`; f.el.style.opacity = 0;
+  setTimeout(() => f.el.remove(), 260);
+}
+function cascadaVacia(h) {
+  const c = h.casc;
+  c.filas.forEach(f => f.el.remove()); c.filas = [];
+  c.pend.up.usd = c.pend.dn.usd = 0; c.pend.up.n = c.pend.dn.n = 0;
+}
+
+// ── Canal de operaciones: una conexión por mercado (cada una atiende un solo filtro: probado, con dos solo llega uno) y solo con la pestaña a la vista ──
+const rtAbierto = (h) => !!h.ws && h.ws.readyState === 1;
+function rtSuscribe(h) {
+  if (rtAbierto(h) && h.rtSlug) h.ws.send(JSON.stringify({action: 'subscribe', subscriptions: [{topic: 'activity', type: 'trades', filters: JSON.stringify({event_slug: h.rtSlug})}]}));
+}
+function rtMensaje(h, e) {
+  if (!e.data) return;               // respuesta al PING
+  let d; try { d = JSON.parse(e.data); } catch (_) { return; }
+  const p = d.payload; if (d.topic !== 'activity' || !p) return;
+  h.dato = Date.now();
+  const v = _pmv[p.eventSlug]; if (!v) return;
+  if (p.conditionId) v.cond = p.conditionId;
+  if (!(p.fee > 0)) return;          // solo la fila del que cruza
+  const usd = p.price * p.size, lado = p.outcomeIndex === 0 ? 'up' : 'dn';
+  if (pmCuenta(v, p.transactionHash, lado, p.side, usd) && p.side === 'BUY' && usd >= CASC.minUsd) cascadaEntra(h, lado, usd);
+}
+function rtAbre(h) {
+  if (document.hidden || h.ws || !h.rtSlug) return;
+  let ws; try { ws = new WebSocket(RT_URL); } catch (e) { h.fallos++; return; }
+  h.ws = ws;
+  ws.onopen = () => {
+    h.espera = 1000; h.fallos = 0; h.dato = Date.now();
+    const now = Date.now() / 1000;   // lo que haya pasado sin canal se recupera del histórico
+    Object.values(_pmv).forEach(v => { if (v.clave === h.clave && now > v.w0 + 5) v.completa = false; });
+    rtSuscribe(h);
+  };
+  ws.onmessage = (e) => rtMensaje(h, e);
+  ws.onclose = () => {
+    if (h.ws === ws) h.ws = null;
+    h.fallos++;
+    if (h.reintento || document.hidden) return;
+    h.reintento = setTimeout(() => { h.reintento = null; rtAbre(h); }, h.espera);
+    h.espera = Math.min(h.espera * 2, 30000);
+  };
+}
+function rtCierra(h) {
+  clearTimeout(h.reintento); h.reintento = null;
+  if (h.ws) { h.ws.onclose = null; h.ws.close(); h.ws = null; }
+}
+// A la hora en punto la conexión salta sola a la ventana siguiente, sin esperar a que el bot la anuncie (tarda 1-3 s)
+function pmCanal(h, now) {
+  const v = h.v; if (!v) return;
+  let slug = v.slug;
+  if (now >= v.w0 + v.T && v.slug.endsWith(String(v.w0))) {
+    const w0 = v.w0 + Math.floor((now - v.w0) / v.T) * v.T;
+    slug = v.slug.replace(/\d+$/, String(w0));
+    pmVentana(slug, h.clave, w0, v.T);
+  }
+  if (h.rtSlug !== slug) { h.rtSlug = slug; rtSuscribe(h); }
+  Object.keys(_pmv).forEach(s => { if (_pmv[s].clave === h.clave && _pmv[s] !== v && s !== slug) delete _pmv[s]; });
+  rtAbre(h);
+}
+setInterval(() => {                  // mantiene vivas las conexiones; si deja de llegar nada, la rehace
+  Object.values(_huecos).forEach(h => {
+    if (!rtAbierto(h)) return;
+    h.ws.send('PING');
+    if (Date.now() - h.dato > 60000) { rtCierra(h); rtAbre(h); }
+  });
+}, 5000);
+document.addEventListener('visibilitychange', () => {
+  const hs = Object.values(_huecos);
+  if (!document.hidden) { hs.forEach(rtAbre); return; }
+  clearTimeout(_cascT); _cascT = null;
+  hs.forEach(h => { rtCierra(h); cascadaVacia(h); });
+});
+
+// Al abrir el panel a media ventana (o volver a la pestaña): lo que ya pasó sale del histórico. Solo esa vez, no en cada ventana.
+async function pmSiembra(v) {
+  v.sembrando = true; v.completa = true;
+  try {
+    if (!v.cond) { const g = await (await fetch(`${PM_GAMMA}/events?slug=${encodeURIComponent(v.slug)}`)).json(); v.cond = g[0].markets[0].conditionId; }
+    let cursor = '', filas = [];
+    for (let i = 0; i < 8; i++) {
+      // _=: sin él su red de caché devuelve la misma respuesta hasta 5 min (medido: 107 s atrasada)
+      const r = await fetch(`${PM_DATA}/v2/trades?condition=${v.cond}&limit=1000&_=${Date.now()}` + (cursor ? '&cursor=' + encodeURIComponent(cursor) : ''));
+      if (!r.ok) break;
+      const j = await r.json(), d = j.data || [], pag = j.pagination || {};
+      filas = filas.concat(d);
+      if (!d.length || !pag.has_more || !pag.next_cursor || d[d.length - 1].timestamp < v.cubierto - 5) break;
+      cursor = pag.next_cursor;
+    }
+    if (!filas.length) return;
+    v.cubierto = filas[0].timestamp;
+    // Gráfica: un punto por segundo con la última operación, solo donde no hay puntos del libro del bot
+    const conLibro = new Set(), porSeg = new Map();
+    v.puntos.forEach(q => { for (let s = Math.floor(q[0]) - 2; s <= q[0] + 2; s++) conLibro.add(s); });
+    filas.forEach(r => {
+      const lado = r.outcome_index === 0 ? 'up' : 'dn', s = r.timestamp - v.w0;
+      if (s < 0) return;               // el mercado abre antes que su ventana: esas operaciones no son de la ventana
+      pmCuenta(v, r.transaction_hash, lado, r.side, r.price * r.size);
+      if (s <= v.T && !conLibro.has(s) && !porSeg.has(s)) porSeg.set(s, lado === 'up' ? r.price : 1 - r.price);
+    });
+    v.puntos = v.puntos.concat([...porSeg]).sort((a, b) => a[0] - b[0]);
+    const h = _huecos[v.clave];
+    if (h && h.v === v) { pmDibuja(h); pmPie(h); }
+  } catch (e) { v.completa = false; console.warn('histórico de operaciones:', e); }
+  finally { v.sembrando = false; }
+}
+
+// ── Tarjeta: nodos fijos por mercado ──
+function huecoMercado(box, clave, T) {
+  if (_huecos[clave]) return _huecos[clave];
+  const el = document.createElement('div');
+  el.className = 'mkt'; el.dataset.clave = clave; el.dataset.t = T;
+  el.innerHTML = `<div class="mkt-cab"></div>
+    <div class="mkt-cuerpo">
+      <div class="pm">
+        <div class="pm-top"><span title="Compras al momento por el canal público de Polymarket; precios del libro del bot"><b>Polymarket</b><span class="led"></span><span class="pm-vivo"></span></span><a class="pm-ver" target="_blank" rel="noopener">Ver mercado ›</a></div>
+        <a class="pm-tit pm-ver" target="_blank" rel="noopener"><span class="pm-ico"></span><p></p></a>
+        <div class="pm-graf"><svg aria-hidden="true"></svg><span class="pm-pct"></span><div class="pm-cascada" aria-hidden="true"></div></div>
+        <div class="pm-pie"><span class="pm-vol" title="Lo negociado en esta ventana: precio × acciones de cada operación, una vez por operación"></span><span class="pm-lados"></span></div>
+        <div class="pm-btns"><a class="pm-btn up" target="_blank" rel="noopener"></a><a class="pm-btn dn" target="_blank" rel="noopener"></a></div>
+      </div>
+      <div class="mkt-datos"></div>
+    </div>
+    <div class="mkt-pie"></div>`;
+  box.insertBefore(el, [...box.children].find(c => Number(c.dataset.t) > T) || null);
+  const q = (s) => el.querySelector(s);
+  const h = _huecos[clave] = {clave, el, cab: q('.mkt-cab'), datos: q('.mkt-datos'), pie: q('.mkt-pie'), graf: q('.pm-graf'), svg: q('.pm-graf svg'), pct: q('.pm-pct'),
+    vol: q('.pm-vol'), lados: q('.pm-lados'), led: q('.pm-top .led'), vivo: q('.pm-vivo'), ico: q('.pm-ico'), tit: q('.pm-tit p'), up: q('.pm-btn.up'), dn: q('.pm-btn.dn'),
+    casc: {capa: q('.pm-cascada'), filas: [], sig: 0, pend: {up: {usd: 0, n: 0, desde: 0}, dn: {usd: 0, n: 0, desde: 0}}}, slug: null, v: null, visto: 0, W: 0, H: 0,
+    ws: null, rtSlug: null, espera: 1000, reintento: null, dato: 0, fallos: 0};
+  h.ro = new ResizeObserver(es => { h.W = es[0].contentRect.width; h.H = es[0].contentRect.height; pmDibuja(h); });
+  h.ro.observe(h.graf);
+  return h;
+}
+function pmPie(h) {
+  const v = h.v; if (!v) return;
+  h.vol.textContent = `$${_pmNum.format(v.vol)} Vol.`;
+  h.lados.innerHTML = `<span class="up">▲ $${_pmNum.format(v.up)}</span> · <span class="dn">▼ $${_pmNum.format(v.dn)}</span>`;
+  h.lados.title = `Compras en esta ventana: ${v.nUp} de Up y ${v.nDn} de Down`;
+}
+// Gráfica de la ventana (de 0 a T, no de 24 h como el widget): línea azul, escala automática y el % grande junto al último punto
+function pmDibuja(h) {
+  const v = h.v, W = h.W, H = h.H; if (!v || !W || !H || document.hidden) return;
+  const pts = v.puntos;
+  if (!pts.length) { h.svg.innerHTML = ''; h.pct.textContent = ''; return; }
+  const GUT = 30, MV = 8, vals = pts.map(p => p[1] * 100);
+  let lo = Math.min(...vals), hi = Math.max(...vals);
+  const falta = Math.max(0, 10 - (hi - lo)) / 2;
+  lo = Math.max(0, Math.floor(lo - falta - 1)); hi = Math.min(100, Math.ceil(hi + falta + 1));
+  const x = (t) => 2 + (W - GUT - 10) * Math.min(1, Math.max(0, t / v.T)), y = (pc) => MV + (H - 2 * MV) * (hi - pc) / (hi - lo);
+  const rej = [hi, Math.round((hi + lo) / 2), lo].map(c => `<line x1="2" x2="${W - GUT}" y1="${y(c)}" y2="${y(c)}" stroke="#333" stroke-dasharray="4 3"/><text x="${W - GUT + 4}" y="${y(c) + 3.5}" font-size="10" fill="#6b7280">${c}%</text>`).join('');
+  const ult = pts[pts.length - 1], ux = x(ult[0]), uy = y(ult[1] * 100);
+  h.svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  h.svg.innerHTML = `${rej}<path d="M${pts.map(p => x(p[0]).toFixed(1) + ' ' + y(p[1] * 100).toFixed(1)).join('L')}" fill="none" stroke="#2d9cdb" stroke-width="2" stroke-linejoin="round"/>
+    <circle cx="${ux}" cy="${uy}" r="8" fill="#2d9cdb" opacity=".3"/><circle cx="${ux}" cy="${uy}" r="4" fill="#2d9cdb"/>`;
+  const dcha = ux + 66 <= W - GUT, px = dcha ? ux + 12 : ux - 62, py = Math.max(0, Math.min(H - 28, dcha ? uy - 14 : uy - 34));
+  h.pct.textContent = Math.round(ult[1] * 100) + '%';
+  h.pct.style.transform = `translate(${px.toFixed(1)}px, ${py.toFixed(1)}px)`;
+}
+function pmActualiza(h, m, w0, T, t) {
+  if (!m.slug) return;
+  if (h.slug !== m.slug) {
+    h.slug = m.slug; h.v = pmVentana(m.slug, h.clave, w0, T);
+    const url = 'https://polymarket.com/event/' + encodeURIComponent(m.slug);
+    h.el.querySelectorAll('.pm-ver').forEach(a => { a.href = url; });
+    h.up.href = url + '?tid=0'; h.dn.href = url + '?tid=1';
+    const dia = new Date(w0 * 1000).toLocaleDateString('es-ES', {day: 'numeric', month: 'short'});
+    h.tit.innerHTML = `${esc(PM_NOMBRE[m.asset] || m.asset || '')} Up or Down<br>${esc(dia)}, ${hhmm(w0)}-${hhmm(w0 + T)}`;
+    h.ico.textContent = m.asset === 'BTC' ? '₿' : String(m.asset || '?').charAt(0);
+    h.ico.classList.toggle('btc', m.asset === 'BTC');
+  }
+  pmCanal(h, Date.now() / 1000);
+  const v = h.v, medio = (a, b) => (a != null && b != null) ? (Number(a) + Number(b)) / 2 : ((a ?? b) != null ? Number(a ?? b) : null);
+  let pu = medio(m.bid_up, m.ask_up);
+  if (pu === null) { const pd = medio(m.bid_down, m.ask_down); if (pd !== null) pu = 1 - pd; }
+  const ult = v.puntos[v.puntos.length - 1];
+  if (pu !== null) { if (ult && t - ult[0] < 1) ult[1] = pu; else v.puntos.push([t, pu]); }
+  const cts = (a) => a == null ? '—' : Math.round(Number(a) * 100) + '¢';
+  h.up.innerHTML = `Up <b>${cts(m.ask_up)}</b>`; h.dn.innerHTML = `Down <b>${cts(m.ask_down)}</b>`;
+  const abierto = rtAbierto(h);
+  h.led.className = 'led' + (abierto ? ' on' : ''); h.vivo.textContent = abierto ? 'en vivo' : 'conectando…';
+  if (!v.completa && !v.sembrando && !document.hidden && (abierto || h.fallos)) pmSiembra(v);
+  pmDibuja(h); pmPie(h);
+}
+
 function renderLive(v4) {
   const box = $('liveMarkets'); if (!box || !v4) return;
   const p = v4.params || {}, tmin0 = p.V4_T_MIN ?? 210, tmax0 = p.V4_T_MAX ?? 292, pmin0 = p.V4_P_MIN ?? 0.993;
@@ -793,9 +1086,19 @@ function renderLive(v4) {
     if (PAUSE_TIP[c]) return `<span class="w pause" title="${esc(PAUSE_TIP[c])}"><span class="led warn"></span><b>${c}</b> 5 min · en pausa</span>`;
     return `<span class="w" title="Solo se graban el oráculo y los datos para investigar; no se apuesta"><span class="led"></span><b>${c}</b> · solo datos</span>`;
   }).join('');
-  if (!mk.length) { box.innerHTML = `<div class="mkt"><div class="sub">Sin ventana viva en este momento (${esc((p.V4_ASSETS || ['BTC']).join('/'))} ${esc(durTxt)}). El bot busca el siguiente mercado…</div></div>`; return; }
   const now = Date.now() / 1000;
-  box.innerHTML = mk.map(m => {
+  // Cambio de ventana: el bot puede pasar unos segundos sin el mercado; su tarjeta se queda donde está, sin saltos
+  const claves = mk.map(m => (m.asset || '') + ':' + (m.window_s || (windowOf(m.slug) || {}).T || 300));
+  Object.keys(_huecos).forEach(k => {
+    if (claves.includes(k)) return;
+    const h = _huecos[k];
+    if (now - h.visto > 20) { rtCierra(h); h.ro.disconnect(); h.el.remove(); delete _huecos[k]; return; }
+    h.datos.innerHTML = '<div class="status-line">Ventana cerrada: esperando la siguiente…</div>'; h.pie.innerHTML = '';
+    pmCanal(h, now);
+  });
+  if (!mk.length && !Object.keys(_huecos).length) { box.innerHTML =`<div class="mkt"><div class="sub">Sin ventana viva en este momento (${esc((p.V4_ASSETS || ['BTC']).join('/'))} ${esc(durTxt)}). El bot busca el siguiente mercado…</div></div>`; return; }
+  [...box.children].forEach(c => { if (!c.dataset.clave) c.remove(); });
+  mk.forEach((m, i) => {
     const w0 = m.window_ts || (windowOf(m.slug) || {}).start || now;
     const T = m.window_s || (windowOf(m.slug) || {}).T || 300;
     const tmin = (m.zone && m.zone[0] != null) ? m.zone[0] : tmin0 + (T - 300);
@@ -813,8 +1116,8 @@ function renderLive(v4) {
     const diff = (strike != null && cur != null) ? cur - strike : null;   // precio actual − precio a superar
     const dec = (m.asset === 'BTC' || m.asset === 'ETH') ? 2 : 4;
     const status = m.signal ? `<span class="sig">🎯 SEÑAL: ${esc(m.signal)}</span>` : esc(m.status || '—');
-    return `<div class="mkt">
-      <div class="mkt-top">
+    const h = huecoMercado(box, claves[i], T); h.visto = now;
+    h.cab.innerHTML = `<div class="mkt-top">
         <div><div class="mkt-name">${esc(m.asset || '')} <small>${T / 60} min · ${hhmm(w0)}–${hhmm(w0 + T)}</small></div>
           <div class="sub">${inZone ? '<span class="pos">● en zona de entrada</span>' : (t < tmin ? 'zona de entrada en ' + fmtMMSS(tmin - t) : 'zona de entrada cerrada')}</div></div>
         <div class="count">${fmtMMSS(left)} <small>restantes</small></div>
@@ -824,8 +1127,8 @@ function renderLive(v4) {
         <div class="zone" style="left:${tmin / T * 100}%;width:${(tmax - tmin) / T * 100}%"></div>
         <div class="now" style="left:calc(${(t / T * 100).toFixed(2)}% - 1px)"></div>
       </div>
-      <div class="tl-lbl"><span>0 s</span><span>zona ${tmin}–${tmax} s (faltan ${T - tmin}–${T - tmax} s)</span><span>${T} s</span></div>
-      <div class="prob">
+      <div class="tl-lbl"><span>0 s</span><span>zona ${tmin}–${tmax} s (faltan ${T - tmin}–${T - tmax} s)</span><span>${T} s</span></div>`;
+    h.datos.innerHTML = `<div class="prob">
         <div class="sub" style="margin-bottom:5px">Probabilidad del modelo ${pu === null ? '(calculando…)' : ''} · umbral de entrada ${(pmin * 100).toFixed(1)}%</div>
         <div class="prob-bar${pu === null ? ' unk' : ''}">
           <div class="up" style="width:${pu === null ? 0 : upPct.toFixed(2)}%"></div><div class="mid"></div>
@@ -843,10 +1146,11 @@ function renderLive(v4) {
           <div class="sub" style="font-size:10px">puntual: ${spot != null ? '$' + Number(spot).toLocaleString('es-ES', {minimumFractionDigits: dec, maximumFractionDigits: dec}) : '—'}</div></div>
         <div><div class="k">Diferencia (${diff == null ? '—' : (diff >= 0 ? 'va ganando UP' : 'va ganando DOWN')})</div><div class="v ${cls(diff)}">${diff != null ? (diff >= 0 ? '▲ ' : '▼ ') + signed(diff, dec) + ' $' : '—'}</div></div>
       </div>
-      ${clPathSvg(m.cl_path, strike, T)}
-      <div class="status-line">${status}</div>
-    </div>`;
-  }).join('');
+      <div class="sub" style="font-size:10px;line-height:1.5">Modelo con exchanges: precio $${n(m.S, dec)} · a superar $${n(m.K, dec)} · distancia ${signed(m.dist, dec)} $ · σ ${n(m.sigma, 2)} · segundo ${m.t ?? '—'} · libro hace ${n(m.quote_age, 1)} s · Chainlink hace ${n(m.cl_twap_age_s, 1)} s</div>
+      <div class="status-line">${status}</div>`;
+    h.pie.innerHTML = clPathSvg(m.cl_path, strike, T);
+    pmActualiza(h, m, w0, T, t);
+  });
 }
 
 // ─── Render: rendimiento ──────────────────────────────────────────────────────
