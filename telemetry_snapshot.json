@@ -1,11 +1,11 @@
 {
   "schema": 2,
-  "timestamp": "2026-11-04T01:08:55.966485+00:00",
-  "timestamp_epoch": 1793754535,
+  "timestamp": "2026-11-04T01:09:13.139297+00:00",
+  "timestamp_epoch": 1793754553,
   "bot_online": true,
   "simulation_mode": true,
-  "balance": 36.6474,
-  "pnl_since_reset": -10.5126,
+  "balance": 36.4953,
+  "pnl_since_reset": -10.6647,
   "reset_anchor": {
     "balance": 47.16,
     "id": 11,
@@ -170,18 +170,18 @@
         "session_id": 874,
         "ts": "2026-10-29 10:27:30"
       },
-      "cash": 36.6474,
+      "cash": 30.8152,
       "dup_excluded": {
         "count": 1,
         "pnl": 0.1397
       },
-      "equity": 36.6474,
+      "equity": 36.4953,
       "equity_at_cost": 36.6474,
-      "open_cost": 0.0,
-      "open_count": 0,
+      "open_cost": 5.8322,
+      "open_count": 1,
       "pending_collect": 0.0,
       "pending_collect_count": 0,
-      "pnl_since_reset": -10.5126,
+      "pnl_since_reset": -10.6647,
       "since_reset": {
         "by_strategy": {
           "TWAP_LOCK_V4": {
@@ -216,7 +216,7 @@
           },
           "closed": 257,
           "losses": 10,
-          "open": 0,
+          "open": 1,
           "pnl": -10.5126,
           "profit_factor": 0.76,
           "realized": -10.5126,
@@ -227,15 +227,15 @@
         "win_rate": 96.11,
         "wins": 247
       },
-      "unrealized": 0
+      "unrealized": -0.1521
     },
     "real_balance": 0.0,
-    "session_pnl": -10.5126,
+    "session_pnl": -10.6647,
     "real_pnl": -3119.605721360532,
     "v4_real": null,
     "v4_version": "4.5",
     "recorder": {
-      "max_age_s": 56.0,
+      "max_age_s": 13.0,
       "ok": true,
       "procs": 12,
       "stale": []
@@ -246,7 +246,7 @@
       "collected_value": 1363.3,
       "failed_count": 0,
       "failed_value": 0.0,
-      "last_collected_age_s": 1704.2,
+      "last_collected_age_s": 1721.4,
       "last_error": null,
       "mode": "sim",
       "no_value_count": 0,
@@ -260,50 +260,50 @@
     },
     "ws_feed": {
       "alimentador": {
-        "aplicados": 172550,
+        "aplicados": 172887,
         "conectado": true,
         "conexiones": 1,
-        "edad_fotograma_ms": 21,
-        "fotograma": 1731175,
-        "hace_s": 0.02,
+        "edad_fotograma_ms": 50,
+        "fotograma": 1731512,
+        "hace_s": 0.05,
         "instantaneas": 1,
-        "max_de_golpe": 6,
-        "recibidos": 172551,
-        "sin_vuelta": 36,
+        "max_de_golpe": 11,
+        "recibidos": 172888,
+        "sin_vuelta": 46,
         "ultimo_error": null
       },
       "connected": true,
-      "connected_for_s": 383.0,
+      "connected_for_s": 400.0,
       "data_age_s": {
         "…121941": 0.0,
-        "…282961": 0.1,
+        "…282961": 0.0,
         "…392243": 0.0,
         "…435406": 0.0,
         "…519465": 0.0,
         "…597444": 0.0,
         "…626317": 0.0,
         "…773031": 0.0,
-        "…828716": 0.0,
-        "…897227": 0.1,
+        "…828716": 0.1,
+        "…897227": 0.0,
         "…978997": 0.0,
-        "…982306": 0.0
+        "…982306": 0.1
       },
-      "kb_per_s": 2478.9,
+      "kb_per_s": 2615.5,
       "lag_ms_max": 3114,
       "lag_ms_p50": 25,
       "lag_tokens": {
         "104580741724022713021857150082491299534981534782628870324178266473758319435406": 24,
-        "115084231272220490627834095473324279734337853112190880991241528803287355392243": 22,
-        "23681086183294899444188618158993833648100528357725225405499021593422546282961": 76,
-        "27467019087577031210756235798008703701795173909392018958103307081352033982306": 39,
-        "27480805841119009628892478205760770375720330622586948706278311075834014121941": 31,
-        "33312498709897903802138503777518785025231827275480873411624025544055721978997": 31,
-        "42136068990112826746228215998361034092549314576009963864137914045831082828716": 39,
-        "4319829060376417923230634538172661675858512005515801714276783915677416897227": 76,
-        "50282888931622658401247388741481951003294469327516505602533583611540893519465": 22,
-        "51873336243572908943652376000740451918450354200274504793221184068457118626317": 22,
+        "115084231272220490627834095473324279734337853112190880991241528803287355392243": 23,
+        "23681086183294899444188618158993833648100528357725225405499021593422546282961": 30,
+        "27467019087577031210756235798008703701795173909392018958103307081352033982306": 22,
+        "27480805841119009628892478205760770375720330622586948706278311075834014121941": 25,
+        "33312498709897903802138503777518785025231827275480873411624025544055721978997": 25,
+        "42136068990112826746228215998361034092549314576009963864137914045831082828716": 22,
+        "4319829060376417923230634538172661675858512005515801714276783915677416897227": 30,
+        "50282888931622658401247388741481951003294469327516505602533583611540893519465": 23,
+        "51873336243572908943652376000740451918450354200274504793221184068457118626317": 24,
         "65949068743887048602754100654541403966444282633677468769876428760820496773031": 24,
-        "92245602925916212057146311600120713506569862197397633401460735207182862597444": 22
+        "92245602925916212057146311600120713506569862197397633401460735207182862597444": 24
       },
       "last_hour": {
         "1013": 7,
@@ -317,7 +317,7 @@
         "vigilancia": 12
       },
       "max_data_age_s": 0.1,
-      "msgs_per_s": 3847.5,
+      "msgs_per_s": 3953.4,
       "procesos": 8,
       "redundancia": 3,
       "restarts": 0,
@@ -335,13 +335,26 @@
           "vigilancia": 58
         },
         "connects": 2349,
-        "msgs": 315979134,
+        "msgs": 316063622,
         "parse_errors": 0,
-        "pongs": 209879,
+        "pongs": 209918,
         "resubscribes": 240
       }
     },
-    "active_positions": [],
+    "active_positions": [
+      {
+        "market_slug": "btc-updown-5m-1793754300",
+        "outcome": "UP",
+        "entry_price": 0.972,
+        "current_price": 0.95,
+        "cost_usdc": 5.8322,
+        "shares": 6.0,
+        "unrealized_pnl": -0.1521,
+        "unrealized_pnl_pct": -2.61,
+        "strategy": "TWAP_LOCK_V4 (6.00t)",
+        "window_ts": 1793754300
+      }
+    ],
     "v4": {
       "available": true,
       "active": true,
@@ -349,12 +362,12 @@
       "markets": [
         {
           "K": 77227.45,
-          "S": 77019.77,
-          "ask_down": 0.91,
-          "ask_up": 0.1,
+          "S": 77012.82,
+          "ask_down": 0.92,
+          "ask_up": 0.09,
           "asset": "BTC",
-          "bid_down": 0.9,
-          "bid_up": 0.09,
+          "bid_down": 0.91,
+          "bid_up": 0.08,
           "cl_path": [
             [
               0,
@@ -893,31 +906,47 @@
               76911.3101
             ],
             [
-              534,
-              76912.6549
+              536,
+              76914.9088
+            ],
+            [
+              540,
+              76917.957
+            ],
+            [
+              544,
+              76919.4911
+            ],
+            [
+              548,
+              76920.0407
+            ],
+            [
+              551,
+              76918.8187
             ]
           ],
-          "cl_ref": 76901.90009961944,
+          "cl_ref": 76907.10199828465,
           "cl_strike": 77116.58503891618,
-          "cl_twap": 76912.65489436398,
-          "cl_twap_age_s": 1.1,
-          "dist": -207.68,
+          "cl_twap": 76918.81867998233,
+          "cl_twap_age_s": 0.53,
+          "dist": -214.63,
           "dur": "15m",
-          "edge_down": -0.0384,
-          "edge_up": 0.0164,
+          "edge_down": -0.0305,
+          "edge_up": 0.0096,
           "p_min": 0.993,
-          "p_up": 0.12267,
+          "p_up": 0.10537,
           "pm_strike": 77113.83699212287,
           "quote_age": 0.0,
-          "sigma": 9.098,
+          "sigma": 8.907,
           "signal": null,
           "signal_p": null,
           "signal_side": null,
           "slug": "btc-updown-15m-1793754000",
-          "status": "Fuera de zona: espera hasta t≥795s (ahora t=535s)",
-          "t": 535,
-          "t_eff": -65,
-          "updated": 1793754535.9887598,
+          "status": "Fuera de zona: espera hasta t≥795s (ahora t=553s)",
+          "t": 553,
+          "t_eff": -47,
+          "updated": 1793754553.1307466,
           "window_s": 900,
           "window_ts": 1793754000,
           "zone": [
@@ -927,12 +956,12 @@
         },
         {
           "K": 76972.27,
-          "S": 77019.77,
-          "ask_down": 0.15,
-          "ask_up": 0.86,
+          "S": 77012.82,
+          "ask_down": 0.05,
+          "ask_up": 0.96,
           "asset": "BTC",
-          "bid_down": 0.14,
-          "bid_up": 0.85,
+          "bid_down": 0.04,
+          "bid_up": 0.95,
           "cl_path": [
             [
               0,
@@ -1405,29 +1434,65 @@
             [
               234,
               76912.6549
+            ],
+            [
+              236,
+              76914.9088
+            ],
+            [
+              238,
+              76915.8581
+            ],
+            [
+              240,
+              76917.957
+            ],
+            [
+              242,
+              76919.0814
+            ],
+            [
+              244,
+              76919.4911
+            ],
+            [
+              246,
+              76920.244
+            ],
+            [
+              248,
+              76920.0407
+            ],
+            [
+              250,
+              76919.2837
+            ],
+            [
+              251,
+              76918.8187
             ]
           ],
-          "cl_ref": 76901.90009961944,
+          "cl_ref": 76907.10199828465,
           "cl_strike": 76867.16077025988,
-          "cl_twap": 76912.65489436398,
-          "cl_twap_age_s": 1.1,
-          "dist": 47.49,
+          "cl_twap": 76918.81867998233,
+          "cl_twap_age_s": 0.53,
+          "dist": 40.54,
           "dur": "5m",
-          "edge_down": -0.0182,
-          "edge_up": -0.0091,
+          "edge_down": -0.0282,
+          "edge_up": 0.0122,
           "p_min": 0.98,
-          "p_up": 0.8593,
+          "p_up": 0.97484,
           "pm_strike": 76867.16077025988,
           "quote_age": 0.0,
-          "sigma": 9.098,
+          "sigma": 8.907,
           "signal": null,
           "signal_p": null,
           "signal_side": null,
           "slug": "btc-updown-5m-1793754300",
-          "status": "Buscando: ningún lado cumple p≥P_MIN y margen tras comisión",
-          "t": 235,
-          "t_eff": 235,
-          "updated": 1793754535.9887598,
+          "status": "Entrada de la ventana ya ejecutada · manteniendo hasta resolución",
+          "t": 253,
+          "t_eff": 253,
+          "updated": 1793754553.1307466,
           "window_s": 300,
           "window_ts": 1793754300,
           "zone": [
@@ -1455,73 +1520,73 @@
         "symbols": {
           "bnbusd": {
             "fresh": true,
-            "ref": 693.1502,
-            "ref_age_s": 1.19,
-            "twap": 693.230038,
-            "twap_age_s": 1.15,
-            "twap_lag_s": 0.86
+            "ref": 693.2091,
+            "ref_age_s": 0.68,
+            "twap": 693.268768,
+            "twap_age_s": 0.57,
+            "twap_lag_s": 1.62
           },
           "btcusd": {
             "fresh": true,
-            "ref": 76901.9001,
-            "ref_age_s": 1.16,
-            "twap": 76912.654894,
-            "twap_age_s": 1.11,
-            "twap_lag_s": 0.9
+            "ref": 76907.102,
+            "ref_age_s": 0.67,
+            "twap": 76918.81868,
+            "twap_age_s": 0.57,
+            "twap_lag_s": 1.61
           },
           "dogeusd": {
             "fresh": true,
             "ref": 0.0741,
-            "ref_age_s": 1.2,
-            "twap": 0.074062,
-            "twap_age_s": 1.15,
-            "twap_lag_s": 0.86
+            "ref_age_s": 0.68,
+            "twap": 0.074089,
+            "twap_age_s": 0.55,
+            "twap_lag_s": 1.63
           },
           "ethusd": {
             "fresh": true,
-            "ref": 2263.5107,
-            "ref_age_s": 1.21,
-            "twap": 2263.551229,
-            "twap_age_s": 1.12,
-            "twap_lag_s": 0.89
+            "ref": 2263.8529,
+            "ref_age_s": 0.66,
+            "twap": 2263.920068,
+            "twap_age_s": 0.6,
+            "twap_lag_s": 1.58
           },
           "hypeusd": {
             "fresh": true,
-            "ref": 83.3386,
-            "ref_age_s": 1.22,
-            "twap": 83.389737,
-            "twap_age_s": 1.13,
-            "twap_lag_s": 0.88
+            "ref": 83.2479,
+            "ref_age_s": 0.65,
+            "twap": 83.380388,
+            "twap_age_s": 0.56,
+            "twap_lag_s": 1.62
           },
           "solusd": {
             "fresh": true,
-            "ref": 91.9035,
-            "ref_age_s": 1.22,
-            "twap": 91.894704,
-            "twap_age_s": 1.17,
-            "twap_lag_s": 0.84
+            "ref": 91.9044,
+            "ref_age_s": 0.7,
+            "twap": 91.918988,
+            "twap_age_s": 0.59,
+            "twap_lag_s": 1.6
           },
           "xrpusd": {
             "fresh": true,
-            "ref": 1.2543,
-            "ref_age_s": 1.2,
-            "twap": 1.254594,
-            "twap_age_s": 1.17,
-            "twap_lag_s": 0.84
+            "ref": 1.2545,
+            "ref_age_s": 0.69,
+            "twap": 1.254688,
+            "twap_age_s": 0.57,
+            "twap_lag_s": 1.62
           }
         },
         "ultima_discrepancia": null
       },
       "event_loop": {
-        "cycles": 172514,
+        "cycles": 172841,
         "enabled": true,
-        "last_cycle": 1793754535.9912481,
+        "last_cycle": 1793754553.1326292,
         "last_slow": null,
         "max_s": 0.25,
         "min_s": 0.05,
         "slow_1s": 0,
         "slow_3s": 0,
-        "wakes_by_data": 172513,
+        "wakes_by_data": 172840,
         "wakes_by_timeout": 1,
         "work_max_s": 0.0
       },
@@ -1570,10 +1635,22 @@
           }
         },
         "losses": 10,
-        "open": 0,
+        "open": 1,
         "pnl": -10.5126,
         "profit_factor": 0.76,
         "recent": [
+          {
+            "close": null,
+            "cost": 5.8322,
+            "entry": 0.97,
+            "exit": null,
+            "id": 12941,
+            "pnl": 0.0,
+            "side": "UP",
+            "slug": "btc-updown-5m-1793754300",
+            "status": "OPEN",
+            "ts": "2026-11-04 01:09:02"
+          },
           {
             "close": "2026-11-04 00:40:01",
             "cost": 5.8322,
@@ -1705,18 +1782,6 @@
             "slug": "btc-updown-5m-1793736300",
             "status": "CLOSED_RESOLVED_WIN",
             "ts": "2026-11-03 20:09:15"
-          },
-          {
-            "close": "2026-11-03 19:55:01",
-            "cost": 5.7761,
-            "entry": 0.96,
-            "exit": 1.0,
-            "id": 12929,
-            "pnl": 0.2239,
-            "side": "DOWN",
-            "slug": "btc-updown-5m-1793735400",
-            "status": "CLOSED_RESOLVED_WIN",
-            "ts": "2026-11-03 19:53:54"
           }
         ],
         "scope": "desde_reset",
@@ -3337,6 +3402,21 @@
     "wins": 247
   },
   "trades": [
+    {
+      "id": 12941,
+      "timestamp": "2026-11-04 01:09:02",
+      "close_time": null,
+      "market_slug": "btc-updown-5m-1793754300",
+      "outcome": "UP",
+      "side": "BUY",
+      "entry_price": 0.97,
+      "exit_price": null,
+      "shares": 6.0,
+      "cost_usdc": 5.8322,
+      "pnl": 0.0,
+      "status": "OPEN",
+      "strategy": "TWAP_LOCK_V4"
+    },
     {
       "id": 12940,
       "timestamp": "2026-11-04 00:39:02",
@@ -5232,22 +5312,6 @@
       "shares": 6.0,
       "cost_usdc": 5.8322,
       "pnl": 0.1678,
-      "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_V4",
-      "cobro": "COBRADA"
-    },
-    {
-      "id": 12821,
-      "timestamp": "2026-11-01 09:54:09",
-      "close_time": "2026-11-01 09:55:01",
-      "market_slug": "btc-updown-5m-1793526600",
-      "outcome": "UP",
-      "side": "BUY",
-      "entry_price": 0.99,
-      "exit_price": 1.0,
-      "shares": 5.0,
-      "cost_usdc": 4.9535,
-      "pnl": 0.0465,
       "status": "CLOSED_RESOLVED_WIN",
       "strategy": "TWAP_LOCK_V4",
       "cobro": "COBRADA"
