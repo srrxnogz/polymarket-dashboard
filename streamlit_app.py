@@ -330,7 +330,7 @@ REMOTE_TAIL = """
         <td class="${cls(pnl)}"><b>${signed(pnl)} $</b></td></tr>`;
     }).join('') : '<tr class="empty"><td colspan="5">Sin operaciones V4 desde el reset</td></tr>';
     const cb = L.cobros || {}, lg = ledger || {};
-    const cells = [['Por cobrar', cb.pending_count ? `${cb.pending_count} · $${n(cb.pending_value)}` : 'nada'],
+    const cells = [['Por cobrar', cb.cartera_ok === false ? 'no se lee la cartera' : (cb.pending_count ? `${cb.pending_count} · $${n(cb.pending_value)}` : 'nada')],
                    ['Cobrados', String(cb.collected_count ?? '—')],
                    ['En juego', lg.open_cost != null ? '$' + n(lg.open_cost) : '—'],
                    ['Saldo libre', lg.cash != null ? '$' + n(lg.cash) : '—']];
