@@ -1,7 +1,7 @@
 {
   "schema": 2,
-  "timestamp": "2026-11-05T18:50:13.069047+00:00",
-  "timestamp_epoch": 1793904613,
+  "timestamp": "2026-11-05T18:50:32.040444+00:00",
+  "timestamp_epoch": 1793904632,
   "bot_online": true,
   "simulation_mode": true,
   "balance": 48.4231,
@@ -235,7 +235,7 @@
     "v4_real": null,
     "v4_version": "4.5",
     "recorder": {
-      "max_age_s": 13.0,
+      "max_age_s": 32.0,
       "ok": true,
       "procs": 12,
       "stale": []
@@ -250,7 +250,7 @@
       "collected_value": 1857.1,
       "failed_count": 0,
       "failed_value": 0.0,
-      "last_collected_age_s": 2394.1,
+      "last_collected_age_s": 2412.5,
       "last_error": null,
       "mode": "sim",
       "no_value_count": 0,
@@ -259,51 +259,69 @@
       "real_claim_method": "auto-canje de Polymarket o reclamación manual (el bot solo lo vigila)",
       "sent_count": 0,
       "sim_delay_s": 30.0,
-      "worker_alive": false,
+      "worker_alive": true,
       "worker_error": null
     },
     "ws_feed": {
       "alimentador": {
-        "aplicados": 0,
+        "aplicados": 295,
         "conectado": true,
         "conexiones": 1,
-        "edad_fotograma_ms": 102,
-        "fotograma": 18,
-        "hace_s": 0.06,
-        "instantaneas": 0,
-        "max_de_golpe": 0,
-        "recibidos": 1,
-        "sin_vuelta": 0,
+        "edad_fotograma_ms": 22,
+        "fotograma": 313,
+        "hace_s": 0.02,
+        "instantaneas": 1,
+        "max_de_golpe": 20,
+        "recibidos": 296,
+        "sin_vuelta": 21,
         "ultimo_error": null
       },
-      "connected": false,
-      "connected_for_s": 0,
-      "data_age_s": {},
+      "connected": true,
+      "connected_for_s": 13.0,
+      "data_age_s": {
+        "…011197": 0.0,
+        "…073750": 0.0,
+        "…401749": 0.0,
+        "…405667": 0.0,
+        "…643570": 0.0,
+        "…702640": 0.0,
+        "…948275": 0.0,
+        "…980332": 0.0
+      },
       "kb_per_s": 0.0,
       "lag_ms_max": null,
       "lag_ms_p50": null,
-      "lag_tokens": {},
+      "lag_tokens": {
+        "100181416888227003431759844234948042591235886380645269159214402081309714980332": 26,
+        "13082039304681175329901763601807833243267877518168010752530045372420112643570": 24,
+        "28307430424457138805972499138654087595752059524005133839057868285888179401749": 24,
+        "33176240197096275895772762512703190124032908246928536734898909156014882405667": 26,
+        "34112930869972472364079109715124136378368885645295383335204953487808314702640": 26,
+        "44993273409177664103618942979625418302728543566569931289223431783626529948275": 24,
+        "57624860759229357907725233138474435357986129521625602638932873179672441073750": 24,
+        "62709768741382636030251260191047621519558618600911770080279813154456875011197": 26
+      },
       "last_hour": {
         "1013": 0,
         "cierres_normales": 0,
         "error": 0,
         "huecos": 0,
         "limpio": 0,
-        "primeros_datos": 0,
+        "primeros_datos": 24,
         "reconexiones": 0,
         "resuscripcion": 0,
         "vigilancia": 0
       },
-      "max_data_age_s": null,
+      "max_data_age_s": 0.0,
       "msgs_per_s": 0.0,
       "procesos": 8,
       "redundancia": 3,
       "restarts": 0,
       "sin_conexion_ahora": 0,
       "sin_conexion_tokens": {},
-      "slots": 0,
+      "slots": 12,
       "subprocess": true,
-      "tokens": 0,
+      "tokens": 8,
       "tokens_waiting_first_data": 0,
       "totals": {
         "closes": {
@@ -312,10 +330,10 @@
           "limpio": 0,
           "vigilancia": 0
         },
-        "connects": 0,
-        "msgs": 0,
+        "connects": 12,
+        "msgs": 61862,
         "parse_errors": 0,
-        "pongs": 0,
+        "pongs": 12,
         "resubscribes": 0
       }
     },
@@ -324,7 +342,652 @@
       "available": true,
       "active": true,
       "exclusive": true,
-      "markets": [],
+      "markets": [
+        {
+          "K": 76072.06,
+          "S": 76094.76,
+          "ask_down": 0.38,
+          "ask_up": 0.63,
+          "asset": "BTC",
+          "bid_down": 0.37,
+          "bid_up": 0.62,
+          "cl_path": [
+            [
+              0,
+              75950.0332
+            ],
+            [
+              1,
+              75951.5224
+            ],
+            [
+              2,
+              75953.1003
+            ],
+            [
+              3,
+              75954.5261
+            ],
+            [
+              4,
+              75955.9141
+            ],
+            [
+              5,
+              75957.3435
+            ],
+            [
+              6,
+              75958.8144
+            ],
+            [
+              7,
+              75961.9167
+            ],
+            [
+              8,
+              75961.9167
+            ],
+            [
+              9,
+              75963.7249
+            ],
+            [
+              10,
+              75965.3884
+            ],
+            [
+              11,
+              75966.8228
+            ],
+            [
+              12,
+              75968.2474
+            ],
+            [
+              13,
+              75971.1596
+            ],
+            [
+              14,
+              75971.1596
+            ],
+            [
+              15,
+              75973.92
+            ],
+            [
+              16,
+              75973.92
+            ],
+            [
+              17,
+              75976.5202
+            ],
+            [
+              18,
+              75976.5202
+            ],
+            [
+              19,
+              75977.8577
+            ],
+            [
+              20,
+              75980.6875
+            ],
+            [
+              21,
+              75980.6875
+            ],
+            [
+              22,
+              75983.4144
+            ],
+            [
+              23,
+              75983.4144
+            ],
+            [
+              24,
+              75984.4334
+            ],
+            [
+              25,
+              75985.4847
+            ],
+            [
+              26,
+              75986.6319
+            ],
+            [
+              27,
+              75989.0817
+            ],
+            [
+              28,
+              75990.0451
+            ],
+            [
+              29,
+              75990.0451
+            ],
+            [
+              30,
+              75990.8478
+            ]
+          ],
+          "cl_ref": 75992.94243151424,
+          "cl_strike": 75950.0332315426,
+          "cl_twap": 75990.84778062807,
+          "cl_twap_age_s": 0.83,
+          "dist": 22.7,
+          "dur": "5m",
+          "edge_down": 0.0288,
+          "edge_up": -0.0716,
+          "p_min": 0.98,
+          "p_up": 0.57475,
+          "pm_strike": null,
+          "quote_age": 0.0,
+          "sigma": 7.566,
+          "signal": null,
+          "signal_p": null,
+          "signal_side": null,
+          "slug": "btc-updown-5m-1793904600",
+          "status": "Fuera de zona: espera hasta t≥150s (ahora t=32s)",
+          "t": 32,
+          "t_eff": 32,
+          "updated": 1793904632.0597908,
+          "window_s": 300,
+          "window_ts": 1793904600,
+          "zone": [
+            150,
+            292
+          ]
+        },
+        {
+          "K": 76204.21,
+          "S": 76094.76,
+          "ask_down": 0.73,
+          "ask_up": 0.28,
+          "asset": "BTC",
+          "bid_down": 0.72,
+          "bid_up": 0.27,
+          "cl_path": [
+            [
+              0,
+              76089.3368
+            ],
+            [
+              3,
+              76092.5849
+            ],
+            [
+              6,
+              76094.2622
+            ],
+            [
+              9,
+              76098.6487
+            ],
+            [
+              12,
+              76101.3104
+            ],
+            [
+              15,
+              76106.3406
+            ],
+            [
+              18,
+              76109.1877
+            ],
+            [
+              21,
+              76110.5307
+            ],
+            [
+              24,
+              76110.7368
+            ],
+            [
+              27,
+              76111.3325
+            ],
+            [
+              30,
+              76113.3924
+            ],
+            [
+              33,
+              76114.1066
+            ],
+            [
+              36,
+              76115.0016
+            ],
+            [
+              39,
+              76115.1241
+            ],
+            [
+              42,
+              76115.2859
+            ],
+            [
+              45,
+              76114.1529
+            ],
+            [
+              48,
+              76113.8076
+            ],
+            [
+              51,
+              76113.8299
+            ],
+            [
+              54,
+              76113.7759
+            ],
+            [
+              57,
+              76114.0239
+            ],
+            [
+              60,
+              76113.4313
+            ],
+            [
+              63,
+              76113.2452
+            ],
+            [
+              66,
+              76112.3006
+            ],
+            [
+              69,
+              76111.0682
+            ],
+            [
+              72,
+              76107.8074
+            ],
+            [
+              75,
+              76104.6354
+            ],
+            [
+              78,
+              76100.5282
+            ],
+            [
+              81,
+              76099.4707
+            ],
+            [
+              84,
+              76098.5563
+            ],
+            [
+              87,
+              76096.9426
+            ],
+            [
+              90,
+              76093.8636
+            ],
+            [
+              93,
+              76091.0203
+            ],
+            [
+              96,
+              76088.5427
+            ],
+            [
+              99,
+              76086.3272
+            ],
+            [
+              102,
+              76083.6635
+            ],
+            [
+              105,
+              76082.4357
+            ],
+            [
+              108,
+              76079.9927
+            ],
+            [
+              111,
+              76077.1881
+            ],
+            [
+              114,
+              76074.784
+            ],
+            [
+              117,
+              76073.4599
+            ],
+            [
+              120,
+              76072.8065
+            ],
+            [
+              123,
+              76072.4839
+            ],
+            [
+              126,
+              76072.7195
+            ],
+            [
+              129,
+              76073.2192
+            ],
+            [
+              132,
+              76074.6966
+            ],
+            [
+              135,
+              76076.4357
+            ],
+            [
+              138,
+              76078.7973
+            ],
+            [
+              141,
+              76082.2224
+            ],
+            [
+              144,
+              76084.0275
+            ],
+            [
+              147,
+              76088.7434
+            ],
+            [
+              150,
+              76091.2054
+            ],
+            [
+              153,
+              76095.6442
+            ],
+            [
+              156,
+              76097.76
+            ],
+            [
+              159,
+              76102.3839
+            ],
+            [
+              162,
+              76105.0554
+            ],
+            [
+              165,
+              76105.1751
+            ],
+            [
+              168,
+              76102.7501
+            ],
+            [
+              171,
+              76096.8025
+            ],
+            [
+              174,
+              76093.5141
+            ],
+            [
+              177,
+              76087.1463
+            ],
+            [
+              180,
+              76079.4159
+            ],
+            [
+              183,
+              76073.6881
+            ],
+            [
+              186,
+              76070.2309
+            ],
+            [
+              189,
+              76065.4497
+            ],
+            [
+              192,
+              76060.5332
+            ],
+            [
+              195,
+              76054.3504
+            ],
+            [
+              198,
+              76044.2757
+            ],
+            [
+              201,
+              76038.5925
+            ],
+            [
+              204,
+              76025.7365
+            ],
+            [
+              207,
+              76016.0765
+            ],
+            [
+              210,
+              76009.5311
+            ],
+            [
+              213,
+              75999.363
+            ],
+            [
+              216,
+              75984.8158
+            ],
+            [
+              219,
+              75976.9988
+            ],
+            [
+              222,
+              75965.4867
+            ],
+            [
+              225,
+              75953.2294
+            ],
+            [
+              228,
+              75948.5109
+            ],
+            [
+              231,
+              75946.159
+            ],
+            [
+              234,
+              75941.364
+            ],
+            [
+              237,
+              75939.4103
+            ],
+            [
+              240,
+              75934.6205
+            ],
+            [
+              243,
+              75932.0139
+            ],
+            [
+              246,
+              75926.1197
+            ],
+            [
+              249,
+              75923.2798
+            ],
+            [
+              252,
+              75918.5194
+            ],
+            [
+              255,
+              75916.6576
+            ],
+            [
+              258,
+              75915.7439
+            ],
+            [
+              261,
+              75914.8857
+            ],
+            [
+              264,
+              75914.3041
+            ],
+            [
+              267,
+              75913.8625
+            ],
+            [
+              270,
+              75914.4873
+            ],
+            [
+              273,
+              75915.7773
+            ],
+            [
+              276,
+              75918.3759
+            ],
+            [
+              279,
+              75921.8856
+            ],
+            [
+              282,
+              75925.8476
+            ],
+            [
+              285,
+              75930.0058
+            ],
+            [
+              288,
+              75933.0013
+            ],
+            [
+              291,
+              75937.6116
+            ],
+            [
+              294,
+              75943.6112
+            ],
+            [
+              297,
+              75947.3573
+            ],
+            [
+              300,
+              75950.0332
+            ],
+            [
+              303,
+              75954.5261
+            ],
+            [
+              306,
+              75958.8144
+            ],
+            [
+              309,
+              75963.7249
+            ],
+            [
+              312,
+              75968.2474
+            ],
+            [
+              315,
+              75973.92
+            ],
+            [
+              318,
+              75976.5202
+            ],
+            [
+              321,
+              75980.6875
+            ],
+            [
+              324,
+              75984.4334
+            ],
+            [
+              327,
+              75989.0817
+            ],
+            [
+              330,
+              75990.8478
+            ]
+          ],
+          "cl_ref": 75992.94243151424,
+          "cl_strike": 76089.33677498317,
+          "cl_twap": 75990.84778062807,
+          "cl_twap_age_s": 0.83,
+          "dist": -109.45,
+          "dur": "15m",
+          "edge_down": -0.0201,
+          "edge_up": -0.0178,
+          "p_min": 0.993,
+          "p_up": 0.27634,
+          "pm_strike": null,
+          "quote_age": 0.0,
+          "sigma": 7.566,
+          "signal": null,
+          "signal_p": null,
+          "signal_side": null,
+          "slug": "btc-updown-15m-1793904300",
+          "status": "Fuera de zona: espera hasta t≥795s (ahora t=332s)",
+          "t": 332,
+          "t_eff": -268,
+          "updated": 1793904632.0597908,
+          "window_s": 900,
+          "window_ts": 1793904300,
+          "zone": [
+            795,
+            892
+          ]
+        }
+      ],
       "chainlink_twap": {
         "authed": false,
         "conexiones": 2,
@@ -344,75 +1007,81 @@
         "symbols": {
           "bnbusd": {
             "fresh": true,
-            "ref": 691.8423,
-            "ref_age_s": 0.46,
-            "twap": 691.645079,
-            "twap_age_s": 0.38,
-            "twap_lag_s": 1.3
+            "ref": 691.5797,
+            "ref_age_s": 0.94,
+            "twap": 691.710754,
+            "twap_age_s": 0.84,
+            "twap_lag_s": 1.25
           },
           "btcusd": {
             "fresh": true,
-            "ref": 76018.436,
-            "ref_age_s": 0.46,
-            "twap": 75968.24737,
-            "twap_age_s": 0.4,
-            "twap_lag_s": 1.28
+            "ref": 75992.9424,
+            "ref_age_s": 0.95,
+            "twap": 75990.847781,
+            "twap_age_s": 0.84,
+            "twap_lag_s": 1.24
           },
           "dogeusd": {
             "fresh": true,
             "ref": 0.0719,
-            "ref_age_s": 0.46,
-            "twap": 0.071881,
-            "twap_age_s": 0.42,
-            "twap_lag_s": 1.26
+            "ref_age_s": 0.93,
+            "twap": 0.071896,
+            "twap_age_s": 0.81,
+            "twap_lag_s": 1.27
           },
           "ethusd": {
             "fresh": true,
-            "ref": 2247.7249,
-            "ref_age_s": 0.46,
-            "twap": 2246.720832,
-            "twap_age_s": 0.42,
-            "twap_lag_s": 1.27
+            "ref": 2247.0489,
+            "ref_age_s": 0.97,
+            "twap": 2247.183041,
+            "twap_age_s": 0.8,
+            "twap_lag_s": 1.28
           },
           "hypeusd": {
             "fresh": true,
-            "ref": 77.5832,
-            "ref_age_s": 0.46,
-            "twap": 77.49637,
-            "twap_age_s": 0.43,
-            "twap_lag_s": 1.25
+            "ref": 77.6126,
+            "ref_age_s": 0.93,
+            "twap": 77.530256,
+            "twap_age_s": 0.81,
+            "twap_lag_s": 1.27
           },
           "solusd": {
             "fresh": true,
-            "ref": 89.422,
-            "ref_age_s": 0.46,
-            "twap": 89.36143,
-            "twap_age_s": 0.41,
+            "ref": 89.4185,
+            "ref_age_s": 0.95,
+            "twap": 89.3952,
+            "twap_age_s": 0.81,
             "twap_lag_s": 1.27
           },
           "xrpusd": {
             "fresh": true,
-            "ref": 1.2326,
-            "ref_age_s": 0.46,
-            "twap": 1.232381,
-            "twap_age_s": 0.38,
-            "twap_lag_s": 1.3
+            "ref": 1.2325,
+            "ref_age_s": 0.96,
+            "twap": 1.232511,
+            "twap_age_s": 0.84,
+            "twap_lag_s": 1.24
           }
         },
         "ultima_discrepancia": null
       },
       "event_loop": {
-        "cycles": 0,
+        "cycles": 279,
         "enabled": true,
-        "last_cycle": 0.0,
-        "last_slow": null,
+        "last_cycle": 1793904632.0613437,
+        "last_slow": {
+          "partes": {
+            "descubrimiento": 0.0
+          },
+          "s": 1.78,
+          "ts": 1793904618.8817346
+        },
         "max_s": 0.25,
         "min_s": 0.05,
-        "slow_1s": 0,
+        "slow_1s": 1,
         "slow_3s": 0,
-        "wakes_by_data": 0,
-        "wakes_by_timeout": 0,
-        "work_max_s": 0.0
+        "wakes_by_data": 274,
+        "wakes_by_timeout": 5,
+        "work_max_s": 1.78
       },
       "depth_recorder": {
         "book_rows": 0,
@@ -420,7 +1089,7 @@
         "enabled": false,
         "files": 0,
         "last_error": null,
-        "live_tokens": 0,
+        "live_tokens": 8,
         "queue": 0,
         "running": false,
         "trade_rows": 0
@@ -612,6 +1281,38 @@
         "trades": 345,
         "win_rate_pct": 96.81,
         "wins": 334
+      },
+      "last_simulation": {
+        "asset": "TODOS",
+        "avg_entry_price": 0.9737,
+        "by_side": {
+          "DOWN": {
+            "n": 1405,
+            "pf": 1.65,
+            "pnl": 829.29
+          },
+          "UP": {
+            "n": 1297,
+            "pf": 2.14,
+            "pnl": 997.48
+          }
+        },
+        "dataset": "BTC 5m + BTC 15m juntos con un solo saldo · 24-Sep → 05-Nov 16:35 UTC · precio, precio a batir y volatilidad del bot (cinta del REAL o del PAPEL; si no estaban encendidos, el compuesto del bot reconstruido con los exchanges grabados); con un bot encendido decide con lo que vio en su fila (p, ask, impulso, distancia y regla del libro) · libro real al ms: cada compra solo se llena si al llegar su orden (viaje sorteado de 1.017 compras reales: mediana 0,26 s, 5 % más de 0,7 s) había vendedores ≤ límite · resultado oficial · apuesta como el bot (Kelly 15 %, filtro de gasto, freno de rachas) · ojo: las reglas de hoy se ajustaron mirando los días hasta el 16-oct; lo anterior sale optimista",
+        "engine": "TWAP_LOCK_V4/fiel",
+        "final_balance": 1926.74,
+        "initial_balance": 100.0,
+        "latency_s": 1,
+        "losses": 58,
+        "max_drawdown_usd": 244.3,
+        "profit_factor": 1.85,
+        "roi_per_trade_pct": 1.18,
+        "timestamp": "2026-11-05T17:06:08.209709Z",
+        "total_pnl_usd": 1826.76,
+        "total_trades": 2702,
+        "verdict": "REVIEW",
+        "win_rate_pct": 97.85,
+        "windows_replayed": 14874,
+        "wins": 2644
       },
       "sim_running": false,
       "params": {
