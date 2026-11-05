@@ -760,8 +760,9 @@ function renderKpis(live) {
     const e = $('kPnl'); e.textContent = signed(pnl) + ' $'; e.className = 'val ' + cls(pnl);
     setT('kPnlSub', `reset ${utcTxt(L.anchor && L.anchor.ts)} · saldo inicial $${n(L.anchor && L.anchor.balance)}`);
   } else {
-    const vr = live.v4_real || null;
-    const bal = Number(live.real_balance || 0), pnl = Number(vr ? vr.pnl : (live.session_pnl ?? live.real_pnl ?? 0));
+    // 5-nov (Sergio): «que vayan ligados»: el beneficio es el de la gráfica de Rendimiento (mismas operaciones, mismo inicio)
+    const vr = live.v4_real || null, tc = tramoCifras(_eqd);
+    const bal = Number(live.real_balance || 0), pnl = Number(tc ? tc.pnl : (vr ? vr.pnl : (live.session_pnl ?? live.real_pnl ?? 0)));
     const cb = live.cobros || {}, pend = Number(cb.pending_value || 0);
     // 9-oct: el bot da la operación por ganada 1 s tras el cierre y Polymarket la canjea 1-2 min después: el saldo suma
     // solo lo que aún NO ha llegado a la cartera (el servidor descuenta lo ya ingresado), así nunca marca de más.
@@ -769,10 +770,10 @@ function renderKpis(live) {
     setT('kBal', '$' + (bal + falta).toFixed(2));
     setT('kBalSub', falta > 0.005 ? `disponible $${n(bal)} · por cobrar $${n(falta)} (llega en 1-2 min)`
                   : pend > 0.005 ? `cobro de $${n(pend)} entrando` : 'disponible');
-    setT('kPnlLbl', vr ? 'Beneficio V' + (vr.version || live.v4_version || '4.5') : 'Beneficio de la sesión');
+    setT('kPnlLbl', (tc || vr) ? 'Beneficio' : 'Beneficio de la sesión');
     const e = $('kPnl'); e.textContent = signed(pnl) + ' $'; e.className = 'val ' + cls(pnl);
-    setT('kPnlSub', vr ? `${vr.trades} operaciones · ${vr.wins} ganadas · desde ${vr.since ? utcTxt(vr.since) : '—'}`
-                       : 'desde el arranque');
+    setT('kPnlSub', tc ? `${tc.trades} operaciones · ${tc.wins} ganadas · desde ${tc.desde ? utcTxt(tc.desde) : '—'}`
+                  : (vr ? `${vr.trades} operaciones · ${vr.wins} ganadas · desde ${vr.since ? utcTxt(vr.since) : '—'}` : 'desde el arranque'));
   }
 }
 function renderV4Kpis(ls, eqd) {
@@ -1170,6 +1171,19 @@ function tramoGrafica(pts) {
   const i = pts.findIndex(p => String(p.ts) >= GRAFICA_DESDE);
   return i > 0 ? {base: pts[i], pts: pts.slice(i + 1)} : {base: null, pts: pts};
 }
+// 5-nov (Sergio): «que vayan ligados, que reiniciamos uno y el otro no». En el REAL, el beneficio de Capital y el Acierto, el
+// Profit factor y las Operaciones del Marcador salen de estas mismas operaciones: si se mueve el inicio de la gráfica, se mueven todos.
+function tramoCifras(eqd) {
+  if (!eqd || eqd.status !== 'ok') return null;
+  const {base, pts} = tramoGrafica(eqd.points || []);
+  const pnls = pts.map(p => Number(p.pnl || 0)), g = pnls.filter(x => x > 0), l = pnls.filter(x => x < 0);
+  const sg = g.reduce((a, x) => a + x, 0), sl = -l.reduce((a, x) => a + x, 0);
+  return {desde: base ? base.ts : (eqd.since || (pts[0] || {}).ts || null),
+          pnl: pts.length ? Number(pts[pts.length - 1].cum) - (base ? Number(base.cum) : 0) : 0,
+          trades: pnls.length, wins: g.length, losses: l.length,
+          win_rate_pct: pnls.length ? 100 * g.length / pnls.length : null, profit_factor: sl > 0 ? sg / sl : null,
+          avg_win: g.length ? sg / g.length : null, avg_loss: l.length ? -sl / l.length : null};
+}
 function paintEq() {
   const a = $('eqVPnl'), b = $('eqVSaldo');
   if (a) a.className = _eqView === 'pnl' ? 'act' : '';
@@ -1190,11 +1204,10 @@ function paintEq() {
 function renderPerf(eqd, ls) {
   if (!eqd || eqd.status !== 'ok') return;
   const pts = eqd.points || [];
-  const labels = pts.map(p => utcTxt(p.ts)), data = pts.map(p => p.cum);
   _eqLast = eqd;
   paintEq();
-  paint(sparkPnl, ['0'].concat(labels), [0].concat(data));
-  const tg = tramoGrafica(pts);
+  const tg = tramoGrafica(pts), tb0 = tg.base ? Number(tg.base.cum) : 0;
+  paint(sparkPnl, ['0'].concat(tg.pts.map(p => utcTxt(p.ts))), [0].concat(tg.pts.map(p => Number(p.cum) - tb0)));
   setT('perfScope', (tg.base ? `gráfica desde ${utcTxt(tg.base.ts)} (saldo mínimo, $${n(tg.base.saldo)})`
                      : (eqd.mode === 'sim' ? 'desde el reset' : (eqd.since ? 'desde ' + utcTxt(eqd.since) : 'todo el historial')))
     + ` · ${tg.base ? tg.pts.length : eqd.trades} operaciones` + (eqd.saldo_ahora != null ? ` · saldo $${n(eqd.saldo_ahora)}` : ''));
@@ -1368,10 +1381,15 @@ function renderOracle(v4, live) {
   setT('hRecSub', `${(dr.book_rows || 0).toLocaleString('es-ES')} libros · ${(dr.trade_rows || 0).toLocaleString('es-ES')} operaciones` + (dr.dropped ? ` · ${dr.dropped} perdidas` : ''));
   // Cobros
   const cb = (live || {}).cobros || {};
-  const cbBad = cb.failed_count || cb.worker_alive === false;
+  const cbCartera = cb.cartera_ok === false;     // 5-nov: la cartera lleva ≥ 30 s sin poder leerse: no se confirma ningún cobro
+  const cbBad = cb.failed_count || cb.worker_alive === false || cbCartera;
   led('hCobLed', cbBad ? 'off' : ((cb.pending_count || 0) > 0 ? 'warn' : 'on'));
-  setT('hCob', (cb.pending_count || 0) ? `${cb.pending_count} pendiente(s) · $${n(cb.pending_value)}` : 'al día');
-  setT('hCobSub', `${cb.collected_count || 0} cobrados` + (cb.avg_latency_s != null ? ` · ${Math.round(cb.avg_latency_s)} s de media` : '') + (cb.mode === 'real' ? ' · auto-canje de Polymarket' : ''));
+  const cbPend = (cb.pending_count || 0) ? `${cb.pending_count} pendiente(s) · $${n(cb.pending_value)}` : '';
+  const cbMal = cb.cartera_mal_s || 0;
+  setT('hCob', cbCartera ? 'no se lee la cartera' : (cbPend || 'al día'));
+  setT('hCobSub', cbCartera
+    ? `${cb.cartera_error || 'error'} · desde hace ${cbMal < 120 ? cbMal + ' s' : Math.round(cbMal / 60) + ' min'}` + (cbPend ? ` · ${cbPend}` : '')
+    : `${cb.collected_count || 0} cobrados` + (cb.avg_latency_s != null ? ` · ${Math.round(cb.avg_latency_s)} s de media` : '') + (cb.mode === 'real' ? ' · auto-canje de Polymarket' : ''));
 }
 function renderParams(p) {
   const box = $('params'); if (!box || !p) return;
@@ -1607,8 +1625,10 @@ async function refresh(force = false) {
     pill('v4Pill', !v4.available ? 'V4 no disponible' : (v4.active ? 'V4 activa' : 'V4 desactivada'), !v4.available ? 'off' : (v4.active ? 'on' : 'warn'));
     renderKpis(live);
     const L = live.simulation_mode ? live.ledger : null, ls = Object.assign({}, v4.live_stats || {});
+    let lsEq = _eqd;
     if (L && L.since_reset && L.since_reset.v4) { const v = L.since_reset.v4; Object.assign(ls, {trades: v.closed || 0, wins: v.wins || 0, losses: v.losses || 0, win_rate_pct: v.closed ? v.win_rate : null, pnl: v.pnl || 0, profit_factor: v.profit_factor, open: v.open || 0}); }
-    renderV4Kpis(ls, _eqd); renderPerf(_eqd, v4.live_stats);
+    else if (!L) { const tc = tramoCifras(_eqd); if (tc) { Object.assign(ls, {trades: tc.trades, wins: tc.wins, losses: tc.losses, win_rate_pct: tc.win_rate_pct, pnl: tc.pnl, profit_factor: tc.profit_factor}); lsEq = tc; } }
+    renderV4Kpis(ls, lsEq); renderPerf(_eqd, v4.live_stats);
     renderLive(v4); renderPositions(live.active_positions); renderOracle(v4, live); renderParams(v4.params);
     _abiertas = (live.active_positions || []).length;
     _errors = 0; showError('');
