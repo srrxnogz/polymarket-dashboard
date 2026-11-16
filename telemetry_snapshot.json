@@ -1,7 +1,7 @@
 {
   "schema": 2,
-  "timestamp": "2026-11-16T06:22:06.489533+00:00",
-  "timestamp_epoch": 1794810126,
+  "timestamp": "2026-11-16T06:22:24.404345+00:00",
+  "timestamp_epoch": 1794810144,
   "bot_online": true,
   "simulation_mode": true,
   "balance": 64.4872,
@@ -265,7 +265,7 @@
     "v4_real": null,
     "v4_version": "4.5",
     "recorder": {
-      "max_age_s": 6.0,
+      "max_age_s": 24.0,
       "ok": true,
       "procs": 12,
       "stale": []
@@ -280,7 +280,7 @@
       "collected_value": 8327.05,
       "failed_count": 0,
       "failed_value": 0.0,
-      "last_collected_age_s": 11797.8,
+      "last_collected_age_s": 11815.7,
       "last_error": null,
       "mode": "sim",
       "no_value_count": 0,
@@ -294,54 +294,52 @@
     },
     "ws_feed": {
       "alimentador": {
-        "aplicados": 37456,
+        "aplicados": 37807,
         "conectado": true,
         "conexiones": 1,
-        "edad_fotograma_ms": 34,
-        "fotograma": 9022825,
+        "edad_fotograma_ms": 31,
+        "fotograma": 9023176,
         "hace_s": 0.02,
         "instantaneas": 1,
         "max_de_golpe": 8,
-        "recibidos": 37457,
+        "recibidos": 37808,
         "sin_vuelta": 41,
         "ultimo_error": null
       },
-      "connected": true,
-      "connected_for_s": 581.0,
+      "connected": false,
+      "connected_for_s": 0,
       "data_age_s": {
-        "…078549": 6.1,
-        "…079528": 6.1,
         "…356234": 0.0,
         "…830841": 0.0
       },
-      "kb_per_s": 2048.9,
-      "lag_ms_max": 340,
+      "kb_per_s": 2114.4,
+      "lag_ms_max": 610,
       "lag_ms_p50": 36,
       "lag_tokens": {
-        "21438353576967595225456653043751663801348109254679253813645771158639533078549": 0,
-        "4148152437173231010556977665560664396108848907220939603977734475699978356234": 32,
-        "6621506792401374111766211875580316221031064340113979268202106390486562830841": 32,
-        "69700698400006173209276185876636693214409462090405108195676436981702965079528": 0
+        "21438353576967595225456653043751663801348109254679253813645771158639533078549": 564,
+        "4148152437173231010556977665560664396108848907220939603977734475699978356234": 65,
+        "6621506792401374111766211875580316221031064340113979268202106390486562830841": 65,
+        "69700698400006173209276185876636693214409462090405108195676436981702965079528": 564
       },
       "last_hour": {
         "1013": 1,
-        "cierres_normales": 45,
+        "cierres_normales": 47,
         "error": 66,
         "huecos": 0,
-        "limpio": 36,
+        "limpio": 38,
         "primeros_datos": 86,
         "reconexiones": 67,
         "resuscripcion": 15,
         "vigilancia": 9
       },
-      "max_data_age_s": 6.1,
-      "msgs_per_s": 3290.4,
+      "max_data_age_s": 0.0,
+      "msgs_per_s": 3400.4,
       "procesos": 8,
       "redundancia": 3,
       "restarts": 0,
       "sin_conexion_ahora": 0,
       "sin_conexion_tokens": {},
-      "slots": 6,
+      "slots": 3,
       "subprocess": true,
       "tokens": 4,
       "tokens_waiting_first_data": 0,
@@ -349,13 +347,13 @@
         "closes": {
           "1013": 563,
           "error": 762,
-          "limpio": 9331,
+          "limpio": 9334,
           "vigilancia": 163
         },
         "connects": 10691,
-        "msgs": 1896185004,
+        "msgs": 1896251672,
         "parse_errors": 0,
-        "pongs": 1090774,
+        "pongs": 1090798,
         "resubscribes": 928
       }
     },
@@ -384,73 +382,73 @@
         "symbols": {
           "bnbusd": {
             "fresh": true,
-            "ref": 589.1358,
-            "ref_age_s": 0.22,
-            "twap": 589.02121,
-            "twap_age_s": 0.18,
-            "twap_lag_s": 1.44
+            "ref": 589.1897,
+            "ref_age_s": 0.65,
+            "twap": 589.068179,
+            "twap_age_s": 0.58,
+            "twap_lag_s": 0.96
           },
           "btcusd": {
             "fresh": true,
-            "ref": 64357.3574,
-            "ref_age_s": 0.2,
-            "twap": 64335.002861,
-            "twap_age_s": 0.15,
-            "twap_lag_s": 1.47
+            "ref": 64360.2532,
+            "ref_age_s": 0.62,
+            "twap": 64342.482201,
+            "twap_age_s": 0.6,
+            "twap_lag_s": 0.94
           },
           "dogeusd": {
             "fresh": true,
             "ref": 0.0585,
-            "ref_age_s": 0.23,
-            "twap": 0.058472,
-            "twap_age_s": 0.17,
-            "twap_lag_s": 1.45
+            "ref_age_s": 0.64,
+            "twap": 0.058482,
+            "twap_age_s": 0.57,
+            "twap_lag_s": 0.96
           },
           "ethusd": {
             "fresh": true,
-            "ref": 1808.7816,
-            "ref_age_s": 0.24,
-            "twap": 1807.654902,
-            "twap_age_s": 0.16,
-            "twap_lag_s": 1.46
+            "ref": 1808.8475,
+            "ref_age_s": 0.66,
+            "twap": 1808.005101,
+            "twap_age_s": 0.59,
+            "twap_lag_s": 0.94
           },
           "hypeusd": {
             "fresh": true,
-            "ref": 66.0987,
-            "ref_age_s": 0.22,
-            "twap": 66.076118,
-            "twap_age_s": 0.15,
-            "twap_lag_s": 1.47
+            "ref": 66.1085,
+            "ref_age_s": 0.66,
+            "twap": 66.081397,
+            "twap_age_s": 0.61,
+            "twap_lag_s": 0.92
           },
           "solusd": {
             "fresh": true,
-            "ref": 70.9347,
-            "ref_age_s": 0.21,
-            "twap": 70.90522,
-            "twap_age_s": 0.19,
-            "twap_lag_s": 1.43
+            "ref": 70.9556,
+            "ref_age_s": 0.64,
+            "twap": 70.918983,
+            "twap_age_s": 0.56,
+            "twap_lag_s": 0.97
           },
           "xrpusd": {
             "fresh": true,
-            "ref": 0.951,
-            "ref_age_s": 0.21,
-            "twap": 0.950762,
-            "twap_age_s": 0.14,
-            "twap_lag_s": 1.48
+            "ref": 0.9513,
+            "ref_age_s": 0.66,
+            "twap": 0.95088,
+            "twap_age_s": 0.56,
+            "twap_lag_s": 0.97
           }
         },
         "ultima_discrepancia": null
       },
       "event_loop": {
-        "cycles": 37465,
+        "cycles": 37816,
         "enabled": true,
-        "last_cycle": 1794810126.5953815,
+        "last_cycle": 1794810144.5098033,
         "last_slow": null,
         "max_s": 0.25,
         "min_s": 0.05,
         "slow_1s": 0,
         "slow_3s": 0,
-        "wakes_by_data": 37414,
+        "wakes_by_data": 37765,
         "wakes_by_timeout": 51,
         "work_max_s": 0.0
       },
