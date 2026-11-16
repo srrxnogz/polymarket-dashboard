@@ -1,7 +1,7 @@
 {
   "schema": 2,
-  "timestamp": "2026-11-16T05:40:14.696796+00:00",
-  "timestamp_epoch": 1794807614,
+  "timestamp": "2026-11-16T05:40:32.432900+00:00",
+  "timestamp_epoch": 1794807632,
   "bot_online": true,
   "simulation_mode": true,
   "balance": 64.4872,
@@ -103,6 +103,16 @@
             "win_rate": 100.0,
             "wins": 2
           },
+          "TOMOE": {
+            "closed": 4,
+            "losses": 2,
+            "pnl": 13.5926,
+            "profit_factor": 4.65,
+            "realized": 13.5926,
+            "trades": 4,
+            "win_rate": 50.0,
+            "wins": 2
+          },
           "TWAP_LOCK_COH": {
             "closed": 36,
             "losses": 23,
@@ -132,16 +142,6 @@
             "trades": 11,
             "win_rate": 100.0,
             "wins": 11
-          },
-          "TWAP_LOCK_SHARINGAN": {
-            "closed": 4,
-            "losses": 2,
-            "pnl": 13.5926,
-            "profit_factor": 4.65,
-            "realized": 13.5926,
-            "trades": 4,
-            "win_rate": 50.0,
-            "wins": 2
           },
           "TWAP_LOCK_V4": {
             "closed": 3842,
@@ -194,7 +194,7 @@
       "pnl_since_reset": 17.3272,
       "since_reset": {
         "by_strategy": {
-          "TWAP_LOCK_SHARINGAN": {
+          "TOMOE": {
             "closed": 4,
             "losses": 2,
             "pnl": 13.5926,
@@ -265,7 +265,7 @@
     "v4_real": null,
     "v4_version": "4.5",
     "recorder": {
-      "max_age_s": 14.0,
+      "max_age_s": 32.0,
       "ok": true,
       "procs": 12,
       "stale": []
@@ -280,7 +280,7 @@
       "collected_value": 8327.05,
       "failed_count": 0,
       "failed_value": 0.0,
-      "last_collected_age_s": 9286.0,
+      "last_collected_age_s": 9303.7,
       "last_error": null,
       "mode": "sim",
       "no_value_count": 0,
@@ -294,48 +294,48 @@
     },
     "ws_feed": {
       "alimentador": {
-        "aplicados": 172139,
+        "aplicados": 172488,
         "conectado": true,
         "conexiones": 1,
-        "edad_fotograma_ms": 47,
-        "fotograma": 8975231,
-        "hace_s": 0.03,
+        "edad_fotograma_ms": 13,
+        "fotograma": 8975580,
+        "hace_s": 0.01,
         "instantaneas": 1,
         "max_de_golpe": 10,
-        "recibidos": 172140,
+        "recibidos": 172489,
         "sin_vuelta": 98,
         "ultimo_error": null
       },
       "connected": true,
-      "connected_for_s": 469.0,
+      "connected_for_s": 486.0,
       "data_age_s": {
-        "…198578": 3.7,
-        "…413404": 3.7,
+        "…198578": 1.1,
+        "…413404": 1.1,
         "…648909": 0.0,
         "…685067": 0.0
       },
-      "kb_per_s": 1235.0,
-      "lag_ms_max": 187,
+      "kb_per_s": 993.8,
+      "lag_ms_max": 168,
       "lag_ms_p50": 28,
       "lag_tokens": {
-        "103456936833924393865212666272718260074534604192616704753066861625081886648909": 25,
-        "104463077632158124187310632379541960206216689107100322951838223233348470685067": 25,
+        "103456936833924393865212666272718260074534604192616704753066861625081886648909": 31,
+        "104463077632158124187310632379541960206216689107100322951838223233348470685067": 31,
         "106533676094818469382582838233868063203985742842291974094721575984869746198578": 0,
         "87707700015164191480441205447369552214765030352047915791260609144357084413404": 0
       },
       "last_hour": {
         "1013": 7,
         "cierres_normales": 36,
-        "error": 73,
+        "error": 74,
         "huecos": 0,
         "limpio": 36,
         "primeros_datos": 96,
-        "reconexiones": 80,
+        "reconexiones": 81,
         "resuscripcion": 3,
         "vigilancia": 0
       },
-      "max_data_age_s": 3.7,
-      "msgs_per_s": 1968.0,
+      "max_data_age_s": 1.1,
+      "msgs_per_s": 1591.7,
       "procesos": 8,
       "redundancia": 3,
       "restarts": 0,
@@ -348,14 +348,14 @@
       "totals": {
         "closes": {
           "1013": 562,
-          "error": 716,
+          "error": 717,
           "limpio": 9307,
           "vigilancia": 154
         },
-        "connects": 10611,
-        "msgs": 1889091500,
+        "connects": 10612,
+        "msgs": 1889157870,
         "parse_errors": 0,
-        "pongs": 1088120,
+        "pongs": 1088138,
         "resubscribes": 898
       }
     },
@@ -384,73 +384,73 @@
         "symbols": {
           "bnbusd": {
             "fresh": true,
-            "ref": 589.5364,
-            "ref_age_s": 0.83,
-            "twap": 589.663502,
-            "twap_age_s": 0.74,
-            "twap_lag_s": 1.08
+            "ref": 589.646,
+            "ref_age_s": 0.51,
+            "twap": 589.636355,
+            "twap_age_s": 0.5,
+            "twap_lag_s": 1.06
           },
           "btcusd": {
             "fresh": true,
-            "ref": 64647.4714,
-            "ref_age_s": 0.81,
-            "twap": 64655.327138,
-            "twap_age_s": 0.69,
-            "twap_lag_s": 1.12
+            "ref": 64657.2697,
+            "ref_age_s": 0.52,
+            "twap": 64654.083848,
+            "twap_age_s": 0.45,
+            "twap_lag_s": 1.1
           },
           "dogeusd": {
             "fresh": true,
             "ref": 0.0588,
-            "ref_age_s": 0.85,
-            "twap": 0.058782,
-            "twap_age_s": 0.71,
+            "ref_age_s": 0.53,
+            "twap": 0.058774,
+            "twap_age_s": 0.45,
             "twap_lag_s": 1.1
           },
           "ethusd": {
             "fresh": true,
-            "ref": 1814.2408,
-            "ref_age_s": 0.83,
-            "twap": 1814.671995,
-            "twap_age_s": 0.7,
-            "twap_lag_s": 1.11
+            "ref": 1814.9508,
+            "ref_age_s": 0.53,
+            "twap": 1814.528474,
+            "twap_age_s": 0.48,
+            "twap_lag_s": 1.07
           },
           "hypeusd": {
             "fresh": true,
-            "ref": 66.2289,
-            "ref_age_s": 0.82,
-            "twap": 66.272037,
-            "twap_age_s": 0.71,
-            "twap_lag_s": 1.11
+            "ref": 66.2692,
+            "ref_age_s": 0.52,
+            "twap": 66.260028,
+            "twap_age_s": 0.47,
+            "twap_lag_s": 1.08
           },
           "solusd": {
             "fresh": true,
-            "ref": 71.4007,
-            "ref_age_s": 0.85,
-            "twap": 71.414895,
-            "twap_age_s": 0.72,
-            "twap_lag_s": 1.1
+            "ref": 71.4178,
+            "ref_age_s": 0.54,
+            "twap": 71.408358,
+            "twap_age_s": 0.49,
+            "twap_lag_s": 1.06
           },
           "xrpusd": {
             "fresh": true,
-            "ref": 0.9541,
-            "ref_age_s": 0.84,
-            "twap": 0.954432,
-            "twap_age_s": 0.73,
-            "twap_lag_s": 1.08
+            "ref": 0.9543,
+            "ref_age_s": 0.55,
+            "twap": 0.954261,
+            "twap_age_s": 0.5,
+            "twap_lag_s": 1.05
           }
         },
         "ultima_discrepancia": null
       },
       "event_loop": {
-        "cycles": 172214,
+        "cycles": 172563,
         "enabled": true,
-        "last_cycle": 1794807614.7791033,
+        "last_cycle": 1794807632.5470872,
         "last_slow": null,
         "max_s": 0.25,
         "min_s": 0.05,
         "slow_1s": 0,
         "slow_3s": 0,
-        "wakes_by_data": 172040,
+        "wakes_by_data": 172389,
         "wakes_by_timeout": 174,
         "work_max_s": 0.0
       },
@@ -3243,7 +3243,7 @@
       "cost_usdc": 1.8108,
       "pnl": -1.8108,
       "status": "CLOSED_RESOLVED_LOSS",
-      "strategy": "TWAP_LOCK_SHARINGAN"
+      "strategy": "TOMOE"
     },
     {
       "id": 14245,
@@ -3258,7 +3258,7 @@
       "cost_usdc": 1.9174,
       "pnl": -1.9174,
       "status": "CLOSED_RESOLVED_LOSS",
-      "strategy": "TWAP_LOCK_SHARINGAN"
+      "strategy": "TOMOE"
     },
     {
       "id": 14244,
@@ -3288,7 +3288,7 @@
       "cost_usdc": 1.8786,
       "pnl": 5.8714,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_SHARINGAN",
+      "strategy": "TOMOE",
       "cobro": "COBRADA"
     },
     {
@@ -3383,7 +3383,7 @@
       "cost_usdc": 1.5506,
       "pnl": 11.4494,
       "status": "CLOSED_RESOLVED_WIN",
-      "strategy": "TWAP_LOCK_SHARINGAN",
+      "strategy": "TOMOE",
       "cobro": "COBRADA"
     },
     {
