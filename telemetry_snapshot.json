@@ -1,7 +1,7 @@
 {
   "schema": 2,
-  "timestamp": "2026-11-16T04:02:39.049463+00:00",
-  "timestamp_epoch": 1794801759,
+  "timestamp": "2026-11-16T04:02:57.095469+00:00",
+  "timestamp_epoch": 1794801777,
   "bot_online": true,
   "simulation_mode": true,
   "balance": 64.4872,
@@ -265,7 +265,7 @@
     "v4_real": null,
     "v4_version": "4.5",
     "recorder": {
-      "max_age_s": 39.0,
+      "max_age_s": 57.0,
       "ok": true,
       "procs": 12,
       "stale": []
@@ -280,7 +280,7 @@
       "collected_value": 8327.05,
       "failed_count": 0,
       "failed_value": 0.0,
-      "last_collected_age_s": 3430.3,
+      "last_collected_age_s": 3448.3,
       "last_error": null,
       "mode": "sim",
       "no_value_count": 0,
@@ -294,25 +294,27 @@
     },
     "ws_feed": {
       "alimentador": {
-        "aplicados": 60340,
+        "aplicados": 60686,
         "conectado": true,
         "conexiones": 1,
-        "edad_fotograma_ms": 6,
-        "fotograma": 8863432,
-        "hace_s": 0.0,
+        "edad_fotograma_ms": 66,
+        "fotograma": 8863778,
+        "hace_s": 0.07,
         "instantaneas": 1,
         "max_de_golpe": 10,
-        "recibidos": 60341,
+        "recibidos": 60687,
         "sin_vuelta": 41,
         "ultimo_error": null
       },
       "connected": true,
-      "connected_for_s": 12.0,
+      "connected_for_s": 29.0,
       "data_age_s": {
-        "…196647": 14.8,
-        "…489861": 14.8,
+        "…196647": 31.9,
+        "…334981": 0.1,
+        "…489861": 31.9,
         "…837186": 0.0,
-        "…891189": 0.0
+        "…891189": 0.0,
+        "…966460": 0.1
       },
       "kb_per_s": 1899.2,
       "lag_ms_max": 254,
@@ -320,8 +322,10 @@
       "lag_tokens": {
         "114841372260990315119683360700487899293270102113462897085054811292059770489861": 0,
         "33906980336107351291585418121847964741062505773329832129956448117815534196647": 0,
-        "52319943542468210821852265103933580948802702026304020887892845944198054891189": 21,
-        "95882772957042547729013491556249426823496476472108924377397878564966512837186": 21
+        "49838701030410255371975270131464302036725204075532180485750512518610446334981": 45,
+        "52319943542468210821852265103933580948802702026304020887892845944198054891189": 22,
+        "71996019509399761303540627883631013623436810280725286514715111697823628966460": 45,
+        "95882772957042547729013491556249426823496476472108924377397878564966512837186": 22
       },
       "last_hour": {
         "1013": 0,
@@ -329,21 +333,21 @@
         "error": 53,
         "huecos": 0,
         "limpio": 47,
-        "primeros_datos": 98,
+        "primeros_datos": 104,
         "reconexiones": 53,
         "resuscripcion": 48,
         "vigilancia": 16
       },
-      "max_data_age_s": 14.8,
+      "max_data_age_s": 31.9,
       "msgs_per_s": 2966.7,
       "procesos": 8,
       "redundancia": 3,
       "restarts": 0,
       "sin_conexion_ahora": 0,
       "sin_conexion_tokens": {},
-      "slots": 6,
+      "slots": 9,
       "subprocess": true,
-      "tokens": 4,
+      "tokens": 6,
       "tokens_waiting_first_data": 6,
       "totals": {
         "closes": {
@@ -353,9 +357,9 @@
           "vigilancia": 154
         },
         "connects": 10430,
-        "msgs": 1873478696,
+        "msgs": 1873518168,
         "parse_errors": 0,
-        "pongs": 1082922,
+        "pongs": 1082934,
         "resubscribes": 886
       }
     },
@@ -384,73 +388,73 @@
         "symbols": {
           "bnbusd": {
             "fresh": true,
-            "ref": 592.452,
-            "ref_age_s": 0.16,
-            "twap": 592.865648,
-            "twap_age_s": 0.12,
-            "twap_lag_s": 2.03
+            "ref": 592.166,
+            "ref_age_s": 0.3,
+            "twap": 592.59844,
+            "twap_age_s": 0.21,
+            "twap_lag_s": 0.97
           },
           "btcusd": {
             "fresh": true,
-            "ref": 64995.2969,
-            "ref_age_s": 0.13,
-            "twap": 65018.219004,
-            "twap_age_s": 0.07,
-            "twap_lag_s": 2.08
+            "ref": 64984.3457,
+            "ref_age_s": 0.23,
+            "twap": 65006.233561,
+            "twap_age_s": 0.21,
+            "twap_lag_s": 0.97
           },
           "dogeusd": {
             "fresh": true,
             "ref": 0.0589,
-            "ref_age_s": 0.13,
-            "twap": 0.058973,
-            "twap_age_s": 0.12,
-            "twap_lag_s": 2.04
+            "ref_age_s": 0.32,
+            "twap": 0.058944,
+            "twap_age_s": 0.21,
+            "twap_lag_s": 0.97
           },
           "ethusd": {
             "fresh": true,
-            "ref": 1823.9186,
-            "ref_age_s": 0.15,
-            "twap": 1824.817952,
-            "twap_age_s": 0.09,
-            "twap_lag_s": 2.06
+            "ref": 1823.4185,
+            "ref_age_s": 0.31,
+            "twap": 1824.232062,
+            "twap_age_s": 0.2,
+            "twap_lag_s": 0.98
           },
           "hypeusd": {
             "fresh": true,
-            "ref": 66.4348,
-            "ref_age_s": 0.15,
-            "twap": 66.471452,
-            "twap_age_s": 0.09,
-            "twap_lag_s": 2.06
+            "ref": 66.422,
+            "ref_age_s": 0.29,
+            "twap": 66.445487,
+            "twap_age_s": 0.21,
+            "twap_lag_s": 0.97
           },
           "solusd": {
             "fresh": true,
-            "ref": 71.9341,
-            "ref_age_s": 0.14,
-            "twap": 71.991885,
-            "twap_age_s": 0.1,
-            "twap_lag_s": 2.05
+            "ref": 71.9025,
+            "ref_age_s": 0.29,
+            "twap": 71.956426,
+            "twap_age_s": 0.2,
+            "twap_lag_s": 0.98
           },
           "xrpusd": {
             "fresh": true,
-            "ref": 0.9616,
-            "ref_age_s": 0.17,
-            "twap": 0.962158,
-            "twap_age_s": 0.11,
-            "twap_lag_s": 2.04
+            "ref": 0.9611,
+            "ref_age_s": 0.31,
+            "twap": 0.961742,
+            "twap_age_s": 0.21,
+            "twap_lag_s": 0.97
           }
         },
         "ultima_discrepancia": null
       },
       "event_loop": {
-        "cycles": 60370,
+        "cycles": 60716,
         "enabled": true,
-        "last_cycle": 1794801759.144565,
+        "last_cycle": 1794801777.1137311,
         "last_slow": null,
         "max_s": 0.25,
         "min_s": 0.05,
         "slow_1s": 0,
         "slow_3s": 0,
-        "wakes_by_data": 60298,
+        "wakes_by_data": 60644,
         "wakes_by_timeout": 72,
         "work_max_s": 0.0
       },
