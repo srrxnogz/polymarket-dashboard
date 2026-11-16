@@ -1,7 +1,7 @@
 {
   "schema": 2,
-  "timestamp": "2026-11-16T05:49:48.553614+00:00",
-  "timestamp_epoch": 1794808188,
+  "timestamp": "2026-11-16T05:50:06.628179+00:00",
+  "timestamp_epoch": 1794808206,
   "bot_online": true,
   "simulation_mode": true,
   "balance": 64.4872,
@@ -265,7 +265,7 @@
     "v4_real": null,
     "v4_version": "4.5",
     "recorder": {
-      "max_age_s": 48.0,
+      "max_age_s": 6.0,
       "ok": true,
       "procs": 12,
       "stale": []
@@ -280,7 +280,7 @@
       "collected_value": 8327.05,
       "failed_count": 0,
       "failed_value": 0.0,
-      "last_collected_age_s": 9859.8,
+      "last_collected_age_s": 9877.9,
       "last_error": null,
       "mode": "sim",
       "no_value_count": 0,
@@ -294,34 +294,34 @@
     },
     "ws_feed": {
       "alimentador": {
-        "aplicados": 768,
+        "aplicados": 1111,
         "conectado": true,
         "conexiones": 1,
-        "edad_fotograma_ms": 3,
-        "fotograma": 8986137,
-        "hace_s": 0.0,
+        "edad_fotograma_ms": 46,
+        "fotograma": 8986480,
+        "hace_s": 0.03,
         "instantaneas": 1,
         "max_de_golpe": 5,
-        "recibidos": 769,
+        "recibidos": 1112,
         "sin_vuelta": 14,
         "ultimo_error": null
       },
       "connected": true,
-      "connected_for_s": 443.0,
+      "connected_for_s": 460.0,
       "data_age_s": {
         "…195940": 0.0,
         "…430811": 0.0,
-        "…504018": 0.0,
-        "…689419": 0.0
+        "…504018": 0.7,
+        "…689419": 0.7
       },
-      "kb_per_s": 2033.8,
+      "kb_per_s": 1079.8,
       "lag_ms_max": 224,
-      "lag_ms_p50": 36,
+      "lag_ms_p50": 30,
       "lag_tokens": {
-        "108285668079979933231448708402311726525023398331764943026864551645832471195940": 22,
-        "12410881477546571916867159690710897592250622836422455120025369604988271689419": 21,
-        "78109399331881785819785062906989030375001915805997693846419971897854277430811": 22,
-        "79249171413962585406956266290465945459195148493568806840642299985380052504018": 21
+        "108285668079979933231448708402311726525023398331764943026864551645832471195940": 24,
+        "12410881477546571916867159690710897592250622836422455120025369604988271689419": 25,
+        "78109399331881785819785062906989030375001915805997693846419971897854277430811": 24,
+        "79249171413962585406956266290465945459195148493568806840642299985380052504018": 25
       },
       "last_hour": {
         "1013": 6,
@@ -334,8 +334,8 @@
         "resuscripcion": 0,
         "vigilancia": 0
       },
-      "max_data_age_s": 0.0,
-      "msgs_per_s": 3219.8,
+      "max_data_age_s": 0.7,
+      "msgs_per_s": 1722.5,
       "procesos": 8,
       "redundancia": 3,
       "restarts": 0,
@@ -348,14 +348,14 @@
       "totals": {
         "closes": {
           "1013": 562,
-          "error": 724,
+          "error": 726,
           "limpio": 9313,
           "vigilancia": 154
         },
-        "connects": 10625,
-        "msgs": 1890745086,
+        "connects": 10627,
+        "msgs": 1890777538,
         "parse_errors": 0,
-        "pongs": 1088633,
+        "pongs": 1088645,
         "resubscribes": 898
       }
     },
@@ -384,73 +384,73 @@
         "symbols": {
           "bnbusd": {
             "fresh": true,
-            "ref": 589.3177,
-            "ref_age_s": 0.37,
-            "twap": 589.25243,
-            "twap_age_s": 0.31,
-            "twap_lag_s": 1.38
+            "ref": 589.1587,
+            "ref_age_s": 0.63,
+            "twap": 589.235484,
+            "twap_age_s": 0.34,
+            "twap_lag_s": 1.42
           },
           "btcusd": {
             "fresh": true,
-            "ref": 64583.679,
-            "ref_age_s": 0.37,
-            "twap": 64597.433152,
-            "twap_age_s": 0.28,
-            "twap_lag_s": 1.4
+            "ref": 64558.7378,
+            "ref_age_s": 0.66,
+            "twap": 64586.390718,
+            "twap_age_s": 0.41,
+            "twap_lag_s": 1.35
           },
           "dogeusd": {
             "fresh": true,
-            "ref": 0.0587,
-            "ref_age_s": 0.4,
-            "twap": 0.058679,
-            "twap_age_s": 0.3,
-            "twap_lag_s": 1.38
+            "ref": 0.0586,
+            "ref_age_s": 0.62,
+            "twap": 0.058669,
+            "twap_age_s": 0.34,
+            "twap_lag_s": 1.42
           },
           "ethusd": {
             "fresh": true,
-            "ref": 1811.9605,
-            "ref_age_s": 0.39,
-            "twap": 1812.271569,
-            "twap_age_s": 0.31,
+            "ref": 1811.0551,
+            "ref_age_s": 0.65,
+            "twap": 1811.955788,
+            "twap_age_s": 0.37,
             "twap_lag_s": 1.38
           },
           "hypeusd": {
             "fresh": true,
-            "ref": 66.1185,
-            "ref_age_s": 0.36,
-            "twap": 66.146472,
-            "twap_age_s": 0.27,
-            "twap_lag_s": 1.42
+            "ref": 66.0969,
+            "ref_age_s": 0.66,
+            "twap": 66.129209,
+            "twap_age_s": 0.37,
+            "twap_lag_s": 1.38
           },
           "solusd": {
             "fresh": true,
-            "ref": 71.2338,
-            "ref_age_s": 0.38,
-            "twap": 71.243088,
-            "twap_age_s": 0.27,
+            "ref": 71.2077,
+            "ref_age_s": 0.63,
+            "twap": 71.233943,
+            "twap_age_s": 0.34,
             "twap_lag_s": 1.42
           },
           "xrpusd": {
             "fresh": true,
-            "ref": 0.9521,
-            "ref_age_s": 0.39,
-            "twap": 0.95214,
-            "twap_age_s": 0.27,
-            "twap_lag_s": 1.42
+            "ref": 0.9519,
+            "ref_age_s": 0.65,
+            "twap": 0.952068,
+            "twap_age_s": 0.42,
+            "twap_lag_s": 1.33
           }
         },
         "ultima_discrepancia": null
       },
       "event_loop": {
-        "cycles": 753,
+        "cycles": 1096,
         "enabled": true,
-        "last_cycle": 1794808188.6828277,
+        "last_cycle": 1794808206.729394,
         "last_slow": null,
         "max_s": 0.25,
         "min_s": 0.05,
         "slow_1s": 0,
         "slow_3s": 0,
-        "wakes_by_data": 753,
+        "wakes_by_data": 1096,
         "wakes_by_timeout": 0,
         "work_max_s": 0.0
       },
@@ -460,7 +460,7 @@
         "enabled": false,
         "files": 0,
         "last_error": null,
-        "live_tokens": 2,
+        "live_tokens": 4,
         "queue": 0,
         "running": false,
         "trade_rows": 0
