@@ -1,7 +1,7 @@
 {
   "schema": 2,
-  "timestamp": "2026-11-16T03:22:07.189407+00:00",
-  "timestamp_epoch": 1794799327,
+  "timestamp": "2026-11-16T03:22:24.543269+00:00",
+  "timestamp_epoch": 1794799344,
   "bot_online": true,
   "simulation_mode": true,
   "balance": 64.4872,
@@ -265,7 +265,7 @@
     "v4_real": null,
     "v4_version": "4.5",
     "recorder": {
-      "max_age_s": 7.0,
+      "max_age_s": 24.0,
       "ok": true,
       "procs": 12,
       "stale": []
@@ -280,7 +280,7 @@
       "collected_value": 8327.05,
       "failed_count": 0,
       "failed_value": 0.0,
-      "last_collected_age_s": 998.4,
+      "last_collected_age_s": 1015.8,
       "last_error": null,
       "mode": "sim",
       "no_value_count": 0,
@@ -294,33 +294,31 @@
     },
     "ws_feed": {
       "alimentador": {
-        "aplicados": 13844,
+        "aplicados": 14187,
         "conectado": true,
         "conexiones": 1,
-        "edad_fotograma_ms": 41,
-        "fotograma": 8816936,
-        "hace_s": 0.04,
+        "edad_fotograma_ms": 17,
+        "fotograma": 8817279,
+        "hace_s": 0.01,
         "instantaneas": 1,
         "max_de_golpe": 10,
-        "recibidos": 13845,
+        "recibidos": 14188,
         "sin_vuelta": 30,
         "ultimo_error": null
       },
-      "connected": true,
-      "connected_for_s": 248.0,
+      "connected": false,
+      "connected_for_s": 0,
       "data_age_s": {
         "…620900": 0.0,
-        "…638488": 6.3,
-        "…688956": 6.3,
         "…842407": 0.0
       },
-      "kb_per_s": 1945.4,
-      "lag_ms_max": 262,
+      "kb_per_s": 1903.3,
+      "lag_ms_max": 226,
       "lag_ms_p50": 25,
       "lag_tokens": {
-        "102695230373273401425670107514459822459303806290465956973599765315679777842407": 44,
+        "102695230373273401425670107514459822459303806290465956973599765315679777842407": 41,
         "40422872449396222424241717641571520237686416867133051048561990921878534638488": 0,
-        "42255040668960037690889199119590300178302026273891072354785088784388416620900": 44,
+        "42255040668960037690889199119590300178302026273891072354785088784388416620900": 41,
         "4940528800262846938871119130411785177159059314084033983056220381229587688956": 0
       },
       "last_hour": {
@@ -334,14 +332,14 @@
         "resuscripcion": 48,
         "vigilancia": 15
       },
-      "max_data_age_s": 6.3,
-      "msgs_per_s": 3096.0,
+      "max_data_age_s": 0.0,
+      "msgs_per_s": 3036.4,
       "procesos": 8,
       "redundancia": 3,
       "restarts": 0,
       "sin_conexion_ahora": 0,
       "sin_conexion_tokens": {},
-      "slots": 6,
+      "slots": 3,
       "subprocess": true,
       "tokens": 4,
       "tokens_waiting_first_data": 0,
@@ -349,13 +347,13 @@
         "closes": {
           "1013": 554,
           "error": 552,
-          "limpio": 9224,
+          "limpio": 9227,
           "vigilancia": 153
         },
         "connects": 10355,
-        "msgs": 1868156909,
+        "msgs": 1868208061,
         "parse_errors": 0,
-        "pongs": 1079209,
+        "pongs": 1079244,
         "resubscribes": 886
       }
     },
@@ -384,73 +382,73 @@
         "symbols": {
           "bnbusd": {
             "fresh": true,
-            "ref": 593.7992,
-            "ref_age_s": 0.07,
-            "twap": 593.901715,
-            "twap_age_s": 0.05,
-            "twap_lag_s": 1.2
+            "ref": 594.3156,
+            "ref_age_s": 0.65,
+            "twap": 593.91101,
+            "twap_age_s": 0.53,
+            "twap_lag_s": 1.08
           },
           "btcusd": {
             "fresh": true,
-            "ref": 65059.683,
-            "ref_age_s": 0.08,
-            "twap": 65067.145295,
-            "twap_age_s": 1.2,
-            "twap_lag_s": 1.05
+            "ref": 65118.1495,
+            "ref_age_s": 0.63,
+            "twap": 65068.930915,
+            "twap_age_s": 0.52,
+            "twap_lag_s": 1.09
           },
           "dogeusd": {
             "fresh": true,
-            "ref": 0.0591,
-            "ref_age_s": 0.09,
-            "twap": 0.059156,
-            "twap_age_s": 1.19,
-            "twap_lag_s": 1.06
+            "ref": 0.0592,
+            "ref_age_s": 0.64,
+            "twap": 0.059138,
+            "twap_age_s": 0.56,
+            "twap_lag_s": 1.05
           },
           "ethusd": {
             "fresh": true,
-            "ref": 1821.2741,
-            "ref_age_s": 0.09,
-            "twap": 1821.557574,
-            "twap_age_s": 0.05,
-            "twap_lag_s": 1.19
+            "ref": 1823.4266,
+            "ref_age_s": 0.62,
+            "twap": 1821.586887,
+            "twap_age_s": 0.54,
+            "twap_lag_s": 1.07
           },
           "hypeusd": {
             "fresh": true,
-            "ref": 66.5864,
-            "ref_age_s": 0.07,
-            "twap": 66.645908,
-            "twap_age_s": 1.23,
-            "twap_lag_s": 1.02
+            "ref": 66.6856,
+            "ref_age_s": 0.62,
+            "twap": 66.629056,
+            "twap_age_s": 0.53,
+            "twap_lag_s": 1.08
           },
           "solusd": {
             "fresh": true,
-            "ref": 72.1177,
-            "ref_age_s": 0.09,
-            "twap": 72.126075,
-            "twap_age_s": 1.21,
-            "twap_lag_s": 1.04
+            "ref": 72.2018,
+            "ref_age_s": 0.64,
+            "twap": 72.126377,
+            "twap_age_s": 0.5,
+            "twap_lag_s": 1.11
           },
           "xrpusd": {
             "fresh": true,
-            "ref": 0.9652,
-            "ref_age_s": 0.06,
-            "twap": 0.965323,
-            "twap_age_s": 1.21,
+            "ref": 0.9665,
+            "ref_age_s": 0.65,
+            "twap": 0.965365,
+            "twap_age_s": 0.58,
             "twap_lag_s": 1.03
           }
         },
         "ultima_discrepancia": null
       },
       "event_loop": {
-        "cycles": 13830,
+        "cycles": 14173,
         "enabled": true,
-        "last_cycle": 1794799327.2011313,
+        "last_cycle": 1794799344.5920913,
         "last_slow": null,
         "max_s": 0.25,
         "min_s": 0.05,
         "slow_1s": 0,
         "slow_3s": 0,
-        "wakes_by_data": 13813,
+        "wakes_by_data": 14156,
         "wakes_by_timeout": 17,
         "work_max_s": 0.0
       },
