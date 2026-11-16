@@ -1,7 +1,7 @@
 {
   "schema": 2,
-  "timestamp": "2026-11-16T05:47:11.736301+00:00",
-  "timestamp_epoch": 1794808031,
+  "timestamp": "2026-11-16T05:47:30.079786+00:00",
+  "timestamp_epoch": 1794808050,
   "bot_online": true,
   "simulation_mode": true,
   "balance": 64.4872,
@@ -265,7 +265,7 @@
     "v4_real": null,
     "v4_version": "4.5",
     "recorder": {
-      "max_age_s": 11.0,
+      "max_age_s": 30.0,
       "ok": true,
       "procs": 12,
       "stale": []
@@ -280,7 +280,7 @@
       "collected_value": 8327.05,
       "failed_count": 0,
       "failed_value": 0.0,
-      "last_collected_age_s": 9703.0,
+      "last_collected_age_s": 9721.4,
       "last_error": null,
       "mode": "sim",
       "no_value_count": 0,
@@ -294,25 +294,25 @@
     },
     "ws_feed": {
       "alimentador": {
-        "aplicados": 180064,
+        "aplicados": 180404,
         "conectado": true,
         "conexiones": 1,
-        "edad_fotograma_ms": 8,
-        "fotograma": 8983156,
+        "edad_fotograma_ms": 10,
+        "fotograma": 8983496,
         "hace_s": 0.01,
         "instantaneas": 1,
         "max_de_golpe": 10,
-        "recibidos": 180065,
+        "recibidos": 180405,
         "sin_vuelta": 100,
         "ultimo_error": null
       },
       "connected": true,
-      "connected_for_s": 584.0,
+      "connected_for_s": 3.0,
       "data_age_s": {
-        "…504018": 0.1,
-        "…648909": 9.6,
-        "…685067": 9.6,
-        "…689419": 0.1
+        "…504018": 0.0,
+        "…648909": 5.5,
+        "…685067": 5.5,
+        "…689419": 0.0
       },
       "kb_per_s": 1990.7,
       "lag_ms_max": 250,
@@ -320,21 +320,21 @@
       "lag_tokens": {
         "103456936833924393865212666272718260074534604192616704753066861625081886648909": 0,
         "104463077632158124187310632379541960206216689107100322951838223233348470685067": 0,
-        "12410881477546571916867159690710897592250622836422455120025369604988271689419": 30,
-        "79249171413962585406956266290465945459195148493568806840642299985380052504018": 30
+        "12410881477546571916867159690710897592250622836422455120025369604988271689419": 25,
+        "79249171413962585406956266290465945459195148493568806840642299985380052504018": 25
       },
       "last_hour": {
-        "1013": 7,
+        "1013": 6,
         "cierres_normales": 36,
         "error": 73,
         "huecos": 0,
         "limpio": 36,
         "primeros_datos": 96,
-        "reconexiones": 80,
+        "reconexiones": 79,
         "resuscripcion": 0,
         "vigilancia": 0
       },
-      "max_data_age_s": 9.6,
+      "max_data_age_s": 5.5,
       "msgs_per_s": 3126.9,
       "procesos": 8,
       "redundancia": 3,
@@ -344,18 +344,18 @@
       "slots": 6,
       "subprocess": true,
       "tokens": 4,
-      "tokens_waiting_first_data": 0,
+      "tokens_waiting_first_data": 6,
       "totals": {
         "closes": {
           "1013": 562,
           "error": 724,
-          "limpio": 9310,
+          "limpio": 9313,
           "vigilancia": 154
         },
-        "connects": 10622,
-        "msgs": 1890304859,
+        "connects": 10625,
+        "msgs": 1890358841,
         "parse_errors": 0,
-        "pongs": 1088495,
+        "pongs": 1088507,
         "resubscribes": 898
       }
     },
@@ -384,74 +384,74 @@
         "symbols": {
           "bnbusd": {
             "fresh": true,
-            "ref": 589.16,
-            "ref_age_s": 0.77,
-            "twap": 589.337592,
-            "twap_age_s": 0.7,
-            "twap_lag_s": 1.15
+            "ref": 588.7762,
+            "ref_age_s": 0.33,
+            "twap": 589.191019,
+            "twap_age_s": 0.27,
+            "twap_lag_s": 0.93
           },
           "btcusd": {
             "fresh": true,
-            "ref": 64613.9005,
-            "ref_age_s": 0.77,
-            "twap": 64638.237125,
-            "twap_age_s": 0.72,
-            "twap_lag_s": 1.12
+            "ref": 64559.2116,
+            "ref_age_s": 0.33,
+            "twap": 64617.169046,
+            "twap_age_s": 0.29,
+            "twap_lag_s": 0.91
           },
           "dogeusd": {
             "fresh": true,
-            "ref": 0.0587,
-            "ref_age_s": 0.79,
-            "twap": 0.05868,
-            "twap_age_s": 0.72,
-            "twap_lag_s": 1.13
+            "ref": 0.0586,
+            "ref_age_s": 0.35,
+            "twap": 0.058662,
+            "twap_age_s": 0.32,
+            "twap_lag_s": 0.89
           },
           "ethusd": {
             "fresh": true,
-            "ref": 1812.9862,
-            "ref_age_s": 0.76,
-            "twap": 1813.684526,
-            "twap_age_s": 0.73,
-            "twap_lag_s": 1.11
+            "ref": 1810.8864,
+            "ref_age_s": 0.32,
+            "twap": 1813.112145,
+            "twap_age_s": 0.3,
+            "twap_lag_s": 0.9
           },
           "hypeusd": {
             "fresh": true,
-            "ref": 66.1197,
-            "ref_age_s": 0.76,
-            "twap": 66.122413,
-            "twap_age_s": 0.71,
-            "twap_lag_s": 1.14
+            "ref": 66.0329,
+            "ref_age_s": 0.34,
+            "twap": 66.099741,
+            "twap_age_s": 0.27,
+            "twap_lag_s": 0.93
           },
           "solusd": {
             "fresh": true,
-            "ref": 71.2675,
-            "ref_age_s": 0.79,
-            "twap": 71.319007,
-            "twap_age_s": 0.75,
-            "twap_lag_s": 1.1
+            "ref": 71.1413,
+            "ref_age_s": 0.35,
+            "twap": 71.27689,
+            "twap_age_s": 0.3,
+            "twap_lag_s": 0.9
           },
           "xrpusd": {
             "fresh": true,
-            "ref": 0.9517,
-            "ref_age_s": 0.8,
-            "twap": 0.952114,
-            "twap_age_s": 0.74,
-            "twap_lag_s": 1.1
+            "ref": 0.9507,
+            "ref_age_s": 0.36,
+            "twap": 0.951798,
+            "twap_age_s": 0.31,
+            "twap_lag_s": 0.89
           }
         },
         "ultima_discrepancia": null
       },
       "event_loop": {
-        "cycles": 180143,
+        "cycles": 180484,
         "enabled": true,
-        "last_cycle": 1794808031.83925,
+        "last_cycle": 1794808050.1912835,
         "last_slow": null,
         "max_s": 0.25,
         "min_s": 0.05,
         "slow_1s": 0,
         "slow_3s": 0,
-        "wakes_by_data": 179963,
-        "wakes_by_timeout": 180,
+        "wakes_by_data": 180303,
+        "wakes_by_timeout": 181,
         "work_max_s": 0.0
       },
       "depth_recorder": {
