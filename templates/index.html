@@ -274,6 +274,12 @@ tr:hover td { background: rgba(96,165,250,.04); }
 .tag.k-v4 { background: #10254a; color: #93c5fd; } .tag.k-cheap { background: #2b2410; color: #f5c451; }
 .tag.k-early { background: #241a3d; color: #c4b5fd; } .tag.k-pc { background: #0d2b2a; color: #5eead4; }
 .tag.k-other { background: #1b2336; color: var(--muted); } .tag.k-coh { background: #2a1f0d; color: #fdba74; }
+.tag.k-sh { background: #3a0f16; color: #fda4af; }
+/* 17-nov: desglose por estrategia debajo de la gráfica de Rendimiento */
+.est-tbl { margin-top: 10px; }
+.est-tbl th, .est-tbl td { padding: 5px 8px; }
+.est-tbl th:not(:first-child), .est-tbl td:not(:first-child) { text-align: right; font-variant-numeric: tabular-nums; }
+.est-tbl tr.tot td { font-weight: 800; border-bottom: 0; }
 .wait { font-size: 10px; color: var(--amber); margin-top: 3px; }
 tr.waiting td { background: rgba(251,191,36,.05); }
 .tbl-wrap { max-height: 330px; overflow: auto; border-radius: 10px; }
@@ -339,6 +345,7 @@ tr.waiting td { background: rgba(251,191,36,.05); }
     <div class="rail">
       <span class="pill" id="runPill"><span class="led"></span> —</span>
       <span class="pill" id="v4Pill"><span class="led"></span> V4</span>
+      <span class="pill" id="shPill" title="Sharingan: RINNEGAN y los ojos"><span class="led"></span> Sharingan</span>
       <span class="pill" id="clPill" title="TWAP-60s oficial de Chainlink (el dato con el que resuelve Polymarket)"><span class="led"></span> Oráculo</span>
       <span class="pill" id="wsPill" title="Libro de órdenes de Polymarket en tiempo real"><span class="led"></span> Libro</span>
       <span class="pill" id="recPill" title="Grabador de mercado (datos para el simulador y los análisis)"><span class="led"></span> Grabador</span>
@@ -409,13 +416,19 @@ tr.waiting td { background: rgba(251,191,36,.05); }
   <div class="col-stack">
     <div class="card">
       <div class="card-h">
-        <h2>Rendimiento V4</h2>
+        <h2>Rendimiento V4 y Sharingan</h2>
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end">
           <span class="sub" id="perfScope">—</span>
           <div class="toggle" title="Qué enseña la gráfica"><button class="act" id="eqVPnl" onclick="setEqView('pnl')">Beneficio</button><button id="eqVSaldo" onclick="setEqView('saldo')">Saldo</button></div>
         </div>
       </div>
       <div class="chart-box"><canvas id="eqChart"></canvas></div>
+      <div class="est-tbl" id="perfEstBox" hidden title="Las mismas operaciones que la gráfica, el Capital y el Marcador (mismo inicio)">
+        <table>
+          <thead><tr><th>Por estrategia</th><th>Operaciones</th><th>Acierto</th><th>Profit factor</th><th>Beneficio</th></tr></thead>
+          <tbody id="perfEst"></tbody>
+        </table>
+      </div>
       <div class="meter" title="Operaciones perdidas por cada 100 realizadas; el punto muerto es la proporción con la que se queda en 0 (no dependen del saldo)">
         <div class="row"><span>Pierden <b id="mWr">—</b></span><span class="muted">punto muerto <b class="warn" id="mBe">—</b></span></div>
         <div class="bar"><div class="fill" id="mWrFill"></div><div class="mark" id="mBeMark"></div></div>
@@ -1076,14 +1089,21 @@ function renderLive(v4) {
   const durTxt = durs.map(d => d.replace('m', ' min')).join(' y ');
   // 5 min primero y después 15 min; cada ventana con su duración, su zona de entrada y su umbral
   const mk = (v4.markets || []).slice().sort((a, b) => ((a.window_s || 300) - (b.window_s || 300)) || (a.slug || '').localeCompare(b.slug || ''));
-  setT('liveSub', `solo decide la ventana en curso de cada mercado · entrada en los últimos ${300 - tmin0}–${300 - tmax0} s de cada ventana`);
+  const v4on = !!v4.active;   // 16-nov: con la V4 apagada la tarjeta solo enseña el mercado (no hay zona de entrada de V4)
+  const sh = v4.sharingan || null, shTxt = shResumen(sh);   // 17-nov: lo que compra Sharingan
+  setT('liveSub', v4on ? `solo decide la ventana en curso de cada mercado · entrada en los últimos ${300 - tmin0}–${300 - tmax0} s de cada ventana`
+                       : (shTxt ? 'V4 apagada · compra Sharingan: ' + shTxt : 'V4 apagada: no compra · la tarjeta solo enseña el mercado en curso'));
   // Qué hace el bot con cada moneda: apuesta (V4_ASSETS), en pausa (ETH, simulado con PF < 1) o solo registro de datos
   const bet = (p.V4_ASSETS || ['BTC']).map(a => String(a).toUpperCase());
   const PAUSE_TIP = {ETH: 'En pausa: con el simulador corregido ETH 5m solo da ~2 operaciones al día (40 en 39 días, sin pérdidas): muestra demasiado pequeña. Se reactiva añadiendo ETH a V4_ASSETS.'};
   const wbox = $('watch');
   if (wbox) wbox.innerHTML = ['BTC', 'ETH', 'SOL', 'XRP', 'DOGE', 'BNB', 'HYPE'].map(c => {
     const cd = p.V4_MARKETS ? p.V4_MARKETS.filter(x => String(x).toUpperCase().startsWith(c + ':')).map(x => String(x).split(':')[1].replace('m', ' min')).join(' y ') : durTxt;
-    if (bet.includes(c) && cd) return `<span class="w bet" title="V4 apuesta en este mercado"><span class="led on"></span><b>${c}</b> ${cd} · apostando</span>`;
+    // 17-nov: con la V4 apagada, BTC lo compra Sharingan y el resto de mercados de V4 no compra nadie (antes decía «apostando»)
+    const shd = (c === 'BTC' && shOn(sh)) ? (sh.mercados || []).filter(x => String(x).startsWith('BTC:')).map(x => String(x).split(':')[1].replace('m', ' min')).join(' y ') : '';
+    if (v4on && bet.includes(c) && cd) return `<span class="w bet" title="V4 apuesta en este mercado${shd ? ' (y Sharingan)' : ''}"><span class="led on"></span><b>${c}</b> ${cd} · apostando</span>`;
+    if (shd) return `<span class="w bet" title="${esc('Sharingan compra en este mercado: ' + shTxt)}"><span class="led on"></span><b>${c}</b> ${shd} · Sharingan</span>`;
+    if (!v4on && bet.includes(c) && cd) return `<span class="w pause" title="V4 apagada: aquí no compra nadie (Sharingan solo opera BTC). Vuelve a apostar si se enciende la V4."><span class="led warn"></span><b>${c}</b> ${cd} · V4 apagada</span>`;
     if (PAUSE_TIP[c]) return `<span class="w pause" title="${esc(PAUSE_TIP[c])}"><span class="led warn"></span><b>${c}</b> 5 min · en pausa</span>`;
     return `<span class="w" title="Solo se graban el oráculo y los datos para investigar; no se apuesta"><span class="led"></span><b>${c}</b> · solo datos</span>`;
   }).join('');
@@ -1116,24 +1136,26 @@ function renderLive(v4) {
     const cur = (m.cl_twap != null ? m.cl_twap : spot);
     const diff = (strike != null && cur != null) ? cur - strike : null;   // precio actual − precio a superar
     const dec = (m.asset === 'BTC' || m.asset === 'ETH') ? 2 : 4;
-    const status = m.signal ? `<span class="sig">🎯 SEÑAL: ${esc(m.signal)}</span>` : esc(m.status || '—');
+    const quien = shEnMercado(sh, m.asset, T);   // 17-nov: quién de Sharingan compra en este mercado
+    const status = m.signal ? `<span class="sig">🎯 SEÑAL: ${esc(m.signal)}</span>`
+                 : (!v4on && quien ? esc(`V4 apagada · compra Sharingan (${quien})`) : esc(m.status || '—'));
     const h = huecoMercado(box, claves[i], T); h.visto = now;
     h.cab.innerHTML = `<div class="mkt-top">
         <div><div class="mkt-name">${esc(m.asset || '')} <small>${T / 60} min · ${hhmm(w0)}–${hhmm(w0 + T)}</small></div>
-          <div class="sub">${inZone ? '<span class="pos">● en zona de entrada</span>' : (t < tmin ? 'zona de entrada en ' + fmtMMSS(tmin - t) : 'zona de entrada cerrada')}</div></div>
+          <div class="sub">${!v4on ? (quien ? `<span class="pos">● compra Sharingan: ${esc(quien)}</span>` : '<span class="muted">V4 apagada: no compra</span>') : (inZone ? '<span class="pos">● en zona de entrada</span>' : (t < tmin ? 'zona de entrada en ' + fmtMMSS(tmin - t) : 'zona de entrada cerrada'))}</div></div>
         <div class="count">${fmtMMSS(left)} <small>restantes</small></div>
       </div>
       <div class="timeline">
         <div class="fill" style="width:${(t / T * 100).toFixed(1)}%"></div>
-        <div class="zone" style="left:${tmin / T * 100}%;width:${(tmax - tmin) / T * 100}%"></div>
+        ${v4on ? `<div class="zone" style="left:${tmin / T * 100}%;width:${(tmax - tmin) / T * 100}%"></div>` : ''}
         <div class="now" style="left:calc(${(t / T * 100).toFixed(2)}% - 1px)"></div>
       </div>
-      <div class="tl-lbl"><span>0 s</span><span>zona ${tmin}–${tmax} s (faltan ${T - tmin}–${T - tmax} s)</span><span>${T} s</span></div>`;
+      <div class="tl-lbl"><span>0 s</span><span>${v4on ? `zona ${tmin}–${tmax} s (faltan ${T - tmin}–${T - tmax} s)` : ''}</span><span>${T} s</span></div>`;
     h.datos.innerHTML = `<div class="prob">
-        <div class="sub" style="margin-bottom:5px">Probabilidad del modelo ${pu === null ? '(calculando…)' : ''} · umbral de entrada ${(pmin * 100).toFixed(1)}%</div>
+        <div class="sub" style="margin-bottom:5px">Probabilidad del modelo ${pu === null ? '(calculando…)' : ''}${v4on ? ` · umbral de entrada ${(pmin * 100).toFixed(1)}%` : ''}</div>
         <div class="prob-bar${pu === null ? ' unk' : ''}">
           <div class="up" style="width:${pu === null ? 0 : upPct.toFixed(2)}%"></div><div class="mid"></div>
-          <div class="thr" style="left:${(pmin * 100).toFixed(2)}%"></div><div class="thr" style="left:${((1 - pmin) * 100).toFixed(2)}%"></div>
+          ${v4on ? `<div class="thr" style="left:${(pmin * 100).toFixed(2)}%"></div><div class="thr" style="left:${((1 - pmin) * 100).toFixed(2)}%"></div>` : ''}
           <div class="txt"><span>▲ UP ${pu === null ? '—' : upPct.toFixed(1) + '%'}</span><span>${pu === null ? '—' : (100 - upPct).toFixed(1) + '%'} DOWN ▼</span></div>
         </div>
       </div>
@@ -1178,11 +1200,74 @@ function tramoCifras(eqd) {
   const {base, pts} = tramoGrafica(eqd.points || []);
   const pnls = pts.map(p => Number(p.pnl || 0)), g = pnls.filter(x => x > 0), l = pnls.filter(x => x < 0);
   const sg = g.reduce((a, x) => a + x, 0), sl = -l.reduce((a, x) => a + x, 0);
+  // 17-nov (Sergio: «acaba de adaptar la UI a la nueva versión»): desglose por estrategia de esas mismas operaciones
+  const por_est = {};
+  pts.forEach(p => {
+    const k = p.est || 'V4', x = Number(p.pnl || 0);
+    const d = por_est[k] || (por_est[k] = {trades: 0, wins: 0, losses: 0, gw: 0, gl: 0, pnl: 0});
+    d.trades++; d.pnl += x;
+    if (x > 0) { d.wins++; d.gw += x; } else if (x < 0) { d.losses++; d.gl -= x; }
+  });
   return {desde: base ? base.ts : (eqd.since || (pts[0] || {}).ts || null),
           pnl: pts.length ? Number(pts[pts.length - 1].cum) - (base ? Number(base.cum) : 0) : 0,
           trades: pnls.length, wins: g.length, losses: l.length,
           win_rate_pct: pnls.length ? 100 * g.length / pnls.length : null, profit_factor: sl > 0 ? sg / sl : null,
-          avg_win: g.length ? sg / g.length : null, avg_loss: l.length ? -sl / l.length : null};
+          avg_win: g.length ? sg / g.length : null, avg_loss: l.length ? -sl / l.length : null, por_est};
+}
+// 17-nov: tabla «Por estrategia» debajo de la gráfica (mismo inicio que la gráfica, el Capital y el Marcador)
+const EST_ORDEN = ['V4', 'Post-cierre', 'Temprana', 'Coherencia', 'RINNEGAN', 'TSUKUYOMI', 'KAMUI', 'AMATERASU', 'SUSANOO', 'IZANAGI', 'TOMOE'];
+function estTag(k) {
+  const c = {'V4': 'k-v4', 'Post-cierre': 'k-pc', 'Temprana': 'k-early', 'Coherencia': 'k-coh'}[k] || 'k-sh';
+  return `<span class="tag ${c}">${esc(k)}</span>`;
+}
+function renderEst(tc) {
+  const box = $('perfEstBox'), tb = $('perfEst'); if (!box || !tb) return;
+  const por = (tc && tc.por_est) || {}, ks = Object.keys(por);
+  if (!ks.length) { box.hidden = true; return; }
+  const ord = (k) => { const i = EST_ORDEN.indexOf(k); return i < 0 ? 99 : i; };
+  ks.sort((a, b) => (ord(a) - ord(b)) || (por[b].trades - por[a].trades));
+  const fila = (lab, d, tot) => `<tr${tot ? ' class="tot"' : ''}><td>${lab}</td><td>${d.trades}</td>`
+    + `<td>${d.trades ? (100 * d.wins / d.trades).toFixed(1) + '%' : '—'}</td>`
+    + `<td>${d.gl > 0 ? (d.gw / d.gl).toFixed(2) : (d.gw > 0 ? '∞' : '—')}</td>`
+    + `<td class="${cls(d.pnl)}">${signed(d.pnl)} $</td></tr>`;
+  const T = ks.reduce((a, k) => { const d = por[k]; ['trades', 'wins', 'losses', 'gw', 'gl', 'pnl'].forEach(x => a[x] += d[x]); return a; },
+                      {trades: 0, wins: 0, losses: 0, gw: 0, gl: 0, pnl: 0});
+  tb.innerHTML = ks.map(k => fila(estTag(k), por[k], false)).join('') + (ks.length > 1 ? fila('Total', T, true) : '');
+  box.hidden = false;
+}
+// 17-nov (Sergio: «acaba de adaptar la UI a la nueva versión, no quites nada de V4»): píldora de Sharingan, cabecera y ventana en
+// vivo según lo que compra ahora el bot. Con la V4 apagada compra Sharingan (RINNEGAN y los ojos); con la V4 encendida, lo de antes.
+const TAGLINE_V4 = 'BTC Up/Down a 5 y 15 min · entra en los últimos segundos con el lado casi decidido';
+const listaY = (a) => a.length > 1 ? a.slice(0, -1).join(', ') + ' y ' + a[a.length - 1] : (a[0] || '');
+const shOn = (sh) => !!(sh && sh.enabled && !sh.error);
+function shResumen(sh) {          // «RINNEGAN (BTC 5 y 15 min, Bybit) y los ojos TSUKUYOMI, KAMUI y AMATERASU (BTC 5 min, apuesta mínima)»
+  if (!shOn(sh)) return '';
+  const durs = (sh.mercados || []).map(m => String(m).split(':')[1] || '').filter(Boolean).map(d => d.replace('m', ''));
+  const ojos = sh.ojos || [], bolsas = (sh.bolsas || []).map(b => b.charAt(0) + b.slice(1).toLowerCase());
+  if (!sh.modelo) return ojos.length ? `los ojos ${listaY(ojos)} (BTC ${listaY(durs)} min)` : '';
+  let t = `${sh.estrategia || 'RINNEGAN'} (BTC ${listaY(durs)} min${bolsas.length ? ', ' + listaY(bolsas) : ''})`;
+  if (ojos.length && durs.includes('5')) t += ` y los ojos ${listaY(ojos)} (BTC 5 min, apuesta mínima)`;
+  return t;
+}
+function shCorto(sh) {            // «RINNEGAN y los ojos TSUKUYOMI, KAMUI y AMATERASU»
+  if (!shOn(sh)) return '';
+  const ojos = sh.ojos || [];
+  if (!sh.modelo) return ojos.length ? 'los ojos ' + listaY(ojos) : '';
+  return (sh.estrategia || 'RINNEGAN') + (ojos.length ? ' y los ojos ' + listaY(ojos) : '');
+}
+function shEnMercado(sh, asset, T) {   // quién de Sharingan compra en este mercado ('' = nadie)
+  if (!shOn(sh) || asset !== 'BTC') return '';
+  const d = T >= 900 ? '15m' : '5m', ojos = sh.ojos || [];
+  if (!(sh.mercados || []).includes('BTC:' + d)) return '';
+  if (!sh.modelo) return ojos.length ? listaY(ojos) : '';
+  return (sh.estrategia || 'RINNEGAN') + (d === '5m' && ojos.length ? ' y los ojos' : '');
+}
+function renderSharingan(v4) {
+  const sh = v4.sharingan || null, on = shOn(sh);
+  pill('shPill', !sh ? 'Sharingan' : (sh.error ? 'Sharingan ?' : (on ? 'Sharingan activo' : 'Sharingan apagado')), !sh ? '' : (on ? 'on' : 'warn'));
+  const e = $('shPill'); if (e) e.title = on ? 'Sharingan compra: ' + shResumen(sh) : 'Sharingan no compra';
+  if (sh) setT('tagline', v4.active ? TAGLINE_V4 + (on ? ' · y Sharingan' : '')
+                          : (on ? 'BTC Up/Down · V4 apagada · compra Sharingan: ' + shCorto(sh) : 'BTC Up/Down · V4 apagada: no compra'));
 }
 function paintEq() {
   const a = $('eqVPnl'), b = $('eqVSaldo');
@@ -1251,6 +1336,7 @@ function entryType(st, px) {
   else if (s.startsWith('TWAP_LOCK_PC')) { k = 'pc'; lab = 'Post-cierre'; tip = 'Puja a 0,991 por el ganador ya decidido después del cierre; sin riesgo de resultado.'; }
   else if (s.startsWith('TWAP_LOCK_V4') && p > 0 && p < 0.95) { k = 'cheap'; lab = 'V4 barata'; tip = 'V4 en el tramo barato: por debajo de 0,95, solo con el modelo muy seguro (≥ 99 %).'; }
   else if (s.startsWith('TWAP_LOCK_V4')) { k = 'v4'; lab = 'V4'; tip = 'V4: compra al final de la ventana (0,95-0,99) con el modelo ≥ 98,5 %; aguanta hasta el resultado.'; }
+  else if (/^(TOMOE|KAMUI|AMATERASU|TSUKUYOMI|SUSANOO|IZANAGI|RINNEGAN|TWAP_LOCK_SHARINGAN)/.test(s)) { k = 'sh'; lab = esc((s.split(' (')[0] || '').replace('TWAP_LOCK_SHARINGAN', 'Sharingan')); tip = 'Sharingan: se aguanta hasta el resultado.'; }
   else { k = 'other'; lab = esc(s.split(' (')[0] || '—'); tip = 'Estrategia heredada'; }
   return `<span class="tag k-${k}" title="${esc(tip)}">${lab}</span>`;
 }
@@ -1623,12 +1709,17 @@ async function refresh(force = false) {
     pill('runPill', live.bot_running ? 'Corriendo' : 'Parado', live.bot_running ? 'on' : 'off');
     const v4 = live.v4 || {};
     pill('v4Pill', !v4.available ? 'V4 no disponible' : (v4.active ? 'V4 activa' : 'V4 desactivada'), !v4.available ? 'off' : (v4.active ? 'on' : 'warn'));
+    renderSharingan(v4);
     renderKpis(live);
     const L = live.simulation_mode ? live.ledger : null, ls = Object.assign({}, v4.live_stats || {});
     let lsEq = _eqd;
-    if (L && L.since_reset && L.since_reset.v4) { const v = L.since_reset.v4; Object.assign(ls, {trades: v.closed || 0, wins: v.wins || 0, losses: v.losses || 0, win_rate_pct: v.closed ? v.win_rate : null, pnl: v.pnl || 0, profit_factor: v.profit_factor, open: v.open || 0}); }
-    else if (!L) { const tc = tramoCifras(_eqd); if (tc) { Object.assign(ls, {trades: tc.trades, wins: tc.wins, losses: tc.losses, win_rate_pct: tc.win_rate_pct, pnl: tc.pnl, profit_factor: tc.profit_factor}); lsEq = tc; } }
-    renderV4Kpis(ls, lsEq); renderPerf(_eqd, v4.live_stats);
+    // 17-nov: el Marcador del REAL y el del PAPEL salen de las operaciones de la gráfica (V4 y Sharingan, desde su inicio), igual
+    // que el beneficio del Capital; el libro mayor de la V4 queda de reserva mientras llega la curva
+    const tc = tramoCifras(_eqd);
+    if (tc) { Object.assign(ls, {trades: tc.trades, wins: tc.wins, losses: tc.losses, win_rate_pct: tc.win_rate_pct, pnl: tc.pnl, profit_factor: tc.profit_factor}); lsEq = tc; }
+    else if (L && L.since_reset && L.since_reset.v4) { const v = L.since_reset.v4; Object.assign(ls, {trades: v.closed || 0, wins: v.wins || 0, losses: v.losses || 0, win_rate_pct: v.closed ? v.win_rate : null, pnl: v.pnl || 0, profit_factor: v.profit_factor, open: v.open || 0}); }
+    if (L && L.open_count != null) ls.open = Number(L.open_count) || 0;
+    renderV4Kpis(ls, lsEq); renderPerf(_eqd, v4.live_stats); renderEst(tc);
     renderLive(v4); renderPositions(live.active_positions); renderOracle(v4, live); renderParams(v4.params);
     _abiertas = (live.active_positions || []).length;
     _errors = 0; showError('');
